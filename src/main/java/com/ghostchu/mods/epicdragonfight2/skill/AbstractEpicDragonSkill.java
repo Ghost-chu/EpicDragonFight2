@@ -155,6 +155,10 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
         if (matches) {
             boolean result = this.tick();
             ++this.ticker;
+            if(result){
+                this.unregister();
+                this.end(SkillEndReason.STAGE_SWITCH);
+            }
             return result;
         }
         this.unregister();

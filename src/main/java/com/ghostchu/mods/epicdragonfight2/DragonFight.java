@@ -62,6 +62,10 @@ public class DragonFight implements Listener {
         entity.getPersistentDataContainer().set(plugin.PLUGIN_ENTITY_MARKER, PersistentDataType.BOOLEAN, true);
     }
 
+    public EpicDragonFight2 getPlugin() {
+        return plugin;
+    }
+
     public boolean isMarkedSummonedByPlugin(Entity entity) {
         return entity.getPersistentDataContainer().getOrDefault(plugin.PLUGIN_ENTITY_MARKER, PersistentDataType.BOOLEAN, false);
     }
