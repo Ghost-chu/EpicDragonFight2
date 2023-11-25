@@ -405,8 +405,11 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
     }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (command.getName().equalsIgnoreCase("epicdragonfightactiveteamskill")) {
+        if (command.getName().equalsIgnoreCase("edfteamskillactive")) {
             if (args.length != 1) {
+                for (DragonFight dragonFight : this.dragonFightList) {
+                    dragonFight.runTeamSkill(sender);
+                }
                 return true;
             }
             UUID uuid = UUID.fromString(args[0]);

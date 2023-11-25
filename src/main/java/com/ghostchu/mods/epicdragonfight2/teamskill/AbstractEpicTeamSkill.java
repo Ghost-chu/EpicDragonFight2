@@ -53,7 +53,7 @@ public abstract class AbstractEpicTeamSkill implements EpicTeamSkill, Listener {
                 ready = true;
                 BaseComponent[] components = TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', String.format(getPlugin().getConfig().getString("team-skills.get-ready.broadcast"),getSkillConfig().getString("name"))));
                 TextComponent component = new TextComponent(components);
-                component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/epicdragonfightactiveteamskill "+fight.getUUID().toString()));
+                component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/edfteamskillactive "+fight.getUUID().toString()));
                 component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("点击激活 RCF 终结技")));
                 getPlayerInWorld().forEach(p-> {
                     p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP,1,0);
