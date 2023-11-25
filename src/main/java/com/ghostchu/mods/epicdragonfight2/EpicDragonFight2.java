@@ -409,7 +409,7 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
             this.randomTick();
         } else if (args.length == 1) {
             int t = Integer.parseInt(args[0]);
-            this.dragonFightList.forEach(dragonFight -> dragonFight.processRandom(t));
+            this.dragonFightList.forEach(dragonFight -> dragonFight.processRandom(t, true));
         }
         return true;
     }

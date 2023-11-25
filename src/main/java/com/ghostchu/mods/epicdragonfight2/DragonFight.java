@@ -100,7 +100,7 @@ public class DragonFight implements Listener {
                 }
             } else {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 30, 0));
-                if(player.hasMetadata("stay-together")) {
+                if (player.hasMetadata("stay-together")) {
                     player.removeMetadata("stay-together", plugin);
                     // player exit stay together
                 }
@@ -111,10 +111,14 @@ public class DragonFight implements Listener {
     public void randomTick() {
         int r = this.random.nextInt(10);
         EpicDragonFight2.getInstance().getLogger().info("Random: " + r);
-        this.processRandom(r);
+        this.processRandom(r, false);
     }
 
-    private void installSkill(@NotNull EpicDragonSkill skill) {
+    private void installSkill(@NotNull EpicDragonSkill skill, boolean force) {
+        if (this.currentSkills != null && !force) {
+            plugin.getLogger().info("尝试向槽位安装技能: " + skill.getClass().getName() + "，但此时另一个技能正在进行中。");
+            return;
+        }
         Bukkit.getScheduler().runTaskLater(EpicDragonFight2.getInstance(), () -> {
             plugin.getLogger().info("尝试向槽位安装技能: " + skill.getClass().getName());
             if (Arrays.stream(skill.getAdaptStages()).anyMatch(stage -> stage == this.currentStage)) {
@@ -161,22 +165,22 @@ public class DragonFight implements Listener {
     }
 
 
-    public void processRandom(int t) {
+    public void processRandom(int t, boolean force) {
         if (this.currentSkills != null) {
             return;
         }
         plugin.getLogger().info("生成并处理随机数: " + t);
         if (t == this.lastRandom) {
-            this.processRandom(this.random.nextInt(11));
+            this.processRandom(this.random.nextInt(11), false);
             return;
         }
         switch (t) {
             case 0: {
-                this.installSkill(new WardenPowered(this));
+                this.installSkill(new WardenPowered(this), force);
                 break;
             }
             case 1: {
-                this.installSkill(new BadWind(this));
+                this.installSkill(new BadWind(this), force);
                 break;
             }
             case 2: {
@@ -184,27 +188,27 @@ public class DragonFight implements Listener {
                 break;
             }
             case 3: {
-                this.installSkill(new DragonEffectCloud(this));
+                this.installSkill(new DragonEffectCloud(this), force);
                 break;
             }
             case 4: {
-                this.installSkill(new FallingTrident(this));
+                this.installSkill(new FallingTrident(this), force);
                 break;
             }
             case 5: {
-                this.installSkill(new NukeExplosion(this));
+                this.installSkill(new NukeExplosion(this), force);
                 break;
             }
             case 6: {
-                this.installSkill(new Ravage(this));
+                this.installSkill(new Ravage(this), force);
                 break;
             }
             case 7: {
-                this.installSkill(new RocketRain(this));
+                this.installSkill(new RocketRain(this), force);
                 break;
             }
             case 8: {
-                this.installSkill(new Throw(this));
+                this.installSkill(new Throw(this), force);
                 break;
             }
             case 9: {
