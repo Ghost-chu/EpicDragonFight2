@@ -1,0 +1,12 @@
+name: EpicDragonFight2
+version: '${project.version}'
+main: com.ghostchu.mods.epicdragonfight2.EpicDragonFight2
+api-version: '1.20'
+depend: [NBTAPI]
+commands:
+  epicdragonfight:
+    description: EpicDragonFight
+    usage: /epicdragonfight
+  reloadepicdragonfight:
+    description: Reloading
+    usage: /reloadepicdragonfight

@@ -1,0 +1,154 @@
+# 影响的世界
+worlds:
+  - world_the_end
+# 龙最大血量
+dragon-max-health: 7000.0
+# 随机刻发生速度 tick speed
+random-tick-period: 700
+# 技能列表
+skills:
+  # 龙息药水云
+  dragon-effect-cloud:
+    # 技能持续时间（结束后会消除影响）
+    duration: 400
+    # 药水云持续时间
+    cloud-duration: 120
+    # 药水云展开距离
+    radius: 10
+    # 药水云生成间隔
+    check-interval: 25
+    # 技能即将开始提示信息
+    broadcast:
+      - "&5末影龙：&r在龙息的海洋中淹没吧！"
+      - "&cRCF: &f小心！这条龙身体里的椰能液体的含量越来越多了，有什么不好的事情要发生了……"
+  # 举高高
+  throws:
+    # 技能持续时间（结束后会消除影响）
+    duration: 200
+    # 上抛玩家时刻
+    time: 100
+    # 上抛叠加向量
+    velocity-x: 0.0
+    velocity-y: 100.0
+    velocity-z: 0.0
+    broadcast:
+      - "&cRCF：&f周围的空气都在往脚下凝聚，小心点"
+  # 苦力怕乘TNT - 摧毁末地大陆！
+  rocket-rain:
+    # 技能持续时间（结束后会消除影响）
+    duration: 250
+    # 火箭发射间隔（间隔越短，发射的数量越多）
+    check-interval: 10
+    # 苦力怕爆炸半径
+    creeper-explode-radius: 10
+    # 是否是闪电苦力怕
+    creeper-powered: true
+    # 苦力怕引信时长
+    creeper-fuse-ticks: 100
+    # 苦力怕血量
+    creeper-health: 40.0
+    # 自动点燃苦力怕
+    creeper-auto-ignite: true
+    # 苦力怕速度药水效果时长
+    creeper-speed-duration: 250
+    # 苦力怕速度药水效果等级
+    creeper-speed-level: 2
+    broadcast:
+      - "&5末影龙：&r给我灰飞烟灭吧"
+      - "&5末影龙：&r艺术就是爆炸，而你……将在爆炸中消失！"
+      - "&5末影龙：&r我们一概追求核平，见识下核平的力量吧！"
+  # 天降正义（三叉戟！———
+  trident:
+    # 技能持续时间（结束后会消除影响）
+    duration: 250
+    # 每次投放三叉戟的间隔时间
+    check-interval: 10
+    # 三叉戟Y轴偏移距离
+    height: 80
+    broadcast:
+      - "&5末影龙：&r"
+      - "你感到周围的空气逐渐凝固了起来，有什么不好的事情即将发生..."
+      - "&cRCF：小心，周围的空气开始凝固起来了……快看头顶！"
+  # Nuclear launch detected!
+  nuke:
+    # 技能持续时间（结束后会消除影响）
+    duration: 220
+    # 激活核弹爆炸的时刻
+    explode-time: 200
+    # 爆炸威力
+    # 参考：普通苦力怕为 3，TNT是 4，闪电苦力怕是 6
+    power: 25.0
+    broadcast:
+      - "&cRCF：小心，末地中央的末地门似乎正在变得不稳定，尽量别靠近它！"
+  # 复仇者小黑联盟！
+  ravage:
+    # 技能持续时间
+    duration: 600
+    # 每次为玩家周围的末影人指定最近的目标玩家的间隔
+    check-interval: 10
+    # 玩家附近的末影人探测距离
+    range: 100
+    broadcast:
+      - "&5末影龙：&r我的子民们，团结起来，将这些无知人类从我们的故乡驱逐出去！"
+  # 【被动】 末影龙 HP 低于该值时禁用爆炸伤害
+  explosion-protect:
+    below: 150.0
+  # 【被动】 末影龙 HP 低于该值时禁用远程伤害
+  projectile-protect:
+    below: 80.0
+  # 铁砧之力
+  anvilpowered:
+    duration: 200
+    check-interval: 10
+  # Warden 召唤
+  warden:
+    broadcast:
+      - "&5末影龙：&r我以末地之主的名义召唤，漆黑之梦魇，出现吧！"
+  wind:
+    duration: 100
+    broadcast:
+      - "&cRCF: &r小队注意，你们所在附近的风场变的十分不稳定，大的要来了，抓好附近的东西，别被吹飞了！"
+# 召唤物名字
+summon-entity-name: "Codusk"
+# Ding~ 随 机 选 人
+dragon-name:
+  - "鳕龙"
+  - "艾 尔 登 之 龙"
+  - "癫火之龙"
+  - "旺财"
+  - "红暴大轮胎"
+  - "莉亚电钻杀人魔"
+  - "极地邪魅地头蛇"
+  - "莉亚菇菇"
+  - "河豚气鼓鼓"
+  - "香烤鳕鱼"
+  - "狗"
+  - "RIAZth | 候车厅"
+# 开战标题
+fight-start:
+  title: "&a┗|｀O′|┛ 嗷~~"
+  subtitle: "&6末地之王正在虚无中翱翔！"
+fight-end:
+  egg-placed: "&7曾经的末地之主已倒在你的面前，只剩一颗龙蛋孤独的落在传送门之上...\n不过你知道，它终有一天还会归来。休息一下，做好下次讨伐的准备吧"
+attributes:
+  GENERIC_MAX_HEALTH:
+    ADD_NUMBER_DEMO:
+      amount: 5.0
+      operation: "ADD_NUMBER"
+    MULTIPLY_SCALAR_1_DEMO:
+      amount: 0.5
+      operation: "MULTIPLY_SCALAR_1"
+    ADD_SCALAR:
+      amount: 1.5
+      operation: "ADD_SCALAR"
+stay-together:
+  group-says:
+    - "快过来，人多力量大"
+    - "终于来了，RCF 小队绝不丢下任何队员"
+    - "别放弃，我们都在！"
+    - "下次别跑的太远了，欢迎回来"
+  alone-says:
+    - "我来了，搭把手！"
+    - "帮我一下，一起对付它！"
+    - "搭把手！"
+    - "我来了"
