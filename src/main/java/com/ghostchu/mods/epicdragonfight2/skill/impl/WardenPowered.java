@@ -52,6 +52,7 @@ public class WardenPowered extends AbstractEpicDragonSkill {
             warden.setInvisible(true);
         });
         applyDifficultRate(entity);
+        markEntitySummonedByPlugin(entity);
         Bukkit.getScheduler().runTaskLater(EpicDragonFight2.getInstance(), () -> entity.setInvisible(false), 4);
     }
 

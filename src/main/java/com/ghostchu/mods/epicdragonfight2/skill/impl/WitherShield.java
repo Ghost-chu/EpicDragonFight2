@@ -4,7 +4,6 @@ import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
 import com.ghostchu.mods.epicdragonfight2.skill.AbstractEpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.SkillEndReason;
-import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
@@ -17,7 +16,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -52,10 +50,14 @@ public class WitherShield extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
+        int total = spawned;
         getPlayerInWorld().forEach(bossBar::addPlayer);
         List<Wither> withers = getAllWithers();
-        bossBar.setTitle("凋零护盾 - " + withers.size() + " / " + spawned);
-        bossBar.setProgress((double) withers.size() / spawned);
+        if(withers.size() > total){
+            total = withers.size();
+        }
+        bossBar.setTitle("凋零护盾 - " + withers.size() + " / " + total);
+        bossBar.setProgress(Math.min((double) withers.size() / total,1.0f));
         return withers.isEmpty();
     }
 
@@ -90,23 +92,23 @@ public class WitherShield extends AbstractEpicDragonSkill {
                 .filter(this::isMarkedSummonedByPlugin)
                 .toList();
     }
-
-    @EventHandler(ignoreCancelled = true)
-    public void witherTargeting(EntityTargetLivingEntityEvent event) {
-        if (!(event.getEntity() instanceof Wither)) {
-            return;
-        }
-        if (!(event.getTarget() instanceof Player)) {
-            // random a target
-            Player player = RandomUtil.randomPick(getPlayerInWorld());
-            if (player == null) {
-                event.setCancelled(true);
-                event.setTarget(null);
-            } else {
-                event.setTarget(player);
-            }
-        }
-    }
+//
+//    @EventHandler(ignoreCancelled = true)
+//    public void witherTargeting(EntityTargetLivingEntityEvent event) {
+//        if (!(event.getEntity() instanceof Wither)) {
+//            return;
+//        }
+//        if (!(event.getTarget() instanceof Player)) {
+//            // random a target
+//            Player player = RandomUtil.randomPick(getPlayerInWorld());
+//            if (player == null) {
+//                event.setCancelled(true);
+//                event.setTarget(null);
+//            } else {
+//                event.setTarget(player);
+//            }
+//        }
+//    }
 
     @Override
     public long skillStartWaitingTicks() {

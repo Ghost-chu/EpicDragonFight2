@@ -23,6 +23,7 @@ import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -253,6 +254,40 @@ public class DragonFight implements Listener {
             return players.get(0);
         }
         return players.get(this.random.nextInt(Math.max(1, players.size() - 1)));
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onTargeting(EntityTargetLivingEntityEvent event) {
+        if (event.getEntity() instanceof EnderDragon eventDragon) {
+            if (!isMarkedSummonedByPlugin(eventDragon))
+                return;
+            if (!(event.getTarget() instanceof Player)) {
+                Player newTarget = RandomUtil.randomPick(getPlayerInWorld());
+                if (newTarget == null) {
+                    event.setCancelled(true);
+                } else {
+                    event.setTarget(newTarget);
+                }
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onTargetingToDragon(EntityTargetLivingEntityEvent event) {
+        if (event.getTarget() instanceof EnderDragon eventDragon) {
+            if (!isMarkedSummonedByPlugin(eventDragon))
+                return;
+            if (!isMarkedSummonedByPlugin(event.getTarget()))
+                return;
+            if (!(event.getTarget() instanceof Player)) {
+                Player newTarget = RandomUtil.randomPick(getPlayerInWorld());
+                if (newTarget == null) {
+                    event.setCancelled(true);
+                } else {
+                    event.setTarget(newTarget);
+                }
+            }
+        }
     }
 
     public void broadcast(@NotNull String string) {
