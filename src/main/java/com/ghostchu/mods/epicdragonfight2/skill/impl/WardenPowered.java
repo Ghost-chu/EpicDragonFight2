@@ -36,7 +36,7 @@ public class WardenPowered extends AbstractEpicDragonSkill {
     @Override
     public boolean tick() {
         if (!summoned) {
-            getWorld().getPlayers().forEach(this::spawnWarden);
+            getPlayerInWorld().forEach(this::spawnWarden);
             summoned = true;
         }
         return false;

@@ -92,10 +92,10 @@ public class DragonFight implements Listener {
                     if (random.nextBoolean()) {
                         // group says
                         Player groupSayer = RandomUtil.randomPick(aroundPlayers);
-                        Bukkit.dispatchCommand(groupSayer, "globle " + RandomUtil.randomPick(plugin.getConfig().getStringList("stay-together.group-says")));
+                        Bukkit.dispatchCommand(groupSayer, "global " + RandomUtil.randomPick(plugin.getConfig().getStringList("stay-together.group-says")));
                     } else {
                         // alone says
-                        Bukkit.dispatchCommand(player, "globle " + RandomUtil.randomPick(plugin.getConfig().getStringList("stay-together.alone-says")));
+                        Bukkit.dispatchCommand(player, "global " + RandomUtil.randomPick(plugin.getConfig().getStringList("stay-together.alone-says")));
                     }
                 }
             } else {
@@ -184,7 +184,7 @@ public class DragonFight implements Listener {
                 break;
             }
             case 2: {
-                //this.installSkill(new Blind(this));
+                this.installSkill(new WitherShield(this), force);
                 break;
             }
             case 3: {
