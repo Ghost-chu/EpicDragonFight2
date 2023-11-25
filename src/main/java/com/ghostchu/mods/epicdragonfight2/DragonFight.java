@@ -258,34 +258,9 @@ public class DragonFight implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onTargeting(EntityTargetLivingEntityEvent event) {
-        if (event.getEntity() instanceof EnderDragon eventDragon) {
-            if (!isMarkedSummonedByPlugin(eventDragon))
-                return;
-            if (!(event.getTarget() instanceof Player)) {
-                Player newTarget = RandomUtil.randomPick(getPlayerInWorld());
-                if (newTarget == null) {
-                    event.setCancelled(true);
-                } else {
-                    event.setTarget(newTarget);
-                }
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onTargetingToDragon(EntityTargetLivingEntityEvent event) {
-        if (event.getTarget() instanceof EnderDragon eventDragon) {
-            if (!isMarkedSummonedByPlugin(eventDragon))
-                return;
-            if (!isMarkedSummonedByPlugin(event.getTarget()))
-                return;
-            if (!(event.getTarget() instanceof Player)) {
-                Player newTarget = RandomUtil.randomPick(getPlayerInWorld());
-                if (newTarget == null) {
-                    event.setCancelled(true);
-                } else {
-                    event.setTarget(newTarget);
-                }
+        if (isMarkedSummonedByPlugin(event.getEntity())) {
+            if (event.getTarget() != null && isMarkedSummonedByPlugin(event.getTarget())) {
+                event.setTarget(randomPlayer());
             }
         }
     }
