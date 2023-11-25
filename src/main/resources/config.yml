@@ -111,6 +111,16 @@ skills:
   wither-shield:
     broadcast:
       - "&cRCF: &r各小队注意，末影龙召唤了凋零护盾，干掉这些凋零才能突破末影龙的防线，位置已经标出在你们的显示屏上。"
+team-skills:
+  get-ready:
+    broadcast: "&aRCF 终结技 &b[%s&b]&a 准备就绪，&b点击此处施放终结技！"
+  active:
+    broadcast: "&c<player_name>: &f现在施放终结技 &b[%s&b]&a！"
+  purge:
+    name: "&6肃静"
+    broadcast:
+      - "&c<player_name>: &d是时候让世界安静一些了！让嘈杂的声音就此消失吧！末影超声炮！&7（战场的所有末影人已全部击杀）"
+    need-charge: 3600
 # 召唤物名字
 summon-entity-name: "Codusk"
 # Ding~ 随 机 选 人

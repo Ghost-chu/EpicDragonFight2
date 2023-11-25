@@ -3,6 +3,7 @@ package com.ghostchu.mods.epicdragonfight2.skill;
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.EpicDragonFight2;
 import com.ghostchu.mods.epicdragonfight2.Stage;
+import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EnderDragon;
@@ -36,7 +37,11 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
     public AbstractEpicDragonSkill(@NotNull DragonFight fight, String skillName) {
         this.fight = fight;
         this.skillName = skillName;
+    }
 
+
+    public EpicDragonFight2 getPlugin() {
+        return this.fight.getPlugin();
     }
 
     public String getSkillName() {
@@ -110,9 +115,7 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
     @Override
     public String preAnnounce() {
         if (getSkillConfig().isList("broadcast")) {
-            List<String> broadcastEntries = getSkillConfig().getStringList("broadcast");
-            int selected = random.nextInt(broadcastEntries.size());
-            return broadcastEntries.get(selected);
+            return RandomUtil.randomPick(getSkillConfig().getStringList("broadcast"));
         } else {
             return getSkillConfig().getString("broadcast", "");
         }
@@ -155,7 +158,7 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
         if (matches) {
             boolean result = this.tick();
             ++this.ticker;
-            if(result){
+            if (result) {
                 this.unregister();
                 this.end(SkillEndReason.STAGE_SWITCH);
             }

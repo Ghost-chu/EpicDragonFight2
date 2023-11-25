@@ -3,6 +3,8 @@ package com.ghostchu.mods.epicdragonfight2;
 import com.ghostchu.mods.epicdragonfight2.skill.EpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.SkillEndReason;
 import com.ghostchu.mods.epicdragonfight2.skill.impl.*;
+import com.ghostchu.mods.epicdragonfight2.teamskill.EpicTeamSkill;
+import com.ghostchu.mods.epicdragonfight2.teamskill.impl.Purge;
 import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.md_5.bungee.api.ChatMessageType;
@@ -11,6 +13,7 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
@@ -51,12 +54,19 @@ public class DragonFight implements Listener {
     @Nullable
     private EpicDragonSkill currentSkills;
     private int lastRandom = -1;
+    private UUID uuid;
+    private EpicTeamSkill teamSkill;
 
-    public DragonFight(EpicDragonFight2 plugin, World world, EnderDragon dragon) {
+    public DragonFight(EpicDragonFight2 plugin ,UUID uuid, World world, EnderDragon dragon) {
         this.plugin = plugin;
         this.world = world;
         this.dragon = dragon;
+        this.uuid = uuid;
         markEntitySummonedByPlugin(this.dragon);
+    }
+
+    public UUID getUUID() {
+        return uuid;
     }
 
     public void markEntitySummonedByPlugin(Entity entity) {
@@ -75,8 +85,23 @@ public class DragonFight implements Listener {
         if (this.currentSkills != null && this.currentSkills.cycle()) {
             this.currentSkills = null;
         }
+        if(this.teamSkill == null){
+            installTeamSkill(randomTeamSkill(),false);
+        }else{
+            this.teamSkill.tick();
+        }
         this.tickMagic();
     }
+
+    private void installTeamSkill(EpicTeamSkill epicTeamSkill, boolean b) {
+        if(this.teamSkill != null & !b){
+            plugin.getLogger().info("尝试安装团队终结技 "+epicTeamSkill.getClass().getName()+" 但目前已有一个终结技已安装");
+            return;
+        }
+        this.teamSkill = epicTeamSkill;
+        plugin.getLogger().info("已安装团队终结技 "+epicTeamSkill.getClass().getName());
+    }
+
 
     private void tickMagic() {
         this.getPlayerInWorld().forEach(player -> {
@@ -113,6 +138,21 @@ public class DragonFight implements Listener {
         });
     }
 
+    public void runTeamSkill(CommandSender sender){
+        if(this.teamSkill.execute(sender)){
+            this.teamSkill = null;
+            installTeamSkill(randomTeamSkill(),false);
+        }
+    }
+
+    private EpicTeamSkill randomTeamSkill() {
+        int r = this.random.nextInt(1);
+        return switch (r){
+            case 0 -> new Purge(this);
+            default -> null;
+        };
+    }
+
     public void randomTick() {
         int r = this.random.nextInt(10);
         EpicDragonFight2.getInstance().getLogger().info("Random: " + r);
@@ -145,12 +185,13 @@ public class DragonFight implements Listener {
         for (String attribute : attributeSection.getKeys(false)) {
             try {
                 Attribute attr = Attribute.valueOf(attribute);
+                if(attr == null) continue;
                 AttributeInstance instance = entity.getAttribute(attr);
                 if (instance == null) continue;
                 ConfigurationSection modifiersSection = attributeSection.getConfigurationSection(attribute);
                 List<AttributeModifier> modifiers = new ArrayList<>();
                 for (String key : modifiersSection.getKeys(false)) {
-                    ConfigurationSection modifierSection = attributeSection.getConfigurationSection(attribute);
+                    ConfigurationSection modifierSection = modifiersSection.getConfigurationSection(attribute);
                     double amount;
                     if (modifierSection.isString("amount")
                             && modifierSection.getString("amount").equalsIgnoreCase("player_count")) {
@@ -169,12 +210,10 @@ public class DragonFight implements Listener {
         }
     }
 
-
     public void processRandom(int t, boolean force) {
-        if (this.currentSkills != null) {
+        if (this.currentSkills != null && !force) {
             return;
         }
-        plugin.getLogger().info("生成并处理随机数: " + t);
         if (t == this.lastRandom) {
             this.processRandom(this.random.nextInt(11), false);
             return;
@@ -260,7 +299,8 @@ public class DragonFight implements Listener {
     public void onTargeting(EntityTargetLivingEntityEvent event) {
         if (isMarkedSummonedByPlugin(event.getEntity())) {
             if (event.getTarget() != null && isMarkedSummonedByPlugin(event.getTarget())) {
-                event.setTarget(randomPlayer());
+                Player newTarget = randomPlayer();
+                event.setTarget(newTarget);
             }
         }
     }

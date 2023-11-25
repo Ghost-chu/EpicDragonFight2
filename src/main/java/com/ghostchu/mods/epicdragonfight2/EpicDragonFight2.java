@@ -176,11 +176,11 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
         Bukkit.getWorlds().stream().filter(w -> w.getEnvironment() == World.Environment.THE_END)
                 .forEach(w -> {
                     Collection<EnderDragon> enderDragons = w.getEntitiesByClass(EnderDragon.class);
-                    if (!enderDragons.isEmpty()) {
+                    if (!enderDragons.isEmpty() && !this.worlds.contains(w)) {
                         EnderDragon dragon = enderDragons.iterator().next();
                         if (dragon.getPersistentDataContainer().getOrDefault(PLUGIN_ENTITY_MARKER, PersistentDataType.BOOLEAN, false)) {
                             this.worlds.add(w);
-                            DragonFight fight = new DragonFight(this, w, dragon);
+                            DragonFight fight = new DragonFight(this, UUID.randomUUID(), w, dragon);
                             this.registerFight(fight);
                             getLogger().info("已重新注册 " + w.getName() + " 的龙战");
                         }
@@ -276,7 +276,7 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void dragonSpawn(EntitySpawnEvent event) {
         if (event.getEntity() instanceof EnderDragon enderDragon && this.worlds.contains(event.getLocation().getWorld())) {
-            DragonFight fight = new DragonFight(this, event.getLocation().getWorld(), enderDragon);
+            DragonFight fight = new DragonFight(this, UUID.randomUUID(), event.getLocation().getWorld(), enderDragon);
             this.registerFight(fight);
             enderDragon.setMaxHealth(this.getConfig().getDouble("dragon-max-health"));
             enderDragon.setHealth(enderDragon.getMaxHealth());
@@ -405,11 +405,24 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
     }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length == 0) {
-            this.randomTick();
-        } else if (args.length == 1) {
-            int t = Integer.parseInt(args[0]);
-            this.dragonFightList.forEach(dragonFight -> dragonFight.processRandom(t, true));
+        if (command.getName().equalsIgnoreCase("epicdragonfightactiveteamskill")) {
+            if (args.length != 1) {
+                return true;
+            }
+            UUID uuid = UUID.fromString(args[0]);
+            for (DragonFight dragonFight : this.dragonFightList) {
+                if (dragonFight.getUUID().equals(uuid)) {
+                    dragonFight.runTeamSkill(sender);
+                }
+            }
+        }
+        if (command.getName().equalsIgnoreCase("epicdragonfight")) {
+            if (args.length == 0) {
+                this.randomTick();
+            } else if (args.length == 1) {
+                int t = Integer.parseInt(args[0]);
+                this.dragonFightList.forEach(dragonFight -> dragonFight.processRandom(t, true));
+            }
         }
         return true;
     }

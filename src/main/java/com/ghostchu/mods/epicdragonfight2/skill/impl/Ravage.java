@@ -49,6 +49,7 @@ public class Ravage extends AbstractEpicDragonSkill {
                 continue;
             this.getWorld().getNearbyEntities(player.getLocation(), this.range, 20.0, this.range).stream().filter(entity -> entity instanceof Enderman).map(entity -> (Enderman) entity).forEach(enderman -> {
                 enderman.setTarget(player);
+                markEntitySummonedByPlugin(enderman);
                 this.getWorld().playSound(enderman.getLocation(), Sound.ENTITY_ENDERMAN_SCREAM, 0.5f, this.getRandom().nextFloat());
             });
         }

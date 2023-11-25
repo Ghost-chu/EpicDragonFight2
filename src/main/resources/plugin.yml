@@ -10,3 +10,6 @@ commands:
   reloadepicdragonfight:
     description: Reloading
     usage: /reloadepicdragonfight
+  epicdragonfightactiveteamskill:
+    description: EpicDragonFight
+    usage: /epicdragonfightactiveteamskill

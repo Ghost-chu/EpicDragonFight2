@@ -58,6 +58,10 @@ public class WitherShield extends AbstractEpicDragonSkill {
         }
         bossBar.setTitle("凋零护盾 - " + withers.size() + " / " + total);
         bossBar.setProgress(Math.min((double) withers.size() / total,1.0f));
+        if(getTick() % 200 == 0){
+            getPlugin().getLogger().info("[WitherShield] 剩余 "+ withers.size()+" 只凋零");
+            withers.forEach(w-> getPlugin().getLogger().info("[WitherShield] - "+ w.getLocation()));
+        }
         return withers.isEmpty();
     }
 
