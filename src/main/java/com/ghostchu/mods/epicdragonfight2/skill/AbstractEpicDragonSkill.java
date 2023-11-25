@@ -128,6 +128,14 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
         }
     }
 
+    public int getCleanTick(){
+        return getTick() - skillStartWaitingTicks();
+    }
+
+    public boolean isWaitingStart(){
+        return getTick() < skillStartWaitingTicks();
+    }
+
     public void applyDifficultRate(LivingEntity entity) {
         fight.applyDifficultRate(entity);
     }
@@ -144,7 +152,7 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
             ++this.ticker;
             return false;
         }
-        if (this.ticker >= this.duration) {
+        if (this.ticker > this.duration) {
             this.unregister();
             this.end(SkillEndReason.REACH_TIME_LIMIT);
             return true;

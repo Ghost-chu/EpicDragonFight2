@@ -15,13 +15,13 @@ public class BadWind extends AbstractEpicDragonSkill {
 
     public BadWind(@NotNull DragonFight fight) {
         super(fight, "wind");
-        this.duration = getSkillConfig().getInt("duration");
+        this.duration = getSkillConfig().getInt("duration") ;
     }
 
     @Override
     public int start() {
         this.getPlayerInWorld().forEach(player -> player.playSound(player.getLocation(), Sound.ENTITY_WITHER_AMBIENT, 1.0f, this.getRandom().nextFloat()));
-        return this.duration;
+        return this.duration + this.skillStartWaitingTicks();
     }
 
     @Override
@@ -30,6 +30,9 @@ public class BadWind extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
+        if (isWaitingStart()) {
+            return false;
+        }
         for (Player player : this.getPlayerInWorld()) {
             player.setGliding(false);
             Vector baseVelocity = fromToVector(player.getLocation(), getDragon().getLocation()).add(new Vector(0.5, 0, 0.5));
@@ -47,8 +50,8 @@ public class BadWind extends AbstractEpicDragonSkill {
     }
 
     @Override
-    public long skillStartWaitingTicks() {
-        return 35;
+    public int skillStartWaitingTicks() {
+        return 20 * 5;
     }
 
     @Override

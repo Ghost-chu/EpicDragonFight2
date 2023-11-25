@@ -27,7 +27,7 @@ public class Ravage extends AbstractEpicDragonSkill {
     @Override
     public int start() {
         this.getPlayerInWorld().forEach(player -> player.playSound(player.getLocation(), Sound.ENTITY_GHAST_WARN, 1.0f, this.getRandom().nextFloat()));
-        return this.duration;
+        return this.duration + this.skillStartWaitingTicks();
     }
 
     @Override
@@ -36,7 +36,10 @@ public class Ravage extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
-        if (this.getTick() % this.checkInterval == 0) {
+        if(isWaitingStart()){
+            return false;
+        }
+        if (getCleanTick() % this.checkInterval == 0) {
             this.findAndApplyTarget();
         }
         this.playParticle();
@@ -63,7 +66,7 @@ public class Ravage extends AbstractEpicDragonSkill {
     }
 
     @Override
-    public long skillStartWaitingTicks() {
+    public int skillStartWaitingTicks() {
         return 15;
     }
 

@@ -11,7 +11,6 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 public class Throw extends AbstractEpicDragonSkill {
-    private final int duration;
     private final int throwTime;
     private final int velocityX;
     private final int velocityY;
@@ -19,7 +18,6 @@ public class Throw extends AbstractEpicDragonSkill {
 
     public Throw(@NotNull DragonFight fight) {
         super(fight, "throws");
-        this.duration = getSkillConfig().getInt("duration");
         this.throwTime = getSkillConfig().getInt("time");
         this.velocityX = getSkillConfig().getInt("velocity-x");
         this.velocityY = getSkillConfig().getInt("velocity-y");
@@ -29,7 +27,7 @@ public class Throw extends AbstractEpicDragonSkill {
     @Override
     public int start() {
         this.getPlayerInWorld().forEach(player -> player.playSound(player.getLocation(), Sound.ENTITY_TNT_PRIMED, 1.0f, this.getRandom().nextFloat()));
-        return this.duration;
+        return  this.skillStartWaitingTicks();
     }
 
     @Override
@@ -38,7 +36,11 @@ public class Throw extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
-        if (this.getTick() == this.throwTime) {
+        this.playParticle();
+        if (isWaitingStart()) {
+            return false;
+        }
+        if (getCleanTick() == 0) {
             for (Player player : this.getPlayerInWorld()) {
                 Vector baseVelocity = player.getVelocity();
                 baseVelocity.setX(baseVelocity.getX() + velocityX);
@@ -49,7 +51,6 @@ public class Throw extends AbstractEpicDragonSkill {
                 this.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.5f, this.getRandom().nextFloat());
             }
         }
-        this.playParticle();
         return false;
     }
 
@@ -60,8 +61,8 @@ public class Throw extends AbstractEpicDragonSkill {
     }
 
     @Override
-    public long skillStartWaitingTicks() {
-        return 35;
+    public int skillStartWaitingTicks() {
+        return throwTime;
     }
 
     @Override

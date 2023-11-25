@@ -21,7 +21,6 @@ public class NukeExplosion extends AbstractEpicDragonSkill {
         this.duration = getSkillConfig().getInt("duration");
         this.explodeTime = getSkillConfig().getInt("explode-time");
         this.power = getSkillConfig().getInt("power");
-
     }
 
     @Override
@@ -32,7 +31,7 @@ public class NukeExplosion extends AbstractEpicDragonSkill {
             player.setVelocity(dir);
         });
         this.getPlayerInWorld().forEach(player -> player.playSound(player.getLocation(), Sound.ENTITY_TNT_PRIMED, 1.0f, this.getRandom().nextFloat()));
-        return this.duration;
+        return this.duration + this.skillStartWaitingTicks();
     }
 
     @Override
@@ -41,22 +40,23 @@ public class NukeExplosion extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
-        if (this.getTick() < this.explodeTime) {
+        if (isWaitingStart()) {
             this.getWorld().spawnParticle(Particle.SMOKE_LARGE, this.nukeLocation, 4);
             this.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, this.nukeLocation, 4);
             if (this.getTick() % 5 == 0) {
                 this.getPlayerInWorld().forEach(player -> player.playSound(player.getLocation(), Sound.BLOCK_BELL_USE, 1.0f, this.getRandom().nextFloat()));
             }
+            return false;
         }
-        if (this.getTick() == this.explodeTime) {
+        if(getCleanTick() == 0){
             this.getWorld().createExplosion(new Location(this.getWorld(), 0.0, 70.0, 0.0), this.power, true, false, this.getDragon());
         }
         return false;
     }
 
     @Override
-    public long skillStartWaitingTicks() {
-        return 0;
+    public int skillStartWaitingTicks() {
+        return explodeTime;
     }
 
     @Override

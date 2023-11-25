@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 public interface EpicDragonSkill {
     String preAnnounce();
 
-    long skillStartWaitingTicks();
+    int skillStartWaitingTicks();
 
     @NotNull Stage[] getAdaptStages();
 

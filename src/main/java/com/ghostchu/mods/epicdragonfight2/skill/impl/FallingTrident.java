@@ -28,7 +28,7 @@ public class FallingTrident extends AbstractEpicDragonSkill {
     }
 
     @Override
-    public long skillStartWaitingTicks() {
+    public int skillStartWaitingTicks() {
         return 20 * 2;
     }
 
@@ -40,7 +40,10 @@ public class FallingTrident extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
-        if (this.getTick() % this.checkInterval == 0) {
+        if(isWaitingStart()){
+            return false;
+        }
+        if (getCleanTick() % this.checkInterval == 0) {
             this.summonTrident();
         }
         if (getTick() % 2 == 0) {

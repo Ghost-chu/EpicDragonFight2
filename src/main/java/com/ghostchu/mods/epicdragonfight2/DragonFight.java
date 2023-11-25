@@ -10,11 +10,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -181,33 +177,33 @@ public class DragonFight implements Listener {
     }
 
     public void applyDifficultRate(LivingEntity entity) {
-        ConfigurationSection attributeSection = plugin.getConfig().getConfigurationSection("attributes");
-        for (String attribute : attributeSection.getKeys(false)) {
-            try {
-                Attribute attr = Attribute.valueOf(attribute);
-                if(attr == null) continue;
-                AttributeInstance instance = entity.getAttribute(attr);
-                if (instance == null) continue;
-                ConfigurationSection modifiersSection = attributeSection.getConfigurationSection(attribute);
-                List<AttributeModifier> modifiers = new ArrayList<>();
-                for (String key : modifiersSection.getKeys(false)) {
-                    ConfigurationSection modifierSection = modifiersSection.getConfigurationSection(attribute);
-                    double amount;
-                    if (modifierSection.isString("amount")
-                            && modifierSection.getString("amount").equalsIgnoreCase("player_count")) {
-                        amount = getWorld().getPlayers().size();
-                    } else {
-                        amount = modifiersSection.getDouble("amount");
-                    }
-                    AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), key, amount,
-                            AttributeModifier.Operation.valueOf(modifierSection.getString("operation")));
-                    modifiers.add(modifier);
-                }
-                modifiers.forEach(instance::addModifier);
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            }
-        }
+//        ConfigurationSection attributeSection = plugin.getConfig().getConfigurationSection("attributes");
+//        for (String attribute : attributeSection.getKeys(false)) {
+//            try {
+//                Attribute attr = Attribute.valueOf(attribute);
+//                if(attr == null) continue;
+//                AttributeInstance instance = entity.getAttribute(attr);
+//                if (instance == null) continue;
+//                ConfigurationSection modifiersSection = attributeSection.getConfigurationSection(attribute);
+//                List<AttributeModifier> modifiers = new ArrayList<>();
+//                for (String key : modifiersSection.getKeys(false)) {
+//                    ConfigurationSection modifierSection = modifiersSection.getConfigurationSection(attribute);
+//                    double amount;
+//                    if (modifierSection.isString("amount")
+//                            && modifierSection.getString("amount").equalsIgnoreCase("player_count")) {
+//                        amount = getWorld().getPlayers().size();
+//                    } else {
+//                        amount = modifiersSection.getDouble("amount");
+//                    }
+//                    AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), key, amount,
+//                            AttributeModifier.Operation.valueOf(modifierSection.getString("operation")));
+//                    modifiers.add(modifier);
+//                }
+//                modifiers.forEach(instance::addModifier);
+//            } catch (IllegalArgumentException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public void processRandom(int t, boolean force) {

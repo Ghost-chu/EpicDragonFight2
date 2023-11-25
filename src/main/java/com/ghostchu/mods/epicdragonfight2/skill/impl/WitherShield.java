@@ -115,8 +115,8 @@ public class WitherShield extends AbstractEpicDragonSkill {
 //    }
 
     @Override
-    public long skillStartWaitingTicks() {
-        return 0;
+    public int skillStartWaitingTicks() {
+        return 1;
     }
 
     @Override

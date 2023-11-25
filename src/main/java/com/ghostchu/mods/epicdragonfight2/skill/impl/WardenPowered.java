@@ -26,7 +26,7 @@ public class WardenPowered extends AbstractEpicDragonSkill {
     @Override
     public int start() {
         this.getPlayerInWorld().forEach(player -> player.playSound(player.getLocation(), Sound.BLOCK_SCULK_SHRIEKER_SHRIEK, 1.0f, this.getRandom().nextFloat()));
-        return 20;
+        return 20 + skillStartWaitingTicks();
     }
 
     @Override
@@ -35,6 +35,9 @@ public class WardenPowered extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
+        if(isWaitingStart()){
+            return false;
+        }
         if (!summoned) {
             getPlayerInWorld().forEach(this::spawnWarden);
             summoned = true;
@@ -57,7 +60,7 @@ public class WardenPowered extends AbstractEpicDragonSkill {
     }
 
     @Override
-    public long skillStartWaitingTicks() {
+    public int skillStartWaitingTicks() {
         return 35;
     }
 

@@ -41,7 +41,7 @@ public class RocketRain extends AbstractEpicDragonSkill {
 
     @Override
     public int start() {
-        return this.duration;
+        return this.duration + this.skillStartWaitingTicks();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class RocketRain extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
-        if (this.getTick() % this.checkInterval == 0) {
+        if (getCleanTick() % this.checkInterval == 0) {
             ArrayList<Player> playersRecent = new ArrayList<Player>();
             for (Player player : this.getPlayerInWorld()) {
                 if (!(player.getLocation().distance(this.getDragon().getLocation()) < 300.0)) continue;
@@ -96,7 +96,7 @@ public class RocketRain extends AbstractEpicDragonSkill {
     }
 
     @Override
-    public long skillStartWaitingTicks() {
+    public int skillStartWaitingTicks() {
         return 10;
     }
 

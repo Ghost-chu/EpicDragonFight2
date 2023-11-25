@@ -30,7 +30,7 @@ public class DragonEffectCloud extends AbstractEpicDragonSkill {
 
     @Override
     public int start() {
-        return this.duration;
+        return this.duration + this.skillStartWaitingTicks();
     }
 
     @Override
@@ -39,7 +39,10 @@ public class DragonEffectCloud extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
-        if (this.getTick() % this.checkInterval == 0) {
+        if (isWaitingStart()) {
+            return false;
+        }
+        if (this.getCleanTick() % this.checkInterval == 0) {
             for (Player player : this.getPlayerInWorld()) {
                 Location ballGeneratePos = getDragon().getLocation();
                 if (player.getLocation().getBlockY() > getDragon().getLocation().getBlockY()) {
@@ -79,7 +82,7 @@ public class DragonEffectCloud extends AbstractEpicDragonSkill {
     }
 
     @Override
-    public long skillStartWaitingTicks() {
+    public int skillStartWaitingTicks() {
         return 20 * 3;
     }
 
