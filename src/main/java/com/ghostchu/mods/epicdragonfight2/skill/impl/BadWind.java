@@ -34,6 +34,9 @@ public class BadWind extends AbstractEpicDragonSkill {
             return false;
         }
         for (Player player : this.getPlayerInWorld()) {
+            if(Math.abs(player.getLocation().distance(getDragon().getLocation())) > 150){
+                continue;
+            }
             player.setGliding(false);
             Vector baseVelocity = fromToVector(player.getLocation(), getDragon().getLocation()).add(new Vector(0.5, 0, 0.5));
             this.getWorld().spawnParticle(Particle.SMOKE_NORMAL, player.getLocation(), 1);

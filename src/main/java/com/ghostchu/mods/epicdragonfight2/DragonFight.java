@@ -118,10 +118,12 @@ public class DragonFight implements Listener {
                     if (random.nextBoolean()) {
                         // group says
                         Player groupSayer = RandomUtil.randomPick(aroundPlayers);
-                        Bukkit.dispatchCommand(groupSayer, "global " + RandomUtil.randomPick(plugin.getConfig().getStringList("stay-together.group-says")));
+                        Bukkit.dispatchCommand(groupSayer, "global " +
+                                RandomUtil.randomPick(plugin.getConfig().getStringList("stay-together.group-says")));
                     } else {
                         // alone says
-                        Bukkit.dispatchCommand(player, "global " + RandomUtil.randomPick(plugin.getConfig().getStringList("stay-together.alone-says")));
+                        Bukkit.dispatchCommand(player, "global " +
+                                RandomUtil.randomPick(plugin.getConfig().getStringList("stay-together.alone-says")));
                     }
                 }
             } else {
@@ -269,7 +271,7 @@ public class DragonFight implements Listener {
     public List<Player> getPlayerInWorld() {
         ArrayList<Player> players = new ArrayList<>();
         for (Player player : this.world.getPlayers()) {
-            if (player.getGameMode() == GameMode.SPECTATOR) continue;
+            if (player.getGameMode() == GameMode.SPECTATOR || player.getGameMode() == GameMode.CREATIVE) continue;
             players.add(player);
         }
         return players;
