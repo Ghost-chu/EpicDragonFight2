@@ -9,6 +9,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.DragonFireball;
 import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -62,7 +63,10 @@ public class FlameBoom extends AbstractEpicDragonSkill {
                 } else {
                     ballGeneratePos.add(0, -3, 0);
                 }
-
+                DragonFireball dragonFireball = (DragonFireball) getDragon().getWorld().spawnEntity(getDragon().getLocation(), EntityType.DRAGON_FIREBALL, false);
+                dragonFireball.setVelocity(fromToVector(player.getLocation(), getDragon().getLocation()));
+                dragonFireball.setPersistent(false);
+                markEntitySummonedByPlugin(dragonFireball);
             }
         }
         return false;

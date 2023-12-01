@@ -92,7 +92,7 @@ public class FallingTrident extends AbstractEpicDragonSkill {
 
     private void summonTrident() {
         for (Player player : this.getPlayerInWorld()) {
-            Trident trident = (Trident) this.getWorld().spawnEntity(player.getLocation().add(0.0, this.height, 0.0), EntityType.TRIDENT);
+            Trident trident = (Trident) this.getWorld().spawnEntity(player.getLocation().add(getRandom().nextInt(-5,5), this.height, getRandom().nextInt(-5,5)), EntityType.TRIDENT);
             trident.setCritical(true);
             trident.setGlowing(true);
             trident.setShooter(this.getDragon());
