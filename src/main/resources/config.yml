@@ -119,6 +119,8 @@ skills:
     fire-ticks: 600
     darkness-ticks: 200
     damage: 5
+  breath-lock-link:
+    duration: 200
   wind:
     duration: 100
     broadcast:

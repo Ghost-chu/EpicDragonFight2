@@ -26,7 +26,7 @@ public class BreathLockLink extends AbstractEpicDragonSkill {
     private Location location;
 
     public BreathLockLink(@NotNull DragonFight fight) {
-        super(fight, "flame-boom");
+        super(fight, "breath-lock-link");
         duration = getSkillConfig().getInt("duration");
     }
 
