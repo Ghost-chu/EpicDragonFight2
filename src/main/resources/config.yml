@@ -114,6 +114,11 @@ skills:
       - "&5末影龙：&r狼群起舞！"
   loud-roar:
     potion-duration: 600
+  flame-boom:
+    max-amount: 7
+    fire-ticks: 600
+    darkness-ticks: 200
+    damage: 5
   wind:
     duration: 100
     broadcast:

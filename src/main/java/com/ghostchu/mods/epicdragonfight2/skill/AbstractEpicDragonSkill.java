@@ -73,6 +73,8 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
         return this.fight.randomPlayer();
     }
 
+
+
     public void broadcast(@NotNull String string) {
         this.fight.broadcast(string.replace("<dragon_name>", getDragon().getName()));
     }
