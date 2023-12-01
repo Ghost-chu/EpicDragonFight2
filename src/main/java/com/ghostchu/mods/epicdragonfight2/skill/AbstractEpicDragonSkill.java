@@ -69,7 +69,7 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
     }
 
     @Nullable
-    private Player randomPlayer() {
+    public Player randomPlayer() {
         return this.fight.randomPlayer();
     }
 

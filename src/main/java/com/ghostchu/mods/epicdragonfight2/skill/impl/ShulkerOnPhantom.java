@@ -23,6 +23,18 @@ public class ShulkerOnPhantom extends AbstractEpicDragonSkill {
 
     @Override
     public int start() {
+        return skillStartWaitingTicks() + 60;
+    }
+
+    @Override
+    public void end(@NotNull SkillEndReason reason) {
+
+    }
+
+    @Override
+    public boolean tick() {
+        if(isWaitingStart())
+            return false;
         for (int i = 0; i < amount; i++) {
             Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
                 Location spawnAt = this.getDragon().getLocation().add(getRandom().nextInt(-10, 10), getRandom().nextInt(-10, 10), getRandom().nextInt(-10, 10));
@@ -36,16 +48,7 @@ public class ShulkerOnPhantom extends AbstractEpicDragonSkill {
 
             }, getRandom().nextInt(40));
         }
-        return 60;
-    }
-
-    @Override
-    public void end(@NotNull SkillEndReason reason) {
-    }
-
-    @Override
-    public boolean tick() {
-        return false;
+        return true;
     }
 
     @Override

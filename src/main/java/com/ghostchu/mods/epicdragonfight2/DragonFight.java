@@ -6,7 +6,11 @@ import com.ghostchu.mods.epicdragonfight2.skill.impl.*;
 import com.ghostchu.mods.epicdragonfight2.teamskill.EpicTeamSkill;
 import com.ghostchu.mods.epicdragonfight2.teamskill.impl.Purge;
 import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
+import com.ghostchu.mods.epicdragonfight2.util.Util;
 import com.google.common.util.concurrent.AtomicDouble;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -59,6 +63,20 @@ public class DragonFight implements Listener {
         this.dragon = dragon;
         this.uuid = uuid;
         markEntitySummonedByPlugin(this.dragon);
+    }
+
+    public void broadcast(Component component){
+        Map<String, ComponentLike> preDefinedVars = new HashMap<>();
+        preDefinedVars.put("<dragon_name>", LegacyComponentSerializer.legacySection().deserialize(dragon.getName()));
+        preDefinedVars.put("<dragon_health>", Component.text(String.format("%.2f", dragon.getHealth())));
+        Player randomPlayer = randomPlayer();
+        Component playerComponent = Component.text("无");
+        if(randomPlayer != null) playerComponent = LegacyComponentSerializer.legacySection().deserialize(randomPlayer.getDisplayName());
+        preDefinedVars.put("<random_other_player_name>", playerComponent);
+        preDefinedVars.put("<players_in_fight>", LegacyComponentSerializer.legacySection().deserialize(Util.list2String(getPlayerInWorld().stream().map(Player::getDisplayName).toList())));
+        preDefinedVars.put("<player_amount_in_fight>", Component.text(getPlayerInWorld().size()));
+
+        Component preFilled = Util.fillArgs(component.compact());
     }
 
     public UUID getUUID() {

@@ -108,6 +108,10 @@ skills:
     amount: 10
     broadcast:
       - "&5末影龙：&r让一切都悬浮起来吧！"
+  grouped-wolfs:
+    amount: 3
+    broadcast:
+      - "&5末影龙：&r狼群起舞！"
   wind:
     duration: 100
     broadcast:
