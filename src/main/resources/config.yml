@@ -112,6 +112,8 @@ skills:
     amount: 3
     broadcast:
       - "&5末影龙：&r狼群起舞！"
+  loud-roar:
+    potion-duration: 600
   wind:
     duration: 100
     broadcast:
