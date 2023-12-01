@@ -17,11 +17,12 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BreathLockLink extends AbstractEpicDragonSkill {
     private final int duration;
-    private List<Player> lockedPlayers;
+    private final List<Player> lockedPlayers = new ArrayList<>();
     private Location location;
 
     public BreathLockLink(@NotNull DragonFight fight) {
