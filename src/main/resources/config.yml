@@ -104,6 +104,10 @@ skills:
   warden:
     broadcast:
       - "&5末影龙：&r我以末地之主的名义召唤，漆黑之梦魇，出现吧！"
+  shulker-on-phantom:
+    amount: 10
+    broadcast:
+      - "&5末影龙：&r让一切都悬浮起来吧！"
   wind:
     duration: 100
     broadcast:
