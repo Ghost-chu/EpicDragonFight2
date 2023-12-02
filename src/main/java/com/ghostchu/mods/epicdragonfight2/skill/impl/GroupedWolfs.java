@@ -81,6 +81,6 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
     @Override
     @NotNull
     public Stage[] getAdaptStages() {
-        return Stage.values();
+        return  new Stage[]{Stage.STAGE_1, Stage.STAGE_2};
     }
 }

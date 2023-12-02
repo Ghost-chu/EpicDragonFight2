@@ -121,7 +121,7 @@ public class WitherShield extends AbstractEpicDragonSkill {
 
     @Override
     public @NotNull Stage[] getAdaptStages() {
-        return Stage.values();
+        return new Stage[]{Stage.STAGE_3,Stage.STAGE_4};
     }
 
     @Override

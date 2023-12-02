@@ -127,6 +127,6 @@ public class BreathLockLink extends AbstractEpicDragonSkill {
     @Override
     @NotNull
     public Stage[] getAdaptStages() {
-        return Stage.values();
+        return new Stage[]{Stage.STAGE_3};
     }
 }
