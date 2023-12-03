@@ -72,7 +72,6 @@ public class RocketRain extends AbstractEpicDragonSkill {
                 }
                 creeper.setMaxHealth(this.creeperHealth);
                 creeper.setHealth(creeper.getMaxHealth());
-                applyDifficultRate(creeper);
                 TNTPrimed tntEntity = (TNTPrimed) this.getWorld().spawnEntity(this.getDragon().getLocation(), EntityType.PRIMED_TNT);
                 tntEntity.setSource(this.getDragon());
                 tntEntity.addPassenger(creeper);
