@@ -1,10 +1,10 @@
-package com.ghostchu.mods.epicdragonfight2.skill.impl;
+package com.ghostchu.mods.epicdragonfight2.skill.enemy.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.EpicDragonFight2;
 import com.ghostchu.mods.epicdragonfight2.Stage;
-import com.ghostchu.mods.epicdragonfight2.skill.AbstractEpicDragonSkill;
-import com.ghostchu.mods.epicdragonfight2.skill.SkillEndReason;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import de.tr7zw.nbtapi.NBTContainer;
 import de.tr7zw.nbtapi.NBTEntity;
 import org.bukkit.Bukkit;
@@ -64,9 +64,8 @@ public class WardenPowered extends AbstractEpicDragonSkill {
         return 35;
     }
 
-    @Override
     @NotNull
-    public Stage[] getAdaptStages() {
+    public static Stage[] getAdaptStages() {
         return new Stage[]{Stage.STAGE_3,Stage.STAGE_4};
     }
 }

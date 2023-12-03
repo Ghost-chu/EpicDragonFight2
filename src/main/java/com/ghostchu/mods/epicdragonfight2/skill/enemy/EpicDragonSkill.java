@@ -1,6 +1,5 @@
-package com.ghostchu.mods.epicdragonfight2.skill;
+package com.ghostchu.mods.epicdragonfight2.skill.enemy;
 
-import com.ghostchu.mods.epicdragonfight2.Stage;
 import org.jetbrains.annotations.NotNull;
 
 public interface EpicDragonSkill {
@@ -8,12 +7,14 @@ public interface EpicDragonSkill {
 
     int skillStartWaitingTicks();
 
-    @NotNull Stage[] getAdaptStages();
-
     boolean cycle();
 
     void unregister();
 
     void end(@NotNull SkillEndReason var1);
+
+    boolean isEnded();
+
+    boolean isStarted();
 
 }

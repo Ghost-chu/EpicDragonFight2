@@ -1,9 +1,9 @@
-package com.ghostchu.mods.epicdragonfight2.skill.impl;
+package com.ghostchu.mods.epicdragonfight2.skill.enemy.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
-import com.ghostchu.mods.epicdragonfight2.skill.AbstractEpicDragonSkill;
-import com.ghostchu.mods.epicdragonfight2.skill.SkillEndReason;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -56,9 +56,9 @@ public class ShulkerOnPhantom extends AbstractEpicDragonSkill {
         return 20;
     }
 
-    @Override
+
     @NotNull
-    public Stage[] getAdaptStages() {
+    public static Stage[] getAdaptStages() {
         return new Stage[]{Stage.STAGE_1};
     }
 }

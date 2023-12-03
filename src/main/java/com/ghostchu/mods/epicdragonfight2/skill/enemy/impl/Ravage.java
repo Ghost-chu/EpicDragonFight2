@@ -1,9 +1,9 @@
-package com.ghostchu.mods.epicdragonfight2.skill.impl;
+package com.ghostchu.mods.epicdragonfight2.skill.enemy.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
-import com.ghostchu.mods.epicdragonfight2.skill.AbstractEpicDragonSkill;
-import com.ghostchu.mods.epicdragonfight2.skill.SkillEndReason;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -70,9 +70,8 @@ public class Ravage extends AbstractEpicDragonSkill {
         return 15;
     }
 
-    @Override
     @NotNull
-    public Stage[] getAdaptStages() {
+    public static Stage[] getAdaptStages() {
         return new Stage[]{Stage.STAGE_1,
                 Stage.STAGE_2};
     }

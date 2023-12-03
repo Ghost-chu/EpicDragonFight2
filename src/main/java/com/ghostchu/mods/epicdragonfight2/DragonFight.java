@@ -1,10 +1,9 @@
 package com.ghostchu.mods.epicdragonfight2;
 
-import com.ghostchu.mods.epicdragonfight2.skill.EpicDragonSkill;
-import com.ghostchu.mods.epicdragonfight2.skill.SkillEndReason;
-import com.ghostchu.mods.epicdragonfight2.skill.impl.*;
-import com.ghostchu.mods.epicdragonfight2.teamskill.EpicTeamSkill;
-import com.ghostchu.mods.epicdragonfight2.teamskill.impl.Purge;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.*;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
+import com.ghostchu.mods.epicdragonfight2.skill.team.EpicTeamSkill;
+import com.ghostchu.mods.epicdragonfight2.skill.team.Purge;
 import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
 import com.ghostchu.mods.epicdragonfight2.util.Util;
 import com.google.common.util.concurrent.AtomicDouble;

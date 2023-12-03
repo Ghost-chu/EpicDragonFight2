@@ -1,4 +1,4 @@
-package com.ghostchu.mods.epicdragonfight2.teamskill;
+package com.ghostchu.mods.epicdragonfight2.skill.team;
 
 import org.bukkit.command.CommandSender;
 

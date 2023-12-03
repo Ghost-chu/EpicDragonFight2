@@ -1,24 +1,31 @@
-package com.ghostchu.mods.epicdragonfight2.skill.impl;
+package com.ghostchu.mods.epicdragonfight2.skill.enemy.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
-import com.ghostchu.mods.epicdragonfight2.skill.AbstractEpicDragonSkill;
-import com.ghostchu.mods.epicdragonfight2.skill.SkillEndReason;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 
-public class GroupedWolfs extends AbstractEpicDragonSkill {
+public class DragonEffectCloud extends AbstractEpicDragonSkill {
     private final int duration;
-    private final int wolfAmount;
+    private final int cloudDuration;
+    private final int checkInterval;
+    private final float radius;
 
-    public GroupedWolfs(@NotNull DragonFight fight) {
-        super(fight, "grouped-wolfs");
+    public DragonEffectCloud(@NotNull DragonFight fight) {
+        super(fight, "dragon-effect-cloud");
         duration = getSkillConfig().getInt("duration");
-        wolfAmount = getSkillConfig().getInt("wolf-amount");
+        cloudDuration = getSkillConfig().getInt("cloud-duration");
+        checkInterval = getSkillConfig().getInt("check-interval");
+        radius = getSkillConfig().getInt("radius");
     }
 
     @Override
@@ -32,11 +39,10 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
-        //noinspection DuplicatedCode
         if (isWaitingStart()) {
             return false;
         }
-        if (this.getCleanTick() == 0) {
+        if (this.getCleanTick() % this.checkInterval == 0) {
             for (Player player : this.getPlayerInWorld()) {
                 Location ballGeneratePos = getDragon().getLocation();
                 if (player.getLocation().getBlockY() > getDragon().getLocation().getBlockY()) {
@@ -48,7 +54,6 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
                 dragonFireball.setVelocity(fromToVector(player.getLocation(), getDragon().getLocation()));
                 dragonFireball.setPersistent(false);
                 markEntitySummonedByPlugin(dragonFireball);
-
             }
         }
         return false;
@@ -66,11 +71,18 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
         if(!isMarkedSummonedByPlugin(event.getEntity())){
             return;
         }
-        for (int i = 0; i < wolfAmount; i++) {
-            Wolf wolf = (Wolf) this.getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.WOLF);
-            wolf.setAngry(true);
-            wolf.setTarget(randomPlayer());
-        }
+        Entity entity = this.getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.AREA_EFFECT_CLOUD);
+        AreaEffectCloud effectCloud = (AreaEffectCloud) entity;
+        effectCloud.setBasePotionType(PotionType.INSTANT_DAMAGE);
+        effectCloud.setSource(this.getDragon());
+        effectCloud.setDuration(this.cloudDuration);
+        effectCloud.setParticle(Particle.DRAGON_BREATH);
+        effectCloud.setRadius(this.radius);
+        effectCloud.setReapplicationDelay(4);
+        markEntitySummonedByPlugin(effectCloud);
+        this.getWorld().playSound(entity.getLocation(), Sound.BLOCK_GLASS_BREAK, 1.0f, this.getRandom().nextFloat());
+        event.setCancelled(true);
+        event.getEntity().remove();
     }
 
     @Override
@@ -78,9 +90,9 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
         return 20 * 3;
     }
 
-    @Override
+
     @NotNull
-    public Stage[] getAdaptStages() {
-        return  new Stage[]{Stage.STAGE_1, Stage.STAGE_2};
+    public static Stage[] getAdaptStages() {
+        return new Stage[]{Stage.STAGE_1};
     }
 }

@@ -128,6 +128,8 @@ skills:
   wither-shield:
     broadcast:
       - "&cRCF: &r各小队注意，末影龙召唤了凋零护盾，干掉这些凋零才能突破末影龙的防线，位置已经标出在你们的显示屏上。"
+  attack-radar:
+    laser-charge-duration-in-seconds: 10
 team-skills:
   get-ready:
     broadcast: "&aRCF 终结技 &b[%s&b]&a 准备就绪，&b点击此处施放终结技！"

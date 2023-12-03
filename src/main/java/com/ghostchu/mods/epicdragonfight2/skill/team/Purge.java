@@ -1,7 +1,6 @@
-package com.ghostchu.mods.epicdragonfight2.teamskill.impl;
+package com.ghostchu.mods.epicdragonfight2.skill.team;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
-import com.ghostchu.mods.epicdragonfight2.teamskill.AbstractEpicTeamSkill;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Enderman;
 import org.jetbrains.annotations.NotNull;

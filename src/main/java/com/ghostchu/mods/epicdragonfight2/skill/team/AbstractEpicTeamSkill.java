@@ -1,4 +1,4 @@
-package com.ghostchu.mods.epicdragonfight2.teamskill;
+package com.ghostchu.mods.epicdragonfight2.skill.team;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.EpicDragonFight2;

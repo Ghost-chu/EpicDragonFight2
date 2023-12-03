@@ -1,8 +1,7 @@
-package com.ghostchu.mods.epicdragonfight2.skill;
+package com.ghostchu.mods.epicdragonfight2.skill.enemy;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.EpicDragonFight2;
-import com.ghostchu.mods.epicdragonfight2.Stage;
 import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,7 +15,6 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,12 +25,13 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
     private final DragonFight fight;
     @NotNull
     private final Random random = new Random();
-    private final List<Integer> taskIds = new ArrayList<>();
     private final String skillName;
     private int ticker = 0;
     private boolean listenerRegistered = false;
     private int duration = 0;
 
+    private boolean started;
+    private boolean ended;
 
     public AbstractEpicDragonSkill(@NotNull DragonFight fight, String skillName) {
         this.fight = fight;
@@ -72,7 +71,6 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
     public Player randomPlayer() {
         return this.fight.randomPlayer();
     }
-
 
 
     public void broadcast(@NotNull String string) {
@@ -130,11 +128,11 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
         }
     }
 
-    public int getCleanTick(){
+    public int getCleanTick() {
         return getTick() - skillStartWaitingTicks();
     }
 
-    public boolean isWaitingStart(){
+    public boolean isWaitingStart() {
         return getTick() < skillStartWaitingTicks();
     }
 
@@ -150,6 +148,7 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
     public boolean cycle() {
         if (this.isFreshInstalled()) {
             this.duration = this.start();
+            setStarted(true);
             this.register();
             ++this.ticker;
             return false;
@@ -157,26 +156,35 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
         if (this.ticker > this.duration) {
             this.unregister();
             this.end(SkillEndReason.REACH_TIME_LIMIT);
+            setEnded(true);
             return true;
         }
-        boolean matches = false;
-        for (Stage adaptStage : this.getAdaptStages()) {
-            if (!adaptStage.equals(this.fight.getCurrentStage())) continue;
-            matches = true;
-            break;
+        boolean result = this.tick();
+        ++this.ticker;
+        if (result) {
+            this.unregister();
+            this.end(SkillEndReason.SKILL_ENDED);
+            setEnded(true);
         }
-        if (matches) {
-            boolean result = this.tick();
-            ++this.ticker;
-            if (result) {
-                this.unregister();
-                this.end(SkillEndReason.STAGE_SWITCH);
-            }
-            return result;
-        }
-        this.unregister();
-        this.end(SkillEndReason.STAGE_SWITCH);
-        return true;
+        return result;
+    }
+
+    public void setEnded(boolean ended) {
+        this.ended = ended;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    @Override
+    public boolean isEnded() {
+        return ended;
+    }
+
+    @Override
+    public boolean isStarted() {
+        return started;
     }
 
     private void register() {
@@ -185,8 +193,6 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
 
     public void unregister() {
         this.unregisterListener();
-        this.taskIds.forEach(taskId -> Bukkit.getScheduler().cancelTask(taskId));
-        this.taskIds.clear();
     }
 
     public abstract int start();
@@ -236,7 +242,6 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
         int cpId = Bukkit.getScheduler().runTaskTimer(EpicDragonFight2.getInstance(), () -> {
             if (finalShouldBreak.get()) {
                 Bukkit.getScheduler().cancelTask(taskId.get());
-                this.taskIds.remove(taskId.get());
                 return;
             }
             if (shouldSkip == null) {
@@ -247,11 +252,9 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
             int times = loop.incrementAndGet();
             if ((long) times >= duration) {
                 Bukkit.getScheduler().cancelTask(taskId.get());
-                this.taskIds.remove(taskId.get());
             }
         }, 0L, 1L).getTaskId();
         taskId.set(cpId);
-        this.taskIds.add(cpId);
         return cpId;
     }
 
@@ -275,16 +278,13 @@ public abstract class AbstractEpicDragonSkill implements EpicDragonSkill, Listen
             if (finalShouldStop.get()) {
                 HandlerList.unregisterAll(listener);
                 Bukkit.getScheduler().cancelTask(taskId.get());
-                this.taskIds.remove(taskId.get());
             }
             if ((long) loop.incrementAndGet() >= duration) {
                 HandlerList.unregisterAll(listener);
                 Bukkit.getScheduler().cancelTask(taskId.get());
-                this.taskIds.remove(taskId.get());
             }
         }, 0L, 1L).getTaskId();
         taskId.set(cpId);
-        this.taskIds.add(cpId);
         return cpId;
     }
 }

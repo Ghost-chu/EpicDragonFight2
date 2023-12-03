@@ -1,9 +1,9 @@
-package com.ghostchu.mods.epicdragonfight2.skill.impl;
+package com.ghostchu.mods.epicdragonfight2.skill.enemy.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
-import com.ghostchu.mods.epicdragonfight2.skill.AbstractEpicDragonSkill;
-import com.ghostchu.mods.epicdragonfight2.skill.SkillEndReason;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
@@ -119,8 +119,7 @@ public class WitherShield extends AbstractEpicDragonSkill {
         return 1;
     }
 
-    @Override
-    public @NotNull Stage[] getAdaptStages() {
+    public static @NotNull Stage[] getAdaptStages() {
         return new Stage[]{Stage.STAGE_3,Stage.STAGE_4};
     }
 
