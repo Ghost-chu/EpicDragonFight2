@@ -301,5 +301,10 @@
             <version>2.3.3</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>4.8.165</version>
+        </dependency>
     </dependencies>
 </project>

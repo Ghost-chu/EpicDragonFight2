@@ -25,7 +25,7 @@ public class SkillController {
     private List<EpicDragonSkill> currentDragonSkills = new ArrayList<>();
     private List<EpicPassiveSkill> currentPassiveSkills = new ArrayList<>();
     private Map<Stage, List<Class<? extends EpicDragonSkill>>> stageAvailableDragonSkills = new HashMap<>();
-    private List<Class<? extends EpicDragonSkill>> availableTeamSkills = new ArrayList<>();
+    private List<Class<? extends EpicTeamSkill>> availableTeamSkills = new ArrayList<>();
     private List<Class<? extends EpicPassiveSkill>> availablePassiveSkills = new ArrayList<>();
     private int emptyWindowForTeamSkills;
     private int emptyWindowForDragonSkills;
@@ -40,42 +40,44 @@ public class SkillController {
     public void tick() {
         tickStage();
         tickPassiveSkills();
-        tickTeamSkills();
+        //tickTeamSkills();
         tickDragonSkills();
         assignNewPassiveSkill();
-        assignNewTeamSkill();
+        //assignNewTeamSkill();
         assignNewDragonSkill();
     }
 
     private void assignNewDragonSkill() {
-        if(!currentDragonSkills.isEmpty())return;
+        if (!currentDragonSkills.isEmpty()) return;
         emptyWindowForDragonSkills++;
-        if(emptyWindowForDragonSkills >= fight.getPlugin().getConfig().getInt("skill-pick-latency")){
+        if (emptyWindowForDragonSkills >= fight.getPlugin().getConfig().getInt("skill-pick-latency")) {
             emptyWindowForDragonSkills = 0;
             EpicDragonSkill dragonSkill = spawnNewInstance(RandomUtil.randomPick(stageAvailableDragonSkills.getOrDefault(currentStage, Collections.emptyList())));
-            if(dragonSkill != null) {
+            if (dragonSkill != null) {
                 currentDragonSkills.add(dragonSkill);
+                logger.info("已安装技能 " + dragonSkill.getClass().getName());
             }
         }
     }
 
     private void assignNewTeamSkill() {
-        if(!currentTeamSkills.isEmpty())return;
-        emptyWindowForTeamSkills ++;
-        if(emptyWindowForTeamSkills >= fight.getPlugin().getConfig().getInt("skill-pick-latency")){
+        if (!currentTeamSkills.isEmpty()) return;
+        emptyWindowForTeamSkills++;
+        if (emptyWindowForTeamSkills >= fight.getPlugin().getConfig().getInt("skill-pick-latency")) {
             emptyWindowForTeamSkills = 0;
-            EpicDragonSkill teamSkill = spawnNewInstance(RandomUtil.randomPick(availableTeamSkills));
-            if(teamSkill != null) {
-                currentDragonSkills.add(teamSkill);
+            EpicTeamSkill teamSkill = spawnNewInstance(RandomUtil.randomPick(availableTeamSkills));
+            if (teamSkill != null) {
+                currentTeamSkills.add(teamSkill);
             }
         }
     }
 
-    private <T> T spawnNewInstance(Class<T> clazz){
-        if(clazz == null) return null;
+    private <T> T spawnNewInstance(Class<T> clazz) {
+        if (clazz == null) return null;
         try {
             return clazz.getDeclaredConstructor(DragonFight.class).newInstance(fight);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
             return null;
         }
@@ -91,12 +93,13 @@ public class SkillController {
         }
         double percent = fight.getDragon().getHealth() / fight.getDragon().getMaxHealth();
         if (percent <= currentStage.getPercentage()) {
-            stagePos++;
+            if ((stagePos + 1) < Stage.values().length) {
+                stagePos++;
+                currentStage = Stage.values()[stagePos];
+                fight.getPlayerInWorld().forEach(p -> p.playSound(p, Sound.ENTITY_IRON_GOLEM_DEATH, 1.0f, 0.0f));
+                logger.info("Stage switched to " + currentStage.name());
+            }
         }
-        if (stagePos < Stage.values().length) {
-            currentStage = Stage.values()[stagePos];
-        }
-        fight.getPlayerInWorld().forEach(p -> p.playSound(p, Sound.ENTITY_IRON_GOLEM_DEATH, 1.0f, 0.0f));
     }
 
     private void tickDragonSkills() {
@@ -107,7 +110,12 @@ public class SkillController {
                 epicDragonSkill.unregister();
                 return true;
             }
-            return !epicDragonSkill.cycle();
+            if (epicDragonSkill.cycle()) {
+                epicDragonSkill.end(SkillEndReason.SKILL_ENDED);
+                epicDragonSkill.unregister();
+                return true;
+            }
+            return false;
         });
     }
 
@@ -122,14 +130,18 @@ public class SkillController {
     private void scanSkills() {
         List<Class<?>> classList = new ClazzScanner("com.ghostchu.mods.epicdragonfight2.skill").getScanResult();
         for (Class<?> c : classList) {
+            logger.info("Handle " + c.getName());
             try {
-                if (c.isAssignableFrom(EpicDragonSkill.class)) {
+                if (EpicDragonSkill.class.isAssignableFrom(c)) {
+                    logger.info("Registered as DragonSkill " + c.getName());
                     handleDragonSkillLoad(c);
                 }
-                if (c.isAssignableFrom(EpicTeamSkill.class)) {
+                if (EpicTeamSkill.class.isAssignableFrom(c)) {
+                    logger.info("Registered as TeamSkill " + c.getName());
                     handleTeamSkillLoad(c);
                 }
-                if (c.isAssignableFrom(EpicPassiveSkill.class)) {
+                if (EpicPassiveSkill.class.isAssignableFrom(c)) {
+                    logger.info("Registered as PassiveSkill " + c.getName());
                     handlePassiveSkillLoad(c);
                 }
             } catch (Exception e) {
@@ -153,7 +165,7 @@ public class SkillController {
 //            stageAvailableDragonSkills.put(acceptedStage,registered);
 //        }
         //noinspection unchecked
-        availableTeamSkills.add((Class<? extends EpicDragonSkill>) c);
+        availableTeamSkills.add((Class<? extends EpicTeamSkill>) c);
         logger.info("已注册：团队技能 [" + c.getName() + "]");
     }
 

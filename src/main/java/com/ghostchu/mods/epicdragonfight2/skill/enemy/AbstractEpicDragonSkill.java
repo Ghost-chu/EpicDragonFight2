@@ -22,7 +22,8 @@ public abstract class AbstractEpicDragonSkill extends AbstractEpicSkill implemen
     }
 
     public ConfigurationSection getSkillConfig() {
-        return EpicDragonFight2.getInstance().getConfig().getConfigurationSection("skills").getConfigurationSection(getSkillName());
+        return EpicDragonFight2.getInstance().getConfig().getConfigurationSection("skills")
+                .getConfigurationSection(getSkillName());
     }
 
     public void setDuration(int duration) {
@@ -81,7 +82,7 @@ public abstract class AbstractEpicDragonSkill extends AbstractEpicSkill implemen
             setEnded(true);
             return true;
         }
-        boolean result = this.cycle();
+        boolean result = this.tick();
         ++this.ticker;
         if (result) {
             this.unregister();

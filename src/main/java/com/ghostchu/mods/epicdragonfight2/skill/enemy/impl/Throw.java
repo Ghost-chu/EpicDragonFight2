@@ -2,6 +2,7 @@ package com.ghostchu.mods.epicdragonfight2.skill.enemy.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
+import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Particle;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+@EpicSkill
 public class Throw extends AbstractEpicDragonSkill {
     private final int throwTime;
     private final int velocityX;

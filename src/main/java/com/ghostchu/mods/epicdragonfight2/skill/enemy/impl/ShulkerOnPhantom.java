@@ -2,6 +2,7 @@ package com.ghostchu.mods.epicdragonfight2.skill.enemy.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
+import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Bukkit;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Phantom;
 import org.bukkit.entity.Shulker;
 import org.jetbrains.annotations.NotNull;
 
+@EpicSkill
 public class ShulkerOnPhantom extends AbstractEpicDragonSkill {
     private final int amount;
 

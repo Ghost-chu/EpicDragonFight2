@@ -2,6 +2,7 @@ package com.ghostchu.mods.epicdragonfight2.skill.enemy.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
+import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Location;
@@ -14,6 +15,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 
+@EpicSkill
 public class DragonEffectCloud extends AbstractEpicDragonSkill {
     private final int duration;
     private final int cloudDuration;

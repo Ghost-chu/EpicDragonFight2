@@ -2,6 +2,7 @@ package com.ghostchu.mods.epicdragonfight2.skill.enemy.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
+import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Location;
@@ -10,6 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+@EpicSkill
 public class NukeExplosion extends AbstractEpicDragonSkill {
     private final Location nukeLocation = new Location(this.getWorld(), 0.0, 70.0, 0.0);
     private final int duration;

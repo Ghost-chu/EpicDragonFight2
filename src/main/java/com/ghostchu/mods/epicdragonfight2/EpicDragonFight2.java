@@ -151,7 +151,7 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
         saveDefaultConfig();
         instance = this;
         this.getLogger().info("SUPER POWER - EPIC DRAGON FIGHT - LOADED!");
-        Bukkit.getScheduler().runTaskTimer(this, this::randomTick, this.getConfig().getInt("random-tick-period"), this.getConfig().getInt("random-tick-period"));
+//        Bukkit.getScheduler().runTaskTimer(this, this::randomTick, this.getConfig().getInt("random-tick-period"), this.getConfig().getInt("random-tick-period"));
         Bukkit.getScheduler().runTaskTimer(this, () -> this.dragonFightList.forEach(DragonFight::tick), 0L, 1L);
         Bukkit.getPluginManager().registerEvents(this, this);
 
@@ -389,9 +389,9 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
         return builder.toString().trim().replace("\n\n", "\n");
     }
 
-    private void randomTick() {
-        this.dragonFightList.forEach(DragonFight::randomTick);
-    }
+//    private void randomTick() {
+//        this.dragonFightList.forEach(DragonFight::randomTick);
+//    }
 
     private boolean registerFight(@NotNull DragonFight dragonFight) {
         Bukkit.getPluginManager().registerEvents(dragonFight, this);
@@ -404,28 +404,28 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
     }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (command.getName().equalsIgnoreCase("edfteamskillactive")) {
-            if (args.length != 1) {
-                for (DragonFight dragonFight : this.dragonFightList) {
-                    dragonFight.runTeamSkill(sender);
-                }
-                return true;
-            }
-            UUID uuid = UUID.fromString(args[0]);
-            for (DragonFight dragonFight : this.dragonFightList) {
-                if (dragonFight.getUUID().equals(uuid)) {
-                    dragonFight.runTeamSkill(sender);
-                }
-            }
-        }
-        if (command.getName().equalsIgnoreCase("epicdragonfight")) {
-            if (args.length == 0) {
-                this.randomTick();
-            } else if (args.length == 1) {
-                int t = Integer.parseInt(args[0]);
-                this.dragonFightList.forEach(dragonFight -> dragonFight.processRandom(t, true));
-            }
-        }
+//        if (command.getName().equalsIgnoreCase("edfteamskillactive")) {
+//            if (args.length != 1) {
+//                for (DragonFight dragonFight : this.dragonFightList) {
+//                    dragonFight.runTeamSkill(sender);
+//                }
+//                return true;
+//            }
+//            UUID uuid = UUID.fromString(args[0]);
+//            for (DragonFight dragonFight : this.dragonFightList) {
+//                if (dragonFight.getUUID().equals(uuid)) {
+//                    dragonFight.runTeamSkill(sender);
+//                }
+//            }
+//        }
+//        if (command.getName().equalsIgnoreCase("epicdragonfight")) {
+//            if (args.length == 0) {
+//                this.randomTick();
+//            } else if (args.length == 1) {
+//                int t = Integer.parseInt(args[0]);
+//                this.dragonFightList.forEach(dragonFight -> dragonFight.processRandom(t, true));
+//            }
+//        }
         return true;
     }
 

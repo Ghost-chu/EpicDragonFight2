@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+//@EpicSkill
 public class AttackRadar extends AbstractEpicDragonSkill {
     private final int duration;
     private final int laserDuration;

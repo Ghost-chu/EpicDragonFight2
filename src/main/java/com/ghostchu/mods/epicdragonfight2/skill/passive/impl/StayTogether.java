@@ -1,6 +1,7 @@
 package com.ghostchu.mods.epicdragonfight2.skill.passive.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
+import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.passive.AbstactEpicPassiveSkill;
 import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
 import org.bukkit.Bukkit;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@EpicSkill
 public class StayTogether extends AbstactEpicPassiveSkill {
     public StayTogether(@NotNull DragonFight fight) {
         super(fight, "stay-together");

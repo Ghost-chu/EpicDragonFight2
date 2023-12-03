@@ -2,6 +2,7 @@ package com.ghostchu.mods.epicdragonfight2.skill.enemy.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
+import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Sound;
@@ -10,12 +11,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
+@EpicSkill
 public class LoudRoar extends AbstractEpicDragonSkill {
 
     private final int potionDuration;
 
     public LoudRoar(@NotNull DragonFight fight) {
-        super(fight, "loud-road");
+        super(fight, "loud-roar");
         this.potionDuration = getSkillConfig().getInt("potion-duration");
     }
 

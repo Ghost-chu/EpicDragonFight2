@@ -2,6 +2,7 @@ package com.ghostchu.mods.epicdragonfight2.skill.enemy.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
+import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Bukkit;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@EpicSkill
 public class WitherShield extends AbstractEpicDragonSkill {
     private final NamespacedKey BOSSBAR_KEY;
     private final KeyedBossBar bossBar;
