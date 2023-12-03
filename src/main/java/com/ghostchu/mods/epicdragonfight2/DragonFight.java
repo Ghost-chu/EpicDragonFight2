@@ -14,6 +14,7 @@ import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -79,11 +80,11 @@ public class DragonFight implements Listener {
         preDefinedVars.put("<players_in_fight>", LegacyComponentSerializer.legacySection().deserialize(Util.list2String(getPlayerInWorld().stream().map(Player::getDisplayName).toList())));
         preDefinedVars.put("<player_amount_in_fight>", Component.text(getPlayerInWorld().size()));
         Component com = component.compact();
-        String serialized = GsonComponentSerializer.gson().serialize(com);
+        BaseComponent[] serialized = BungeeComponentSerializer.get().serialize(com);
         getPlayerInWorld().forEach(p->{
             Map<String, ComponentLike> perPlayerVars = new HashMap<>(preDefinedVars);
             perPlayerVars.put("<player_name>", LegacyComponentSerializer.legacySection().deserialize(p.getDisplayName()));
-            Component preFilled = Util.fillArgs(GsonComponentSerializer.gson().deserialize(serialized), perPlayerVars);
+            Component preFilled = Util.fillArgs(BungeeComponentSerializer.get().deserialize(serialized), perPlayerVars);
             p.spigot().sendMessage(BungeeComponentSerializer.get().serialize(preFilled));
         });
     }
