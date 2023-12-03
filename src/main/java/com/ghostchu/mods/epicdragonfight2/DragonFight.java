@@ -1,6 +1,6 @@
 package com.ghostchu.mods.epicdragonfight2;
 
-import com.ghostchu.mods.epicdragonfight2.skill.enemy.*;
+import com.ghostchu.mods.epicdragonfight2.skill.enemy.EpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import com.ghostchu.mods.epicdragonfight2.skill.team.EpicTeamSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.team.Purge;
@@ -9,6 +9,9 @@ import com.ghostchu.mods.epicdragonfight2.util.Util;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.serializer.ComponentSerializer;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -56,7 +59,7 @@ public class DragonFight implements Listener {
     private UUID uuid;
     private EpicTeamSkill teamSkill;
 
-    public DragonFight(EpicDragonFight2 plugin ,UUID uuid, World world, EnderDragon dragon) {
+    public DragonFight(EpicDragonFight2 plugin, UUID uuid, World world, EnderDragon dragon) {
         this.plugin = plugin;
         this.world = world;
         this.dragon = dragon;
@@ -64,18 +67,25 @@ public class DragonFight implements Listener {
         markEntitySummonedByPlugin(this.dragon);
     }
 
-    public void broadcast(Component component){
+    public void broadcast(Component component) {
         Map<String, ComponentLike> preDefinedVars = new HashMap<>();
         preDefinedVars.put("<dragon_name>", LegacyComponentSerializer.legacySection().deserialize(dragon.getName()));
         preDefinedVars.put("<dragon_health>", Component.text(String.format("%.2f", dragon.getHealth())));
         Player randomPlayer = randomPlayer();
         Component playerComponent = Component.text("无");
-        if(randomPlayer != null) playerComponent = LegacyComponentSerializer.legacySection().deserialize(randomPlayer.getDisplayName());
+        if (randomPlayer != null)
+            playerComponent = LegacyComponentSerializer.legacySection().deserialize(randomPlayer.getDisplayName());
         preDefinedVars.put("<random_other_player_name>", playerComponent);
         preDefinedVars.put("<players_in_fight>", LegacyComponentSerializer.legacySection().deserialize(Util.list2String(getPlayerInWorld().stream().map(Player::getDisplayName).toList())));
         preDefinedVars.put("<player_amount_in_fight>", Component.text(getPlayerInWorld().size()));
-
-        Component preFilled = Util.fillArgs(component.compact());
+        Component com = component.compact();
+        String serialized = GsonComponentSerializer.gson().serialize(com);
+        getPlayerInWorld().forEach(p->{
+            Map<String, ComponentLike> perPlayerVars = new HashMap<>(preDefinedVars);
+            perPlayerVars.put("<player_name>", LegacyComponentSerializer.legacySection().deserialize(p.getDisplayName()));
+            Component preFilled = Util.fillArgs(GsonComponentSerializer.gson().deserialize(serialized), perPlayerVars);
+            p.spigot().sendMessage(BungeeComponentSerializer.get().serialize(preFilled));
+        });
     }
 
     public UUID getUUID() {
@@ -98,21 +108,21 @@ public class DragonFight implements Listener {
         if (this.currentSkills != null && this.currentSkills.cycle()) {
             this.currentSkills = null;
         }
-        if(this.teamSkill == null){
-            installTeamSkill(randomTeamSkill(),false);
-        }else{
+        if (this.teamSkill == null) {
+            installTeamSkill(randomTeamSkill(), false);
+        } else {
             this.teamSkill.tick();
         }
         this.tickMagic();
     }
 
     private void installTeamSkill(EpicTeamSkill epicTeamSkill, boolean b) {
-        if(this.teamSkill != null & !b){
-            plugin.getLogger().info("尝试安装团队终结技 "+epicTeamSkill.getClass().getName()+" 但目前已有一个终结技已安装");
+        if (this.teamSkill != null & !b) {
+            plugin.getLogger().info("尝试安装团队终结技 " + epicTeamSkill.getClass().getName() + " 但目前已有一个终结技已安装");
             return;
         }
         this.teamSkill = epicTeamSkill;
-        plugin.getLogger().info("已安装团队终结技 "+epicTeamSkill.getClass().getName());
+        plugin.getLogger().info("已安装团队终结技 " + epicTeamSkill.getClass().getName());
     }
 
 
@@ -153,16 +163,16 @@ public class DragonFight implements Listener {
         });
     }
 
-    public void runTeamSkill(CommandSender sender){
-        if(this.teamSkill.execute(sender)){
+    public void runTeamSkill(CommandSender sender) {
+        if (this.teamSkill.execute(sender)) {
             this.teamSkill = null;
-            installTeamSkill(randomTeamSkill(),false);
+            installTeamSkill(randomTeamSkill(), false);
         }
     }
 
     private EpicTeamSkill randomTeamSkill() {
         int r = this.random.nextInt(1);
-        return switch (r){
+        return switch (r) {
             case 0 -> new Purge(this);
             default -> null;
         };
@@ -180,18 +190,13 @@ public class DragonFight implements Listener {
             return;
         }
         Bukkit.getScheduler().runTaskLater(EpicDragonFight2.getInstance(), () -> {
-            plugin.getLogger().info("尝试向槽位安装技能: " + skill.getClass().getName());
-            if (Arrays.stream(skill.getAdaptStages()).anyMatch(stage -> stage == this.currentStage)) {
-                plugin.getLogger().info("新技能已安装: " + skill.getClass().getName());
-                if (this.currentSkills != null) {
-                    this.currentSkills.unregister();
-                    this.currentSkills.end(SkillEndReason.REACH_TIME_LIMIT);
-                }
-                this.currentSkills = skill;
-                broadcast(skill.preAnnounce());
-            } else {
-                plugin.getLogger().info("技能安装跳过，当前阶段为 " + this.currentStage.name() + " 但技能要求阶段为: " + Arrays.toString(skill.getAdaptStages()));
+            plugin.getLogger().info("新技能已安装: " + skill.getClass().getName());
+            if (this.currentSkills != null) {
+                this.currentSkills.unregister();
+                this.currentSkills.end(SkillEndReason.REACH_TIME_LIMIT);
             }
+            this.currentSkills = skill;
+            broadcast(skill.preAnnounce());
         }, 10L);
     }
 
