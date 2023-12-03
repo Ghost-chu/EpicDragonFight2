@@ -280,7 +280,6 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
             this.registerFight(fight);
             enderDragon.setMaxHealth(this.getConfig().getDouble("dragon-max-health"));
             enderDragon.setHealth(enderDragon.getMaxHealth());
-            fight.applyDifficultRate(enderDragon);
             String dragonName = this.randomName();
             enderDragon.setCustomName(ChatColor.WHITE + "『" + dragonName + ChatColor.WHITE + "』");
             if (enderDragon.getBossBar() != null) {

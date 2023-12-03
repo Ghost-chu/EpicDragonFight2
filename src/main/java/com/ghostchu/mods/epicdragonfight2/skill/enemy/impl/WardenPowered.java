@@ -35,7 +35,7 @@ public class WardenPowered extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
-        if(isWaitingStart()){
+        if (isWaitingStart()) {
             return false;
         }
         if (!summoned) {
@@ -66,6 +66,6 @@ public class WardenPowered extends AbstractEpicDragonSkill {
 
     @NotNull
     public static Stage[] getAdaptStages() {
-        return new Stage[]{Stage.STAGE_3,Stage.STAGE_4};
+        return new Stage[]{Stage.STAGE_3, Stage.STAGE_4};
     }
 }

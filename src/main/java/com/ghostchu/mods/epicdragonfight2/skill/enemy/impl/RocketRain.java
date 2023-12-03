@@ -102,6 +102,6 @@ public class RocketRain extends AbstractEpicDragonSkill {
 
     @NotNull
     public static Stage[] getAdaptStages() {
-        return new Stage[]{Stage.STAGE_2,Stage.STAGE_3};
+        return new Stage[]{Stage.STAGE_2, Stage.STAGE_3};
     }
 }

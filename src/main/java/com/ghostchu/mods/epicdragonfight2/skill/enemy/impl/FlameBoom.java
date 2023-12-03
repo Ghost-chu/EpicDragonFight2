@@ -81,18 +81,18 @@ public class FlameBoom extends AbstractEpicDragonSkill {
             event.setCancelled(true);
             return;
         }
-        if(!isMarkedSummonedByPlugin(event.getEntity())){
+        if (!isMarkedSummonedByPlugin(event.getEntity())) {
             return;
         }
 
         Location loc = event.getEntity().getLocation();
         loc.getWorld().playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, getRandom().nextFloat());
         loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-        loc.getWorld().getNearbyEntities(loc,5,5,5).forEach(e->{
-            if(e instanceof Player player){
+        loc.getWorld().getNearbyEntities(loc, 5, 5, 5).forEach(e -> {
+            if (e instanceof Player player) {
                 player.damage(damage);
                 player.setFireTicks(fireTicks);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS,darknessTicks, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, darknessTicks, 1));
             }
         });
         event.setCancelled(true);
@@ -106,6 +106,6 @@ public class FlameBoom extends AbstractEpicDragonSkill {
 
     @NotNull
     public static Stage[] getAdaptStages() {
-        return new Stage[]{Stage.STAGE_2,Stage.STAGE_3};
+        return new Stage[]{Stage.STAGE_2, Stage.STAGE_3};
     }
 }

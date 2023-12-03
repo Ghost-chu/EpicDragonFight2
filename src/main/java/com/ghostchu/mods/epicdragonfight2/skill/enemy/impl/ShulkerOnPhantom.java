@@ -33,7 +33,7 @@ public class ShulkerOnPhantom extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
-        if(isWaitingStart())
+        if (isWaitingStart())
             return false;
         for (int i = 0; i < amount; i++) {
             Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {

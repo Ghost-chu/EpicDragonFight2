@@ -53,14 +53,14 @@ public class WitherShield extends AbstractEpicDragonSkill {
         int total = spawned;
         getPlayerInWorld().forEach(bossBar::addPlayer);
         List<Wither> withers = getAllWithers();
-        if(withers.size() > total){
+        if (withers.size() > total) {
             total = withers.size();
         }
         bossBar.setTitle("凋零护盾 - " + withers.size() + " / " + total);
-        bossBar.setProgress(Math.min((double) withers.size() / total,1.0f));
-        if(getTick() % 200 == 0){
-            getPlugin().getLogger().info("[WitherShield] 剩余 "+ withers.size()+" 只凋零");
-            withers.forEach(w-> getPlugin().getLogger().info("[WitherShield] - "+ w.getLocation()));
+        bossBar.setProgress(Math.min((double) withers.size() / total, 1.0f));
+        if (getTick() % 200 == 0) {
+            getPlugin().getLogger().info("[WitherShield] 剩余 " + withers.size() + " 只凋零");
+            withers.forEach(w -> getPlugin().getLogger().info("[WitherShield] - " + w.getLocation()));
         }
         return withers.isEmpty();
     }
@@ -120,7 +120,7 @@ public class WitherShield extends AbstractEpicDragonSkill {
     }
 
     public static @NotNull Stage[] getAdaptStages() {
-        return new Stage[]{Stage.STAGE_3,Stage.STAGE_4};
+        return new Stage[]{Stage.STAGE_3, Stage.STAGE_4};
     }
 
     @Override

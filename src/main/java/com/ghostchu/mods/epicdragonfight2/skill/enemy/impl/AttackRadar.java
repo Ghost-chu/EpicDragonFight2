@@ -21,15 +21,15 @@ public class AttackRadar extends AbstractEpicDragonSkill {
 
     public AttackRadar(@NotNull DragonFight fight) {
         super(fight, "attack-radar");
-        this.duration = getSkillConfig().getInt("duration") ;
+        this.duration = getSkillConfig().getInt("duration");
         this.laserDuration = getSkillConfig().getInt("laser-charge-duration-in-seconds");
     }
 
     @Override
     public int start() {
-        getPlayerInWorld().forEach(p->{
+        getPlayerInWorld().forEach(p -> {
             try {
-                laserMap.put(p, new Laser.GuardianLaser(getDragon().getLocation(), p,laserDuration, 256));
+                laserMap.put(p, new Laser.GuardianLaser(getDragon().getLocation(), p, laserDuration, 256));
             } catch (ReflectiveOperationException e) {
                 e.printStackTrace();
             }
@@ -48,18 +48,18 @@ public class AttackRadar extends AbstractEpicDragonSkill {
         if (isWaitingStart()) {
             return false;
         }
-        laserMap.forEach((p,laser)->{
+        laserMap.forEach((p, laser) -> {
             RayTraceResult result = getWorld().rayTrace(getDragon().getLocation(), fromToVector(getDragon().getLocation(), p.getLocation()),
                     256, FluidCollisionMode.NEVER,
                     true,
                     1.0,
                     entity -> entity == p);
-            if(result == null) return;
-            if(Objects.equals(p, result.getHitEntity())){
-                p.damage(p.getMaxHealth()+1, getDragon());
+            if (result == null) return;
+            if (Objects.equals(p, result.getHitEntity())) {
+                p.damage(p.getMaxHealth() + 1, getDragon());
             }
-            if(result.getHitBlock() != null){
-                getWorld().createExplosion(result.getHitBlock().getLocation(),7.0f,false, true,getDragon());
+            if (result.getHitBlock() != null) {
+                getWorld().createExplosion(result.getHitBlock().getLocation(), 7.0f, false, true, getDragon());
             }
             laser.stop();
         });
@@ -68,7 +68,7 @@ public class AttackRadar extends AbstractEpicDragonSkill {
     }
 
     private void updateLaserDragonPos() {
-        laserMap.values().forEach(laser->{
+        laserMap.values().forEach(laser -> {
             try {
                 laser.moveStart(getDragon().getLocation());
             } catch (ReflectiveOperationException e) {
@@ -84,6 +84,6 @@ public class AttackRadar extends AbstractEpicDragonSkill {
 
     @NotNull
     public static Stage[] getAdaptStages() {
-        return new Stage[]{Stage.STAGE_1,Stage.STAGE_2};
+        return new Stage[]{Stage.STAGE_1, Stage.STAGE_2};
     }
 }

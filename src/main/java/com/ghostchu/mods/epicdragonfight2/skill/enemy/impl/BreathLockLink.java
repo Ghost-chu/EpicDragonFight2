@@ -37,7 +37,7 @@ public class BreathLockLink extends AbstractEpicDragonSkill {
 
     @Override
     public void end(@NotNull SkillEndReason reason) {
-        if(location != null) {
+        if (location != null) {
             lockedPlayers.forEach(p -> p.teleport(location));
         }
     }
@@ -67,7 +67,7 @@ public class BreathLockLink extends AbstractEpicDragonSkill {
     }
 
     private void playParticles() {
-        lockedPlayers.forEach(p-> drawLine(location, p.getLocation(), 0.2));
+        lockedPlayers.forEach(p -> drawLine(location, p.getLocation(), 0.2));
     }
 
     public void drawLine(Location point1, Location point2, double space) {
@@ -111,8 +111,8 @@ public class BreathLockLink extends AbstractEpicDragonSkill {
         event.getEntity().remove();
         location = effectCloud.getLocation();
         Location loc = event.getEntity().getLocation();
-        loc.getWorld().getNearbyEntities(loc,5,5,5).forEach(e->{
-            if(e instanceof Player player){
+        loc.getWorld().getNearbyEntities(loc, 5, 5, 5).forEach(e -> {
+            if (e instanceof Player player) {
                 lockedPlayers.add(player);
                 player.damage(8);
             }

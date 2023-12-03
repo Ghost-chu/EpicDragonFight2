@@ -48,7 +48,7 @@ public class NukeExplosion extends AbstractEpicDragonSkill {
             }
             return false;
         }
-        if(getCleanTick() == 0){
+        if (getCleanTick() == 0) {
             this.getWorld().createExplosion(new Location(this.getWorld(), 0.0, 70.0, 0.0), this.power, true, false, this.getDragon());
         }
         return false;
@@ -62,6 +62,6 @@ public class NukeExplosion extends AbstractEpicDragonSkill {
 
     @NotNull
     public static Stage[] getAdaptStages() {
-        return new Stage[]{Stage.STAGE_3,Stage.STAGE_4};
+        return new Stage[]{Stage.STAGE_3, Stage.STAGE_4};
     }
 }

@@ -1,26 +1,19 @@
 package com.ghostchu.mods.epicdragonfight2;
 
-import com.ghostchu.mods.epicdragonfight2.skill.enemy.EpicDragonSkill;
-import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
-import com.ghostchu.mods.epicdragonfight2.skill.team.EpicTeamSkill;
-import com.ghostchu.mods.epicdragonfight2.skill.team.Purge;
-import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
+import com.ghostchu.mods.epicdragonfight2.skill.control.SkillController;
 import com.ghostchu.mods.epicdragonfight2.util.Util;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
-import net.kyori.adventure.text.serializer.ComponentSerializer;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,7 +25,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -44,7 +36,6 @@ import java.util.*;
 import static com.ghostchu.mods.epicdragonfight2.EpicDragonFight2.getSource;
 
 public class DragonFight implements Listener {
-
     private final World world;
     private final EnderDragon dragon;
     private final Random random = new Random(System.currentTimeMillis());
@@ -52,23 +43,20 @@ public class DragonFight implements Listener {
     private final Map<String, AtomicDouble> damageRankBoard = new HashMap<>();
     @NotNull
     private final Set<String> playerPlayWithIn = new HashSet<>();
-    @NotNull
-    private Stage currentStage = Stage.STAGE_1;
-    @Nullable
-    private EpicDragonSkill currentSkills;
-    private int lastRandom = -1;
-    private UUID uuid;
-    private EpicTeamSkill teamSkill;
+    private final UUID uuid;
+    private final SkillController skillController;
 
     public DragonFight(EpicDragonFight2 plugin, UUID uuid, World world, EnderDragon dragon) {
         this.plugin = plugin;
         this.world = world;
         this.dragon = dragon;
         this.uuid = uuid;
+        this.skillController = new SkillController(plugin.getLogger(),this);
         markEntitySummonedByPlugin(this.dragon);
     }
 
-    public void broadcast(Component component) {
+    public void broadcast(String minimessage) {
+        Component component = MiniMessage.miniMessage().deserialize(minimessage);
         Map<String, ComponentLike> preDefinedVars = new HashMap<>();
         preDefinedVars.put("<dragon_name>", LegacyComponentSerializer.legacySection().deserialize(dragon.getName()));
         preDefinedVars.put("<dragon_health>", Component.text(String.format("%.2f", dragon.getHealth())));
@@ -81,7 +69,7 @@ public class DragonFight implements Listener {
         preDefinedVars.put("<player_amount_in_fight>", Component.text(getPlayerInWorld().size()));
         Component com = component.compact();
         BaseComponent[] serialized = BungeeComponentSerializer.get().serialize(com);
-        getPlayerInWorld().forEach(p->{
+        getPlayerInWorld().forEach(p -> {
             Map<String, ComponentLike> perPlayerVars = new HashMap<>(preDefinedVars);
             perPlayerVars.put("<player_name>", LegacyComponentSerializer.legacySection().deserialize(p.getDisplayName()));
             Component preFilled = Util.fillArgs(BungeeComponentSerializer.get().deserialize(serialized), perPlayerVars);
@@ -106,188 +94,7 @@ public class DragonFight implements Listener {
     }
 
     public void tick() {
-        if (this.currentSkills != null && this.currentSkills.cycle()) {
-            this.currentSkills = null;
-        }
-        if (this.teamSkill == null) {
-            installTeamSkill(randomTeamSkill(), false);
-        } else {
-            this.teamSkill.tick();
-        }
-        this.tickMagic();
-    }
-
-    private void installTeamSkill(EpicTeamSkill epicTeamSkill, boolean b) {
-        if (this.teamSkill != null & !b) {
-            plugin.getLogger().info("尝试安装团队终结技 " + epicTeamSkill.getClass().getName() + " 但目前已有一个终结技已安装");
-            return;
-        }
-        this.teamSkill = epicTeamSkill;
-        plugin.getLogger().info("已安装团队终结技 " + epicTeamSkill.getClass().getName());
-    }
-
-
-    private void tickMagic() {
-        this.getPlayerInWorld().forEach(player -> {
-            List<Player> aroundPlayers = player.getNearbyEntities(5.0, 5.0, 5.0).stream()
-                    .filter(entity -> entity instanceof Player)
-                    .map(entity -> (Player) entity).toList();
-            if (aroundPlayers.size() > 3) {
-                player.setCooldown(Material.SHIELD, 0);
-                player.setCooldown(Material.ENDER_PEARL, 0);
-                player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 30, 0));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 30, 0));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 30, 0));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 30, 0));
-                if (!player.hasMetadata("stay-together")) {
-                    player.setMetadata("stay-together", new FixedMetadataValue(plugin, true));
-                    // player enter the stay together
-                    if (random.nextBoolean()) {
-                        // group says
-                        Player groupSayer = RandomUtil.randomPick(aroundPlayers);
-                        Bukkit.dispatchCommand(groupSayer, "global " +
-                                RandomUtil.randomPick(plugin.getConfig().getStringList("stay-together.group-says")));
-                    } else {
-                        // alone says
-                        Bukkit.dispatchCommand(player, "global " +
-                                RandomUtil.randomPick(plugin.getConfig().getStringList("stay-together.alone-says")));
-                    }
-                }
-            } else {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 30, 0));
-                if (player.hasMetadata("stay-together")) {
-                    player.removeMetadata("stay-together", plugin);
-                    // player exit stay together
-                }
-            }
-        });
-    }
-
-    public void runTeamSkill(CommandSender sender) {
-        if (this.teamSkill.execute(sender)) {
-            this.teamSkill = null;
-            installTeamSkill(randomTeamSkill(), false);
-        }
-    }
-
-    private EpicTeamSkill randomTeamSkill() {
-        int r = this.random.nextInt(1);
-        return switch (r) {
-            case 0 -> new Purge(this);
-            default -> null;
-        };
-    }
-
-    public void randomTick() {
-        int r = this.random.nextInt(10);
-        EpicDragonFight2.getInstance().getLogger().info("Random: " + r);
-        this.processRandom(r, false);
-    }
-
-    private void installSkill(@NotNull EpicDragonSkill skill, boolean force) {
-        if (this.currentSkills != null && !force) {
-            plugin.getLogger().info("尝试向槽位安装技能: " + skill.getClass().getName() + "，但此时另一个技能正在进行中。");
-            return;
-        }
-        Bukkit.getScheduler().runTaskLater(EpicDragonFight2.getInstance(), () -> {
-            plugin.getLogger().info("新技能已安装: " + skill.getClass().getName());
-            if (this.currentSkills != null) {
-                this.currentSkills.unregister();
-                this.currentSkills.end(SkillEndReason.REACH_TIME_LIMIT);
-            }
-            this.currentSkills = skill;
-            broadcast(skill.preAnnounce());
-        }, 10L);
-    }
-
-    public void applyDifficultRate(LivingEntity entity) {
-//        ConfigurationSection attributeSection = plugin.getConfig().getConfigurationSection("attributes");
-//        for (String attribute : attributeSection.getKeys(false)) {
-//            try {
-//                Attribute attr = Attribute.valueOf(attribute);
-//                if(attr == null) continue;
-//                AttributeInstance instance = entity.getAttribute(attr);
-//                if (instance == null) continue;
-//                ConfigurationSection modifiersSection = attributeSection.getConfigurationSection(attribute);
-//                List<AttributeModifier> modifiers = new ArrayList<>();
-//                for (String key : modifiersSection.getKeys(false)) {
-//                    ConfigurationSection modifierSection = modifiersSection.getConfigurationSection(attribute);
-//                    double amount;
-//                    if (modifierSection.isString("amount")
-//                            && modifierSection.getString("amount").equalsIgnoreCase("player_count")) {
-//                        amount = getWorld().getPlayers().size();
-//                    } else {
-//                        amount = modifiersSection.getDouble("amount");
-//                    }
-//                    AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), key, amount,
-//                            AttributeModifier.Operation.valueOf(modifierSection.getString("operation")));
-//                    modifiers.add(modifier);
-//                }
-//                modifiers.forEach(instance::addModifier);
-//            } catch (IllegalArgumentException e) {
-//                e.printStackTrace();
-//            }
-//        }
-    }
-
-    public void processRandom(int t, boolean force) {
-        if (this.currentSkills != null && !force) {
-            return;
-        }
-        if (t == this.lastRandom) {
-            this.processRandom(this.random.nextInt(11), false);
-            return;
-        }
-        switch (t) {
-            case 0: {
-                this.installSkill(new WardenPowered(this), force);
-                break;
-            }
-            case 1: {
-                this.installSkill(new BadWind(this), force);
-                break;
-            }
-            case 2: {
-                this.installSkill(new WitherShield(this), force);
-                break;
-            }
-            case 3: {
-                this.installSkill(new DragonEffectCloud(this), force);
-                break;
-            }
-            case 4: {
-                this.installSkill(new FallingTrident(this), force);
-                break;
-            }
-            case 5: {
-                this.installSkill(new NukeExplosion(this), force);
-                break;
-            }
-            case 6: {
-                this.installSkill(new Ravage(this), force);
-                break;
-            }
-            case 7: {
-                this.installSkill(new RocketRain(this), force);
-                break;
-            }
-            case 8: {
-                this.installSkill(new Throw(this), force);
-                break;
-            }
-            case 9: {
-                //this.installSkill(new AnvilPowered(this));
-                break;
-            }
-            case 10: {
-                // this.installSkill(new TerrainDissolve(this));
-            }
-            default: {
-                plugin.getLogger().info("本轮随机数未命中任何特定技能.");
-            }
-        }
-        this.lastRandom = t;
+        this.skillController.tick();
     }
 
     @NotNull
@@ -300,9 +107,6 @@ public class DragonFight implements Listener {
         return players;
     }
 
-    public void installStage(@NotNull Stage stage) {
-        this.currentStage = stage;
-    }
 
     @Nullable
     public Player randomPlayer() {
@@ -324,10 +128,6 @@ public class DragonFight implements Listener {
                 event.setTarget(newTarget);
             }
         }
-    }
-
-    public void broadcast(@NotNull String string) {
-        this.getPlayerInWorld().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', string)));
     }
 
     public void broadcastTitle(@NotNull String title, @NotNull String subTitle) {
@@ -501,16 +301,6 @@ public class DragonFight implements Listener {
 
     public EnderDragon getDragon() {
         return this.dragon;
-    }
-
-    @NotNull
-    public Stage getCurrentStage() {
-        return this.currentStage;
-    }
-
-    @Nullable
-    public EpicDragonSkill getCurrentSkills() {
-        return this.currentSkills;
     }
 
     public Map<String, AtomicDouble> getDamageRankBoard() {

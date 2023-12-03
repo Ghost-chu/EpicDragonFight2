@@ -63,7 +63,7 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
             event.setCancelled(true);
             return;
         }
-        if(!isMarkedSummonedByPlugin(event.getEntity())){
+        if (!isMarkedSummonedByPlugin(event.getEntity())) {
             return;
         }
         for (int i = 0; i < wolfAmount; i++) {
@@ -80,6 +80,6 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
 
     @NotNull
     public static Stage[] getAdaptStages() {
-        return  new Stage[]{Stage.STAGE_1, Stage.STAGE_2};
+        return new Stage[]{Stage.STAGE_1, Stage.STAGE_2};
     }
 }

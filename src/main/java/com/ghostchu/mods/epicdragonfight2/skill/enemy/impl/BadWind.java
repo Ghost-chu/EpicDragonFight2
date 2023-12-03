@@ -15,7 +15,7 @@ public class BadWind extends AbstractEpicDragonSkill {
 
     public BadWind(@NotNull DragonFight fight) {
         super(fight, "wind");
-        this.duration = getSkillConfig().getInt("duration") ;
+        this.duration = getSkillConfig().getInt("duration");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class BadWind extends AbstractEpicDragonSkill {
             return false;
         }
         for (Player player : this.getPlayerInWorld()) {
-            if(Math.abs(player.getLocation().distance(getDragon().getLocation())) > 150){
+            if (Math.abs(player.getLocation().distance(getDragon().getLocation())) > 150) {
                 continue;
             }
             player.setGliding(false);
@@ -59,6 +59,6 @@ public class BadWind extends AbstractEpicDragonSkill {
 
     @NotNull
     public static Stage[] getAdaptStages() {
-        return new Stage[]{Stage.STAGE_1,Stage.STAGE_2};
+        return new Stage[]{Stage.STAGE_1, Stage.STAGE_2};
     }
 }

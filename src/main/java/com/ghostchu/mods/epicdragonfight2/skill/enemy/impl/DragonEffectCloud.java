@@ -68,7 +68,7 @@ public class DragonEffectCloud extends AbstractEpicDragonSkill {
             event.setCancelled(true);
             return;
         }
-        if(!isMarkedSummonedByPlugin(event.getEntity())){
+        if (!isMarkedSummonedByPlugin(event.getEntity())) {
             return;
         }
         Entity entity = this.getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.AREA_EFFECT_CLOUD);

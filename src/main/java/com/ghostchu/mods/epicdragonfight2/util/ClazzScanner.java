@@ -14,7 +14,7 @@ public class ClazzScanner {
         this.packagePath = packagePath;
     }
 
-    public List<Class<?>> getScanResult(){
+    public List<Class<?>> getScanResult() {
         try {
             return scanClasses();
         } catch (IOException | ClassNotFoundException e) {

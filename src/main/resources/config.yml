@@ -5,6 +5,8 @@ worlds:
 dragon-max-health: 7000.0
 # 随机刻发生速度 tick speed
 random-tick-period: 700
+# 技能结束后选择延迟
+skill-pick-latency: 400
 # 技能列表
 skills:
   # 龙息药水云

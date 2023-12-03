@@ -36,7 +36,7 @@ public class Ravage extends AbstractEpicDragonSkill {
 
     @Override
     public boolean tick() {
-        if(isWaitingStart()){
+        if (isWaitingStart()) {
             return false;
         }
         if (getCleanTick() % this.checkInterval == 0) {

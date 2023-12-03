@@ -22,7 +22,7 @@ public class LoudRoar extends AbstractEpicDragonSkill {
     @Override
     public int start() {
 
-        return  this.skillStartWaitingTicks();
+        return this.skillStartWaitingTicks();
     }
 
     @Override

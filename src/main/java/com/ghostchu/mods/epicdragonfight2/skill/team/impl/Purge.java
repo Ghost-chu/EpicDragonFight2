@@ -1,6 +1,7 @@
-package com.ghostchu.mods.epicdragonfight2.skill.team;
+package com.ghostchu.mods.epicdragonfight2.skill.team.impl;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
+import com.ghostchu.mods.epicdragonfight2.skill.team.AbstractEpicTeamSkill;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Enderman;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,7 @@ public class Purge extends AbstractEpicTeamSkill {
 
     @Override
     public boolean execute(CommandSender executor) {
-        if(!isReady()){
+        if (!isReady()) {
             return false;
         }
         getWorld().getEntitiesByClass(Enderman.class).forEach(e -> e.setHealth(0));

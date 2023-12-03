@@ -27,7 +27,7 @@ public class Throw extends AbstractEpicDragonSkill {
     @Override
     public int start() {
         this.getPlayerInWorld().forEach(player -> player.playSound(player.getLocation(), Sound.ENTITY_TNT_PRIMED, 1.0f, this.getRandom().nextFloat()));
-        return  this.skillStartWaitingTicks();
+        return this.skillStartWaitingTicks();
     }
 
     @Override
