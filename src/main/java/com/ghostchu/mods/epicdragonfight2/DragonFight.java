@@ -236,11 +236,10 @@ public class DragonFight implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void dragonSecurity(EntityDamageByEntityEvent event) {
-        if (!event.getEntity().equals(this.dragon)) {
-            return;
-        }
-        if (isMarkedSummonedByPlugin(event.getDamager())) {
-            event.setCancelled(true);
+        if (isMarkedSummonedByPlugin(event.getEntity())) {
+            if (isMarkedSummonedByPlugin(event.getDamager())) {
+                event.setCancelled(true);
+            }
         }
     }
 

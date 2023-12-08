@@ -55,6 +55,7 @@ public class SkillController {
             EpicDragonSkill dragonSkill = spawnNewInstance(RandomUtil.randomPick(stageAvailableDragonSkills.getOrDefault(currentStage, Collections.emptyList())));
             if (dragonSkill != null) {
                 currentDragonSkills.add(dragonSkill);
+                fight.broadcast(dragonSkill.preAnnounce());
                 logger.info("已安装技能 " + dragonSkill.getClass().getName());
             }
         }
@@ -111,7 +112,7 @@ public class SkillController {
                 return true;
             }
             if (epicDragonSkill.cycle()) {
-                epicDragonSkill.end(SkillEndReason.SKILL_ENDED);
+                // epicDragonSkill.end(SkillEndReason.SKILL_ENDED);
                 epicDragonSkill.unregister();
                 return true;
             }

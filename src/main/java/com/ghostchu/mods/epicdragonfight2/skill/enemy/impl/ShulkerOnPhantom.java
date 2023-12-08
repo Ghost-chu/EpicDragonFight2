@@ -39,7 +39,7 @@ public class ShulkerOnPhantom extends AbstractEpicDragonSkill {
             return false;
         for (int i = 0; i < amount; i++) {
             Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-                Location spawnAt = this.getDragon().getLocation().add(getRandom().nextInt(-10, 10), getRandom().nextInt(-10, 10), getRandom().nextInt(-10, 10));
+                Location spawnAt = this.getDragon().getLocation().add(getRandom().nextInt(-10, 10), getRandom().nextInt(-10, 5), getRandom().nextInt(-10, 10));
                 Phantom phantom = (Phantom) spawnAt.getWorld().spawnEntity(spawnAt, EntityType.PHANTOM, false);
                 markEntitySummonedByPlugin(phantom);
                 Shulker shulker = (Shulker) spawnAt.getWorld().spawnEntity(spawnAt, EntityType.SHULKER, false);

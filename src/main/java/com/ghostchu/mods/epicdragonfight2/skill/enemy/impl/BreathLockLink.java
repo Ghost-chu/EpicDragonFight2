@@ -5,6 +5,9 @@ import com.ghostchu.mods.epicdragonfight2.Stage;
 import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
+import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -116,6 +119,7 @@ public class BreathLockLink extends AbstractEpicDragonSkill {
         loc.getWorld().getNearbyEntities(loc, 5, 5, 5).forEach(e -> {
             if (e instanceof Player player) {
                 lockedPlayers.add(player);
+                player.spigot().sendMessage(BungeeComponentSerializer.get().serialize(MiniMessage.miniMessage().deserialize(RandomUtil.randomPick(getSkillConfig().getStringList("link-hit")))));
                 player.damage(8);
             }
         });

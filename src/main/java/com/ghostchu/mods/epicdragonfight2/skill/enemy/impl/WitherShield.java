@@ -27,21 +27,27 @@ import java.util.List;
 public class WitherShield extends AbstractEpicDragonSkill {
     private final NamespacedKey BOSSBAR_KEY;
     private final KeyedBossBar bossBar;
+    private final int witherMaxAmounts;
+    private final double witherMaxHealth;
     private int spawned = 0;
 
     public WitherShield(@NotNull DragonFight fight) {
         super(fight, "wither-shield");
         BOSSBAR_KEY = new NamespacedKey(fight.getPlugin(), "withersheild");
         bossBar = Bukkit.createBossBar(BOSSBAR_KEY, "???", BarColor.RED, BarStyle.SEGMENTED_6, BarFlag.CREATE_FOG, BarFlag.DARKEN_SKY);
+        this.witherMaxAmounts = getSkillConfig().getInt("wither-max-amounts");
+        this.witherMaxHealth = getSkillConfig().getDouble("wither-max-health");
     }
 
     @Override
     public int start() {
         spawned = 0;
         List<Player> playerList = getPlayerInWorld();
-        for (int i = 0; i < Math.min(playerList.size(), 6); i++) {
+        for (int i = 0; i < Math.min(playerList.size(), witherMaxAmounts); i++) {
             Player player = playerList.get(i);
             Wither wither = (Wither) getWorld().spawnEntity(player.getLocation().add(0, 20, 0), EntityType.WITHER);
+            wither.setMaxHealth(witherMaxHealth);
+            wither.setHealth(wither.getMaxHealth());
             wither.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 0, false, false, false));
             markEntitySummonedByPlugin(wither);
             spawned++;
@@ -98,23 +104,6 @@ public class WitherShield extends AbstractEpicDragonSkill {
                 .filter(this::isMarkedSummonedByPlugin)
                 .toList();
     }
-//
-//    @EventHandler(ignoreCancelled = true)
-//    public void witherTargeting(EntityTargetLivingEntityEvent event) {
-//        if (!(event.getEntity() instanceof Wither)) {
-//            return;
-//        }
-//        if (!(event.getTarget() instanceof Player)) {
-//            // random a target
-//            Player player = RandomUtil.randomPick(getPlayerInWorld());
-//            if (player == null) {
-//                event.setCancelled(true);
-//                event.setTarget(null);
-//            } else {
-//                event.setTarget(player);
-//            }
-//        }
-//    }
 
     @Override
     public int skillStartWaitingTicks() {
@@ -131,6 +120,6 @@ public class WitherShield extends AbstractEpicDragonSkill {
         bossBar.removeAll();
         Bukkit.removeBossBar(bossBar.getKey());
         getPlayerInWorld().forEach(p -> p.playSound(p, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 0));
-        broadcast("凋零护盾已被击破！");
+        broadcast(getSkillConfig().getString("end-broadcast"));
     }
 }

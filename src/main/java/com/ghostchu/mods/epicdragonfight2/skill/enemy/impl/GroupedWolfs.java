@@ -6,9 +6,13 @@ import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Location;
-import org.bukkit.entity.*;
+import org.bukkit.entity.DragonFireball;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,16 +44,21 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
         }
         if (this.getCleanTick() == 0) {
             for (Player player : this.getPlayerInWorld()) {
-                Location ballGeneratePos = getDragon().getLocation();
+                Location wolfGenerated = getDragon().getLocation();
                 if (player.getLocation().getBlockY() > getDragon().getLocation().getBlockY()) {
-                    ballGeneratePos.add(0, 3, 0);
+                    wolfGenerated.add(0, 3, 0);
                 } else {
-                    ballGeneratePos.add(0, -3, 0);
+                    wolfGenerated.add(0, -3, 0);
                 }
-                DragonFireball dragonFireball = (DragonFireball) getDragon().getWorld().spawnEntity(getDragon().getLocation(), EntityType.DRAGON_FIREBALL, false);
-                dragonFireball.setVelocity(fromToVector(player.getLocation(), getDragon().getLocation()));
-                dragonFireball.setPersistent(false);
-                markEntitySummonedByPlugin(dragonFireball);
+                for (int i = 0; i < wolfAmount; i++) {
+                    Wolf wolf = (Wolf) this.getWorld().spawnEntity(wolfGenerated, EntityType.WOLF);
+                    wolf.setVelocity(fromToVector(player.getLocation(), getDragon().getLocation()));
+                    wolf.setAngry(true);
+                    wolf.setTarget(randomPlayer());
+                    wolf.setCustomNameVisible(true);
+                    wolf.setCustomName("狼群弹药");
+                    markEntitySummonedByPlugin(wolf);
+                }
 
             }
         }
@@ -61,18 +70,21 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
         if (!(event.getEntity() instanceof DragonFireball)) {
             return;
         }
-        if (event.getEntity() instanceof DragonFireball && event.getHitEntity() instanceof EnderDragon) {
-            event.setCancelled(true);
+        if (!isMarkedSummonedByPlugin(event.getEntity())) {
+            return;
+        }
+
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onWolfDamaged(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof DragonFireball)) {
             return;
         }
         if (!isMarkedSummonedByPlugin(event.getEntity())) {
             return;
         }
-        for (int i = 0; i < wolfAmount; i++) {
-            Wolf wolf = (Wolf) this.getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.WOLF);
-            wolf.setAngry(true);
-            wolf.setTarget(randomPlayer());
-        }
+        event.setCancelled(true);
     }
 
     @Override

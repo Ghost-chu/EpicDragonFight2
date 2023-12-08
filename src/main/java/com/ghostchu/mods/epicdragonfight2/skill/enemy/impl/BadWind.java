@@ -14,10 +14,12 @@ import org.jetbrains.annotations.NotNull;
 @EpicSkill
 public class BadWind extends AbstractEpicDragonSkill {
     private final int duration;
+    private final double range;
 
     public BadWind(@NotNull DragonFight fight) {
         super(fight, "wind");
         this.duration = getSkillConfig().getInt("duration");
+        this.range = getSkillConfig().getDouble("range");
     }
 
     @Override
@@ -36,7 +38,7 @@ public class BadWind extends AbstractEpicDragonSkill {
             return false;
         }
         for (Player player : this.getPlayerInWorld()) {
-            if (Math.abs(player.getLocation().distance(getDragon().getLocation())) > 150) {
+            if (Math.abs(player.getLocation().distance(getDragon().getLocation())) > range) {
                 continue;
             }
             player.setGliding(false);

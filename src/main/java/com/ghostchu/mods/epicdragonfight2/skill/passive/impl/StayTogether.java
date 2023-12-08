@@ -40,11 +40,11 @@ public class StayTogether extends AbstactEpicPassiveSkill {
                     if (getRandom().nextBoolean()) {
                         // group says
                         Player groupSayer = RandomUtil.randomPick(aroundPlayers);
-                        Bukkit.dispatchCommand(groupSayer, "global " +
+                        Bukkit.dispatchCommand(groupSayer, "local " +
                                 RandomUtil.randomPick(getPlugin().getConfig().getStringList("stay-together.group-says")));
                     } else {
                         // alone says
-                        Bukkit.dispatchCommand(player, "global " +
+                        Bukkit.dispatchCommand(player, "local " +
                                 RandomUtil.randomPick(getPlugin().getConfig().getStringList("stay-together.alone-says")));
                     }
                 }

@@ -15,10 +15,17 @@ import org.jetbrains.annotations.NotNull;
 public class LoudRoar extends AbstractEpicDragonSkill {
 
     private final int potionDuration;
+    private final int potionLevel;
 
     public LoudRoar(@NotNull DragonFight fight) {
         super(fight, "loud-roar");
         this.potionDuration = getSkillConfig().getInt("potion-duration");
+        this.potionLevel = getSkillConfig().getInt("potion-level");
+    }
+
+    @NotNull
+    public static Stage[] getAdaptStages() {
+        return new Stage[]{Stage.STAGE_1};
     }
 
     @Override
@@ -39,7 +46,7 @@ public class LoudRoar extends AbstractEpicDragonSkill {
         if (getCleanTick() == 0) {
             for (Player player : this.getPlayerInWorld()) {
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_AMBIENT, 1.0f, this.getRandom().nextFloat());
-                player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 1, potionDuration));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, potionDuration, potionLevel));
             }
         }
         return false;
@@ -48,10 +55,5 @@ public class LoudRoar extends AbstractEpicDragonSkill {
     @Override
     public int skillStartWaitingTicks() {
         return 1;
-    }
-
-    @NotNull
-    public static Stage[] getAdaptStages() {
-        return new Stage[]{Stage.STAGE_1};
     }
 }

@@ -19,10 +19,12 @@ import org.jetbrains.annotations.NotNull;
 
 @EpicSkill
 public class WardenPowered extends AbstractEpicDragonSkill {
+    private final double wardenHealth;
     private boolean summoned;
 
     public WardenPowered(@NotNull DragonFight fight) {
         super(fight, "warden");
+        this.wardenHealth = getSkillConfig().getDouble("warden-health");
     }
 
     @Override
@@ -51,6 +53,8 @@ public class WardenPowered extends AbstractEpicDragonSkill {
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1, false, false, true));
         Location spawnAt = p.getLocation();
         Warden entity = getWorld().spawn(spawnAt, Warden.class, warden -> {
+            warden.setMaxHealth(wardenHealth);
+            warden.setHealth(warden.getMaxHealth());
             NBTEntity nbtEntity = new NBTEntity(warden);
             NBTContainer nbtContainer = new NBTContainer("{Brain:{memories:{\"minecraft:dig_cooldown\":{ttl:1200L,value:{}}, \"minecraft:is_emerging\":{ttl:134L,value:{}}}}}");
             nbtEntity.mergeCompound(nbtContainer);
