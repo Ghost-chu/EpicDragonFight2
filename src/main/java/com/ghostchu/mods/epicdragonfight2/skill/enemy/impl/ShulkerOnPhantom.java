@@ -5,6 +5,8 @@ import com.ghostchu.mods.epicdragonfight2.Stage;
 import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
+import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -48,6 +50,10 @@ public class ShulkerOnPhantom extends AbstractEpicDragonSkill {
                 spawnAt.getWorld().spawnParticle(Particle.SMOKE_NORMAL, spawnAt, 2);
                 spawnAt.getWorld().playSound(phantom, Sound.ENTITY_PHANTOM_FLAP, 1.0f, getRandom().nextFloat());
 
+                ReadWriteNBT tags = NBT.parseNBT("{Tags:[\"ph_general\"]}");
+                NBT.modify(phantom, nbt -> {
+                    nbt.mergeCompound(tags);
+                });
             }, getRandom().nextInt(40));
         }
         return true;
