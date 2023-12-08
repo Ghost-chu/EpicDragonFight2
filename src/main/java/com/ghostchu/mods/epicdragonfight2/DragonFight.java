@@ -95,6 +95,7 @@ public class DragonFight implements Listener {
 
     public void tick() {
         this.skillController.tick();
+        getDragon().setNoDamageTicks(0);
     }
 
     @NotNull
@@ -242,6 +243,14 @@ public class DragonFight implements Listener {
             }
         }
     }
+//    @EventHandler(ignoreCancelled = true)
+//    public void noDragonDamageTick(EntityDamageEvent event) {
+//        if (isMarkedSummonedByPlugin(event.getEntity())) {
+//            if(event.getEntity() instanceof EnderDragon eDragon && eDragon == getDragon()){
+//                eDragon.setNoDamageTicks(0);
+//            }
+//        }
+//    }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {

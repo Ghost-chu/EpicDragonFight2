@@ -2,7 +2,7 @@
 worlds:
   - world_the_end
 # 龙最大血量
-dragon-max-health: 7000.0
+dragon-max-health: 2048.0
 # 随机刻发生速度 tick speed
 random-tick-period: 700
 # 技能结束后选择延迟
