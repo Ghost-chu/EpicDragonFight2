@@ -80,7 +80,7 @@ public class DragonEffectCloud extends AbstractEpicDragonSkill {
         effectCloud.setDuration(this.cloudDuration);
         effectCloud.setParticle(Particle.DRAGON_BREATH);
         effectCloud.setRadius(this.radius);
-        effectCloud.setReapplicationDelay(4);
+        effectCloud.setReapplicationDelay(8);
         markEntitySummonedByPlugin(effectCloud);
         this.getWorld().playSound(entity.getLocation(), Sound.BLOCK_GLASS_BREAK, 1.0f, this.getRandom().nextFloat());
         event.setCancelled(true);

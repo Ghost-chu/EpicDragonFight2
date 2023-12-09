@@ -24,7 +24,7 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
     public GroupedWolfs(@NotNull DragonFight fight) {
         super(fight, "grouped-wolfs");
         duration = getSkillConfig().getInt("duration");
-        wolfAmount = getSkillConfig().getInt("wolf-amount");
+        wolfAmount = getSkillConfig().getInt("amount");
     }
 
     @Override

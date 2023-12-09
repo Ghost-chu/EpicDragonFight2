@@ -72,7 +72,11 @@ public class BreathLockLink extends AbstractEpicDragonSkill {
     }
 
     private void playParticles() {
-        lockedPlayers.forEach(p -> drawLine(location, p.getLocation(), 0.2));
+        lockedPlayers.forEach(p -> {
+            if (p.getWorld() == getWorld()) {
+                drawLine(location, p.getLocation(), 0.2);
+            }
+        });
     }
 
     public void drawLine(Location point1, Location point2, double space) {

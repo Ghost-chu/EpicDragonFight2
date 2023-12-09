@@ -318,7 +318,7 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
                     taskId.set(task.getTaskId());
                     dragonFight.getWorld().getWorldBorder().reset();
                     dragonFight.getWorld().getEntities().forEach(e -> {
-                        if (dragonFight.isMarkedSummonedByPlugin(e)) {
+                        if (dragonFight.isMarkedSummonedByPlugin(e) && e.getType() != EntityType.ENDER_DRAGON) {
                             e.remove();
                         }
                     });
@@ -395,7 +395,7 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
                     .append(" 🗡").append((record.getValue()).intValue()).append("\n");
             builder.append("\n");
         }
-        return builder.toString().trim().replace("\n\n", "\n");
+        return builder.toString().trim().replace("\n\n", " \n");
     }
 
 //    private void randomTick() {

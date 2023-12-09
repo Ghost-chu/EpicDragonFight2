@@ -13,7 +13,7 @@ skills:
     # 技能持续时间（结束后会消除影响）
     duration: 400
     # 药水云持续时间
-    cloud-duration: 120
+    cloud-duration: 60
     # 药水云展开距离
     radius: 10
     # 药水云生成间隔
