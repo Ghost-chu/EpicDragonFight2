@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static com.ghostchu.mods.epicdragonfight2.EpicDragonFight2.getSource;
 
@@ -53,6 +54,8 @@ public class DragonFight implements Listener {
         this.uuid = uuid;
         this.skillController = new SkillController(plugin.getLogger(),this);
         markEntitySummonedByPlugin(this.dragon);
+        world.getWorldBorder().setCenter(0, 0);
+        world.getWorldBorder().setSize(300, TimeUnit.SECONDS, 10);
     }
 
     public void broadcast(String minimessage) {

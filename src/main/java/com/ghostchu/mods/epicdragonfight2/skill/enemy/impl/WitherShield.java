@@ -17,8 +17,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -39,6 +41,10 @@ public class WitherShield extends AbstractEpicDragonSkill {
         this.witherMaxHealth = getSkillConfig().getDouble("wither-max-health");
     }
 
+    public static @NotNull Stage[] getAdaptStages() {
+        return new Stage[]{Stage.STAGE_3, Stage.STAGE_4};
+    }
+
     @Override
     public int start() {
         spawned = 0;
@@ -55,7 +61,6 @@ public class WitherShield extends AbstractEpicDragonSkill {
         return Integer.MAX_VALUE;
     }
 
-
     @Override
     public boolean tick() {
         int total = spawned;
@@ -70,33 +75,54 @@ public class WitherShield extends AbstractEpicDragonSkill {
             getPlugin().getLogger().info("[WitherShield] 剩余 " + withers.size() + " 只凋零");
             withers.forEach(w -> getPlugin().getLogger().info("[WitherShield] - " + w.getLocation()));
         }
+        withers.forEach(wither -> {
+            if (wither.getLocation().getBlockY() > 125) {
+                wither.setVelocity(wither.getVelocity().add(new Vector(0, -5, 0)));
+                wither.damage(8);
+            }
+        });
         return withers.isEmpty();
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void dragonAttacked(EntityDeathEvent event) {
+        if (event.getEntity() instanceof Wither wither) {
+            if (isMarkedSummonedByPlugin(wither)) {
+                event.getDrops().clear();
+                event.setDroppedExp(0);
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void dragonAttacked(EntityDamageEvent event) {
-        if (event.getEntity() instanceof EnderDragon) {
-            event.setCancelled(true);
-            event.setDamage(0);
+        if (event.getEntity() instanceof EnderDragon dragon) {
+            if (isMarkedSummonedByPlugin(dragon)) {
+                event.setCancelled(true);
+                event.setDamage(0);
+            }
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void dragonAttacked(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof EnderDragon) {
-            event.setCancelled(true);
-            event.setDamage(0);
+        if (event.getEntity() instanceof EnderDragon dragon) {
+            if (isMarkedSummonedByPlugin(dragon)) {
+                event.setCancelled(true);
+                event.setDamage(0);
+            }
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void dragonAttacked(EntityDamageByBlockEvent event) {
-        if (event.getEntity() instanceof EnderDragon) {
-            event.setCancelled(true);
-            event.setDamage(0);
+        if (event.getEntity() instanceof EnderDragon dragon) {
+            if (isMarkedSummonedByPlugin(dragon)) {
+                event.setCancelled(true);
+                event.setDamage(0);
+            }
         }
     }
-
 
     public List<Wither> getAllWithers() {
         return getWorld().getEntitiesByClass(Wither.class)
@@ -108,10 +134,6 @@ public class WitherShield extends AbstractEpicDragonSkill {
     @Override
     public int skillStartWaitingTicks() {
         return 1;
-    }
-
-    public static @NotNull Stage[] getAdaptStages() {
-        return new Stage[]{Stage.STAGE_3, Stage.STAGE_4};
     }
 
     @Override

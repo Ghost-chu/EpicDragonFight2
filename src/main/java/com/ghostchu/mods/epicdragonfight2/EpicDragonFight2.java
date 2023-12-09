@@ -308,7 +308,7 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
                     BukkitTask task = Bukkit.getScheduler().runTaskTimer(this, () -> {
                         if (!dragon.isValid()) {
                             Bukkit.getScheduler().runTaskLater(this, () -> {
-                                this.findHighestBedrock(dragonFight.getWorld(), 0, 0).add(0.0, 1.0, 0.0).getBlock().setType(Material.DRAGON_EGG);
+                                this.findHighestBedrock(dragonFight.getWorld(), 0, 0).add(0.0, 20.0, 0.0).getBlock().setType(Material.DRAGON_EGG);
                                 String msg = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("fight-end.egg-placed", ""));
                                 dragonFight.getPlayerInWorld().forEach(player -> player.sendMessage(msg));
                             }, 10L);
@@ -316,6 +316,12 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
                         }
                     }, 0L, 1L);
                     taskId.set(task.getTaskId());
+                    dragonFight.getWorld().getWorldBorder().reset();
+                    dragonFight.getWorld().getEntities().forEach(e -> {
+                        if (dragonFight.isMarkedSummonedByPlugin(e)) {
+                            e.remove();
+                        }
+                    });
                 }
             });
         }
