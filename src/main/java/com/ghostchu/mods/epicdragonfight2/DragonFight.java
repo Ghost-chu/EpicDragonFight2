@@ -25,6 +25,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -151,6 +152,13 @@ public class DragonFight implements Listener {
             event.setCancelled(true);
             event.setBuild(false);
             event.getPlayer().sendMessage(ChatColor.GRAY + "神秘的力量导致你手中的水元素无法放置");
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemDamage(PlayerItemDamageEvent event) {
+        if (event.getPlayer().getWorld() == getWorld()) {
+            event.setCancelled(true);
         }
     }
 

@@ -2,11 +2,11 @@
 worlds:
   - world_the_end
 # 龙最大血量
-dragon-max-health: 2048.0
+dragon-max-health: 4096.0
 # 随机刻发生速度 tick speed
 random-tick-period: 700
 # 技能结束后选择延迟
-skill-pick-latency: 400
+skill-pick-latency: 300
 # 技能列表
 skills:
   dragon-effect-cloud: # 龙息云
