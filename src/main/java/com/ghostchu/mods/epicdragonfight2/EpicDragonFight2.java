@@ -377,12 +377,15 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
         Iterator<Map.Entry<String, AtomicDouble>> it = descOrderKeyMap.entrySet().iterator();
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < size && it.hasNext(); ++i) {
-            String numberUnit = "rd";
+            String numberUnit = "th";
             if (i == 0) {
                 numberUnit = "st";
             }
             if (i == 1) {
                 numberUnit = "nd";
+            }
+            if (i == 2) {
+                numberUnit = "rd";
             }
             builder.append(ChatColor.RED).append(" ").append(i + 1).append(numberUnit).append(" ");
             Map.Entry<String, AtomicDouble> record = it.next();
