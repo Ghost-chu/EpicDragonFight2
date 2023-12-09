@@ -283,9 +283,10 @@ public class DragonFight implements Listener {
                 subTitle = ChatColor.translateAlternateColorCodes('&', subTitle);
                 event.getEntity().sendTitle(title, subTitle, 10, 100, 20);
                 event.getEntity().sendMessage(ChatColor.RED + "● MSG FR RCF");
-                event.getEntity().sendMessage(ChatColor.GRAY + "你好，" + event.getEntity().getName() + "。很高兴你看起来没有生命危险了");
-                event.getEntity().sendMessage(ChatColor.GRAY + "我们已经提取了你的 RCF 记录仪中的关键情报，感谢你做出的突出贡献");
-                event.getEntity().sendMessage(ChatColor.GRAY + "你的装备在这边，如果准备好的话，就立刻返回战场吧。留给我们的时间不多了");
+                event.getEntity().sendMessage(ChatColor.GRAY + "你还好吧，" + event.getEntity().getName() + "。");
+                event.getEntity().sendMessage(ChatColor.GRAY + "在上次 RCF 行动后，我们调整了下你的护甲系统，现在护甲和工具不会损耗耐久值了。");
+                event.getEntity().sendMessage(ChatColor.GRAY + "你的装备在这边，如果准备好的话，就立刻返回战场吧。留给我们的时间不多了。");
+                event.getEntity().sendMessage(ChatColor.GRAY + "谨慎行事，RCF 不希望再失去任何队员了。");
             }, 2L);
         }, 2L);
     }
