@@ -3,9 +3,7 @@ worlds:
   - world_the_end
 # 龙最大血量
 dragon-max-health: 4096.0
-# 随机刻发生速度 tick speed
-random-tick-period: 700
-# 技能结束后选择延迟
+# 技能结束后新技能安装延迟
 skill-pick-latency: 300
 # 技能列表
 skills:
@@ -15,155 +13,195 @@ skills:
     # 药水云持续时间
     cloud-duration: 60
     # 药水云展开距离
-    radius: 10
+    radius: 6
     # 药水云生成间隔
     check-interval: 25
-    # 技能即将开始提示信息
+    # 技能即将开始提示信息（随机抽选一条）
     broadcast:
-      - "<red><random_other_player_name></red>: 这条龙比以前的都要强，那它的口水……"
-      - "<red><random_other_player_name></red>: 我去，真带劲的臭口水，我可不想在里面洗澡！"
-      - "<red><player_name></red>: 找掩体躲一下！"
-      - "<red><random_other_player_name></red>: 话说这能拿来炼药吗……"
+      - <red><random_other_player_name></red>：这条龙比以前的都要强，那它的口水……
+      - <red><random_other_player_name></red>：我去，真带劲的臭口水，我可不想在里面洗澡！
+      - <red><player_name></red>：找掩体躲一下！
+      - <red><random_other_player_name></red>：话说这能拿来炼药吗……
   throws: # 地球上投
     duration: 200
     # 上抛玩家时刻
     time: 100
-    # 上抛叠加向量
+    # 上抛叠加向量 x y z
     velocity-x: 0.0
     velocity-y: 100.0
     velocity-z: 0.0
     broadcast:
-      - "<purple><dragon_name></purple>: 地上的生灵，如果失去坚实的土地，就无能为力了吧！"
-      - "<purple><dragon_name></purple>: 「立足之处」被剥夺的感受，也体验一下吧！"
+      - <purple><dragon_name></purple>：地上的生灵，如果失去坚实的土地，就无能为力了吧！
+      - <purple><dragon_name></purple>：「立足之处」被剥夺的感受，也体验一下吧！
   # 苦力怕乘TNT - 摧毁末地大陆！
   rocket-rain: # 龙炎火雨
+    # 技能持续时间
     duration: 250
+    # 技能时间内，每 X tick 发射一次
     check-interval: 10
-    creeper-explode-radius: 10
+    # 苦力怕爆炸范围
+    creeper-explode-radius: 13
+    # 是否为闪电苦力怕
     creeper-powered: true
+    # 苦力怕引信长度 tick
     creeper-fuse-ticks: 100
+    # 苦力怕血量
     creeper-health: 40.0
+    # 自动点燃苦力怕暴炸引信
     creeper-auto-ignite: true
+    # 苦力怕速度药水效果持续时间
     creeper-speed-duration: 250
+    # 苦力怕速度药水效果等级
     creeper-speed-level: 2
     broadcast:
-      - "<purple><dragon_name></purple>: 艺术就是爆炸，而你……将在爆炸中消失！"
-      - "<purple><dragon_name></purple>: 够了，该结束这场闹剧了！给我灰飞烟灭吧！"
-      - "<purple><dragon_name></purple>: 我们一概追求核平，见识下核平的力量吧！"
+      - <purple><dragon_name></purple>：艺术就是爆炸，而你……将在爆炸中消失！
+      - <purple><dragon_name></purple>：够了，该结束这场闹剧了！给我灰飞烟灭吧！
+      - <purple><dragon_name></purple>：我们一概追求核平，见识下核平的力量吧！
   trident: # 天降三叉戟
+    # 技能持续时间
     duration: 250
+    # 技能时间内，每 X tick 发射一次
     check-interval: 10
+    # 召唤的三叉戟掉落位于玩家的 X 格上方
     height: 80
     broadcast:
-      - "<red><random_other_player_name></red>: 检测到大量下落的不明物体！"
-      - "<red><random_other_player_name></red>: 检测到强烈的电离磁场云，注意防范雷电！"
-      - "<red><player_name></red>: 我看到了什么？雷神天闪？"
+      - <red><random_other_player_name></red>：检测到大量下落的不明物体！
+      - <red><random_other_player_name></red>：检测到强烈的电离磁场云，注意防范雷电！
+      - <red><player_name></red>：我看到了什么？雷神天闪？
   nuke: # 核爆
+    # 技能持续时间
     duration: 220
     # 激活核弹爆炸的时刻
     explode-time: 200
-    # 参考: 普通苦力怕为 3，TNT是 4，闪电苦力怕是 6
+    # 爆炸强度参考: 普通苦力怕为 3，TNT是 4，闪电苦力怕是 6
     power: 25.0
     broadcast:
-      - "<purple><dragon_name></purple>: 末日的钟声响起了，人类，一切都将在爆炸的火焰中陨灭！"
+      - <purple><dragon_name></purple>：末日的钟声响起了，人类，一切都将在爆炸的火焰中陨灭！
       - |
-        <red><player_name></red>: 这条龙它疯了，它想和我们同归于尽！
-        <red><random_other_player_name></red>: 远离中心祭坛！
-        <red><player_name></red>: 远离中心祭坛还不够！远离主岛范围！
+        <red><player_name></red>：这条龙它疯了，它想和我们同归于尽！
+        <red><random_other_player_name></red>：远离中心祭坛！
+        <red><player_name></red>：远离中心祭坛还不够！远离主岛范围！快跑！
   ravage: # 末影复仇
-    duration: 600
+    # 技能持续时间
+    duration: 450
+    # 技能时间内，每 X tick 重新检查末影人仇恨对象一次
     check-interval: 10
+    # 范围多少方块以内的末影人会设置玩家为仇恨目标，过大的值可能引起卡顿
     range: 100
     broadcast:
-      - "<purple><dragon_name></purple>: 我的子民们，团结起来，将这些无知人类从我们的故乡驱逐出去！"
-      - "<purple><dragon_name></purple>: 蝼蚁们，是时候也让你们尝尝人海战术的滋味了！"
+      - <purple><dragon_name></purple>：我的子民们，团结起来，将这些无知人类从我们的故乡驱逐出去！
+      - <purple><dragon_name></purple>：蝼蚁们，是时候也让你们尝尝人海战术的滋味了！
   warden: # 监守者之力
+    # 监守者血量
     warden-health: 80.0
     broadcast:
       - "&5末影龙: &r我以末地之主的名义召唤，漆黑之梦魇，出现吧！"
   shulker-on-phantom: # 潜影浮现
+    # 每次召唤的技能生物数量
     amount: 10
     broadcast:
-      - "<purple><dragon_name></purple>: 让愚蠢的人类离开他们引以为傲的陆地吧！"
-      - "<purple><dragon_name></purple>: 潜影一族，听我号令，进攻！"
+      - <purple><dragon_name></purple>：让愚蠢的人类离开他们引以为傲的陆地吧！
+      - <purple><dragon_name></purple>：潜影一族，听我号令，进攻！
       - |
-        <red>RCF</red>: 检测到幻翼一族活动的声呐信号。
-        <red><random_other_player_name></red>: （当场拿出收割黑夜）
+        <red>RCF</red>：检测到幻翼一族活动的声呐信号。
+        <red><random_other_player_name></red>：（当场拿出收割黑夜）
   grouped-wolfs: #狼群出动
-    amount: 3
+    # 狼群内狼群数量
+    amount: 15
     broadcast:
-      - "<purple><dragon_name></purple>: 我的随从啊！让这些人类尝尝利齿撕咬的滋味吧！"
+      - <purple><dragon_name></purple>：我的随从啊！让这些人类尝尝利齿撕咬的滋味吧！
       - |
-        <red><random_other_player_name></red>: 笑死，它召唤的好像是狗哎！等下，草这不是一般的狗，这是疯狗！
-        <red><player_name></red>: 兄弟，这是狼！你们有带骨头吗？
+        <red><random_other_player_name></red>：笑死，它召唤的好像是狗哎！等下，草这不是一般的狗，这是疯狗！
+        <red><player_name></red>：兄弟，这是狼！你们有带骨头吗？
   loud-roar: # 大声咆哮
+    # 负面药水持续时间
     potion-duration: 600
+    # 负面药水效果等级
     potion-level: 1
     broadcast:
+      - <random_other_player_name>：真是刺耳的声音
       - |
-        <purple><dragon_name></purple>: 可恶的人类！（大声咆哮）
-        <red><player_name></red>: 让我想起了我家的姜黄猫，猛虎咆哮.jpg
+        <purple><dragon_name></purple>：可恶的人类！（大声咆哮）
+        <red><player_name></red>：让我想起了我家的姜黄猫，猛虎咆哮.jpg
   flame-boom: # 烈焰眩晕
+    # 发射的末影火球数量
     max-amount: 7
+    # 被末影火球炸到的玩家着火时间
     fire-ticks: 600
+    # 被末影火球炸到的玩家赋予黑暗药水效果时间
     darkness-ticks: 200
+    # 被末影火球炸到的玩家给予的无视护甲的直接伤害
     damage: 5
     broadcast:
-      - <purple><dragon_name></purple>: 感受一下龙炎的炙热吧！
+      - <purple><dragon_name></purple>：感受一下龙炎的炙热吧！
   breath-lock-link: # 龙息束链
+    # 技能持续时间，在技能结束时，被粘住的玩家会被传送回龙息束链的位置
     duration: 200
     broadcast:
-      - <red><player_name></red>: 卧槽好粘稠的口水！
-        <red><random_other_player_name></red>: 回到总部我一定要狠狠地洗澡！
+      - <red><player_name></red>：卧槽好粘稠的口水！
+        <red><random_other_player_name></red>：回到总部我一定要狠狠地洗澡！
     link-hit:
       - 被粘住了，可恶
   wind: # 邪风
     duration: 100
-    # 受影响范围
+    # 距离末影龙 X 格以内的玩家会被向末影龙的相对方向吹飞
     range: 150
     broadcast:
       - |
-        <red><random_other_player_name></red>: <purple><dragon_name></purple>停下来了，这条该死的龙在做什么？
-        <red><random_other_player_name></red>: 不对劲，这附近的气流也停滞下来了！
+        <red><random_other_player_name></red>：<purple><dragon_name></purple>停下来了，这条该死的龙在做什么？
+        <red><random_other_player_name></red>：不对劲，这附近的气流也停滞下来了！
       - |
-        <red><player_name></red>: 大家快落地！飞行装置失灵了，<purple><dragon_name></purple>正利用这点想要击飞所有在场的东西！
-        <red><random_other_player_name></red>: 我去外面是虚空，小心别掉进去！
-      - '<purple><dragon_name></purple>: 不懂得生命的可贵，自然也不理解狂风的凛冽！'
-      - '<red>RCF</red>: 小队注意，你们所在附近的风场变的十分不稳定，大的要来了，抓好附近的东西，别被吹飞了！'
+        <red><player_name></red>：大家快落地！飞行装置失灵了，<purple><dragon_name></purple>正利用这点想要击飞所有在场的东西！
+        <red><random_other_player_name></red>：我去外面是虚空，小心别掉进去！
+      - <purple><dragon_name></purple>：不懂得生命的可贵，自然也不理解狂风的凛冽！
+      - <red>RCF</red>：小队注意，你们所在附近的风场变的十分不稳定，大的要来了，抓好附近的东西，别被吹飞了！
   wither-shield: # 凋零护盾
+    # 凋零的最大数量，每玩家数量+1，最大不超过此限制
     wither-max-amounts: 6
+    # 凋零血量
     wither-max-health: 100
+    # 技能超时
     timeout: 6000
+    # 技能超时固定直接伤害
     timeout-damage: 10.0
+    # 技能超时广播
     timeout-broadcast: |
-      <red>RCF</red>: 小队注意，你们没有在 3 分钟内破坏凋零护盾，末影龙缓过来了！
-      <purple><dragon_name><</purple>: *猛烈的扇动翅膀*
-    end-broadcast: "<green>凋零护盾已被击破，干得漂亮！"
-
+      <red>RCF</red>：小队注意，你们没有在 3 分钟内破坏凋零护盾，末影龙缓过来了！
+      <purple><dragon_name><</purple>：<i>*猛烈的扇动翅膀*<i>
+    # 技能成功击破广播
+    end-broadcast: <green>凋零护盾已被击破，干得漂亮！
+    # 技能开始广播
     broadcast:
-      - "<red><random_other_player_name></red>: 各小队注意，末影龙召唤了凋零护盾，尽快干掉这些凋零才能突破末影龙的防线，位置已经标出在你们的显示屏上，我们上吧。"
+      - <red><random_other_player_name></red>：各小队注意，末影龙召唤了凋零护盾，尽快干掉这些凋零才能突破末影龙的防线，位置已经标出在你们的显示屏上，我们上吧。
   skeleton-shooter: # 飞天狙
+    # 骷髅射手应在玩家头顶 X 格生成，浮空无重力
     skeleton-shooter-spawn-height: 10.0
+    # 骷髅射手的最大血量
     skeleton-shooter-max-health: 50
+    # 骷髅射手的弓的力量附魔等级
     bow-damage-enchantment-level: 5
-    broadcast: "<purple><dragon_name></purple>: 队友呢？队友救一下啊队友!"
+    # 骷髅射手的击退附魔等级
+    bow-knockback-enchantment-level: 2
+    broadcast:
+      - <purple><dragon_name></purple>：队友呢？队友救一下啊队友!
   # 【被动】 末影龙 HP 低于该值时禁用爆炸伤害
   explosion-protect:
     below: 150.0
   # 【被动】 末影龙 HP 低于该值时禁用远程伤害
   projectile-protect:
     below: 80.0
+# 目前还未使用
 team-skills:
   get-ready:
     broadcast: "&aRCF 终结技 &b[%s&b]&a 准备就绪，&b点击此处施放终结技！"
   active:
-    broadcast: "&c<red><player_name></red>: &f现在施放终结技 &b[%s&b]&a！"
+    broadcast: "&c<red><player_name></red>：&f现在施放终结技 &b[%s&b]&a！"
   purge:
     name: "&6肃静"
     broadcast:
-      - "<red><player_name></red>: 是时候让世界安静一些了！让嘈杂的声音就此消失吧！末影超声炮！（战场的所有末影人已全部击杀）"
+      - "<red><player_name></red>：是时候让世界安静一些了！让嘈杂的声音就此消失吧！末影超声炮！（战场的所有末影人已全部击杀）"
     need-charge: 3600
-# 召唤物名字
+# 召唤物名字，用于召唤EDF末影龙
 summon-entity-name: "Codusk"
 # Ding~ 随 机 选 人
 dragon-name:
@@ -179,12 +217,25 @@ dragon-name:
   - "香烤鳕鱼"
   - "狗"
   - "RIAZth | 候车厅"
-# 开战标题
+  - "648"
+  - "很困的喇叭"
+  - "深海喇叭"
+  - "BB-28 洛"
+  - "小岛秀夫"
+  - "虾仁"
+  - "番茄酱"
+  - "薯饼"
+  - "旋转鸡块"
+  - "de_dust2"
+  - "GLaDOS"
+# 开战标题，不支持 MiniMessage（偷懒了）
 fight-start:
   title: "&a┗|｀O′|┛ 嗷~~"
   subtitle: "&6末地之王正在虚无中翱翔！"
+# 战斗结束标题，不支持 MiniMessage（偷懒了）
 fight-end:
   egg-placed: "&7曾经的末地之主已倒在你的面前，只剩一颗龙蛋孤独的落在传送门之上...\n不过你知道，它终有一天还会归来。休息一下，做好下次讨伐的准备吧"
+# 未使用属性
 attributes:
   GENERIC_MAX_HEALTH:
     ADD_NUMBER_DEMO:
@@ -196,33 +247,37 @@ attributes:
     ADD_SCALAR:
       amount: 1.5
       operation: "ADD_SCALAR"
+# 未使用属性
 stay-together:
-#  group-says:
-#    - "快过来，人多力量大"
-#    - "终于来了，RCF 小队绝不丢下任何队员"
-#    - "别放弃，我们都在！"
-#    - "下次别跑的太远了，欢迎回来"
-#  alone-says:
-#    - "我来了，搭把手！"
-#    - "帮我一下，一起对付它！"
-#    - "搭把手！"
-#    - "我来了"
+  group-says:
+    - "快过来，人多力量大"
+    - "终于来了，RCF 小队绝不丢下任何队员"
+    - "别放弃，我们都在！"
+    - "下次别跑的太远了，欢迎回来"
+  alone-says:
+    - "我来了，搭把手！"
+    - "帮我一下，一起对付它！"
+    - "搭把手！"
+    - "我来了"
+# 死亡复活 Title
 death-respawn-title:
   title: <color:#7cd0ff>RCF</color><gray>中枢弹射系统</gray><dark_gray>►</dark_gray><red>执行成功</red>
   subtitle: <dark_gray>●认知障碍:<gray>未检测</gray>●时序紊乱:<gray>未检测</gray>●记忆保全:<gray>成功</gray></dark_gray>
+# 死亡复活消息
 death-respawn-message: |
   <red>● MSG FR RCF</red>
   <gray>你还好吧，<player_name>。</gray>
   <gray>在上次 RCF 行动后，我们对队员的护甲系统进行了改良，现在护甲和工具不会损耗耐久值了。</gray>
   <gray>你的装备在这边，如果准备好的话，就立刻返回战场吧。留给我们的时间不多了。</gray>
   <gray>谨慎行事，RCF 不希望再失去任何队员了。</gray>
+# 阶段开始广播
 stage-messages:
   STAGE_1: ""
   STAGE_2: ""
   STAGE_3: ""
   STAGE_4: ""
   STAGE_5: |
-    <red>RCF<red>: 护甲剥离启动！
-    <red>RCF<red>: 小队注意，我们的支援已抵达战场，末影龙的护甲已被我们剥离，它不再拥有攻击冷却了，刀能挥多块挥多快吧！
-    <red><player_name></red>: RCF 特有的支援姗姗来迟
-    <red><random_other_player_name></red>: 我可以理解为爆点鼠标的意思吗？
+    <red>RCF<red>：护甲剥离启动！
+    <red>RCF<red>：小队注意，我们的支援已抵达战场，末影龙的护甲已被我们剥离，它不再拥有攻击冷却了，刀能挥多块挥多快吧！
+    <red><player_name></red>：RCF 特有的支援姗姗来迟
+    <red><random_other_player_name></red>：我可以理解为爆点鼠标的意思吗？

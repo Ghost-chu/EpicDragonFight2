@@ -25,12 +25,14 @@ public class SkeletonShooter extends AbstractEpicDragonSkill {
     private final double height;
     private final double skeletonShooterMaxHealth;
     private final int enchantmentLevel;
+    private final int enchantmentKonckbackLevel;
 
     public SkeletonShooter(@NotNull DragonFight fight) {
         super(fight, "skeleton-shooter");
         this.height = getSkillConfig().getDouble("skeleton-shooter-spawn-height");
         this.skeletonShooterMaxHealth = getSkillConfig().getDouble("skeleton-shooter-max-health");
         this.enchantmentLevel = getSkillConfig().getInt("bow-damage-enchantment-level");
+        this.enchantmentKonckbackLevel = getSkillConfig().getInt("bow-knockback-enchantment-level");
     }
 
     @NotNull
@@ -67,6 +69,7 @@ public class SkeletonShooter extends AbstractEpicDragonSkill {
         ItemStack bow = new ItemStack(Material.BOW);
         ItemMeta bowMeta = bow.getItemMeta();
         bowMeta.addEnchant(Enchantment.ARROW_DAMAGE, enchantmentLevel, true);
+        bowMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, enchantmentKonckbackLevel, true);
         bow.setItemMeta(bowMeta);
         for (Skeleton skeleton : skeletonList) {
             markEntitySummonedByPlugin(skeleton);
