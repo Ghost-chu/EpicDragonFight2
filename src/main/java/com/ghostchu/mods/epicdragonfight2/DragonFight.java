@@ -62,20 +62,20 @@ public class DragonFight implements Listener {
     public void broadcast(String minimessage) {
         Component component = MiniMessage.miniMessage().deserialize(minimessage);
         Map<String, ComponentLike> preDefinedVars = new HashMap<>();
-        preDefinedVars.put("<red><dragon_name></red>", LegacyComponentSerializer.legacySection().deserialize(dragon.getName()));
+        preDefinedVars.put("<dragon_name>", LegacyComponentSerializer.legacySection().deserialize(dragon.getName()));
         preDefinedVars.put("<dragon_health>", Component.text(String.format("%.2f", dragon.getHealth())));
         Player randomPlayer = randomPlayer();
         Component playerComponent = Component.text("无");
         if (randomPlayer != null)
             playerComponent = LegacyComponentSerializer.legacySection().deserialize(randomPlayer.getDisplayName());
-        preDefinedVars.put("<red><random_other_player_name></red>", playerComponent);
+        preDefinedVars.put("<random_other_player_name>", playerComponent);
         preDefinedVars.put("<players_in_fight>", LegacyComponentSerializer.legacySection().deserialize(Util.list2String(getPlayerInWorld().stream().map(Player::getDisplayName).toList())));
         preDefinedVars.put("<player_amount_in_fight>", Component.text(getPlayerInWorld().size()));
         Component com = component.compact();
         BaseComponent[] serialized = BungeeComponentSerializer.get().serialize(com);
         getPlayerInWorld().forEach(p -> {
             Map<String, ComponentLike> perPlayerVars = new HashMap<>(preDefinedVars);
-            perPlayerVars.put("<red><player_name></red>", LegacyComponentSerializer.legacySection().deserialize(p.getDisplayName()));
+            perPlayerVars.put("<player_name>", LegacyComponentSerializer.legacySection().deserialize(p.getDisplayName()));
             Component preFilled = Util.fillArgs(BungeeComponentSerializer.get().deserialize(serialized), perPlayerVars);
             p.spigot().sendMessage(BungeeComponentSerializer.get().serialize(preFilled));
         });
@@ -284,7 +284,7 @@ public class DragonFight implements Listener {
                 Component chatMsg = MiniMessage.miniMessage().deserialize(
                         plugin.getConfig().getString("death-respawn-message")
                 );
-                Util.fillArgs(chatMsg, Map.of("{player_name}", LegacyComponentSerializer.legacySection().deserialize(event.getEntity().getDisplayName())));
+                Util.fillArgs(chatMsg, Map.of("<player_name>", LegacyComponentSerializer.legacySection().deserialize(event.getEntity().getDisplayName())));
                 event.getEntity().sendTitle(LegacyComponentSerializer.legacySection().serialize(title), LegacyComponentSerializer.legacySection().serialize(subTitle), 10, 100, 20);
                 event.getEntity().spigot().sendMessage(BungeeComponentSerializer.get().serialize(chatMsg));
             }, 2L);
