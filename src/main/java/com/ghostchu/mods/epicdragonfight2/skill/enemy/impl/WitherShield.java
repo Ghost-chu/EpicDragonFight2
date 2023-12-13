@@ -75,7 +75,7 @@ public class WitherShield extends AbstractEpicDragonSkill {
         withers.forEach(wither -> {
             if (wither.getLocation().getBlockY() > 125) {
                 wither.setVelocity(wither.getVelocity().add(new Vector(0, -5, 0)));
-                wither.damage(12);
+                wither.damage(8);
             }
         });
         return withers.isEmpty();
