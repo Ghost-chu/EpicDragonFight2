@@ -87,7 +87,6 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
         if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
             event.setCancelled(true);
         }
-        event.setCancelled(true);
     }
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onWolfDamaged(EntityDamageByEntityEvent event) {
