@@ -128,14 +128,20 @@ skills:
       - |
         <red><player_name></red>: 大家快落地！飞行装置失灵了，<purple><dragon_name></purple>正利用这点想要击飞所有在场的东西！
         <red><random_other_player_name></red>: 我去外面是虚空，小心别掉进去！
-      - <purple><dragon_name></purple>: 不懂得生命的可贵，自然也不理解狂风的凛冽！
+      - '<purple><dragon_name></purple>: 不懂得生命的可贵，自然也不理解狂风的凛冽！'
       - '<red>RCF</red>: 小队注意，你们所在附近的风场变的十分不稳定，大的要来了，抓好附近的东西，别被吹飞了！'
   wither-shield: # 凋零护盾
     wither-max-amounts: 6
     wither-max-health: 100
-    end-broadcast: "凋零护盾已被击破，干得漂亮！"
+    timeout: 6000
+    timeout-damage: 10.0
+    timeout-broadcast: |
+      <red>RCF</red>: 小队注意，你们没有在 3 分钟内破坏凋零护盾，末影龙缓过来了！
+      <purple><dragon_name><</purple>: *猛烈的扇动翅膀*
+    end-broadcast: "<green>凋零护盾已被击破，干得漂亮！"
+
     broadcast:
-      - "<red><random_other_player_name></red>: 各小队注意，末影龙召唤了凋零护盾，干掉这些凋零才能突破末影龙的防线，位置已经标出在你们的显示屏上，我们上吧。"
+      - "<red><random_other_player_name></red>: 各小队注意，末影龙召唤了凋零护盾，尽快干掉这些凋零才能突破末影龙的防线，位置已经标出在你们的显示屏上，我们上吧。"
   skeleton-shooter: # 飞天狙
     skeleton-shooter-spawn-height: 10.0
     skeleton-shooter-max-health: 50

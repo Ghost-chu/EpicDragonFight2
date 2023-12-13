@@ -14,10 +14,7 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByBlockEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -58,7 +55,7 @@ public class WitherShield extends AbstractEpicDragonSkill {
             markEntitySummonedByPlugin(wither);
             spawned++;
         }
-        return Integer.MAX_VALUE;
+        return getSkillConfig().getInt("timeout");
     }
 
     @Override
@@ -78,10 +75,20 @@ public class WitherShield extends AbstractEpicDragonSkill {
         withers.forEach(wither -> {
             if (wither.getLocation().getBlockY() > 125) {
                 wither.setVelocity(wither.getVelocity().add(new Vector(0, -5, 0)));
-                wither.damage(8);
+                wither.damage(12);
             }
         });
         return withers.isEmpty();
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onTargeting(EntityTargetLivingEntityEvent event) {
+        if (isMarkedSummonedByPlugin(event.getEntity())) {
+            if (event.getTarget() != null && !isMarkedSummonedByPlugin(event.getTarget())) {
+                Player newTarget = randomPlayer();
+                event.setTarget(newTarget);
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -138,10 +145,20 @@ public class WitherShield extends AbstractEpicDragonSkill {
 
     @Override
     public void end(@NotNull SkillEndReason var1) {
-        getAllWithers().forEach(Entity::remove);
+        getAllWithers().forEach(w -> w.setHealth(0.0d));
         bossBar.removeAll();
         Bukkit.removeBossBar(bossBar.getKey());
-        getPlayerInWorld().forEach(p -> p.playSound(p, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 0));
-        broadcast(getSkillConfig().getString("end-broadcast"));
+        if (var1 == SkillEndReason.REACH_TIME_LIMIT) {
+            getPlayerInWorld().forEach(p -> p.playSound(p, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 0));
+            broadcast(getSkillConfig().getString("timeout-broadcast"));
+            Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
+                getPlayerInWorld().forEach(p -> p.damage(getSkillConfig().getDouble("timeout-damage"), getDragon()));
+            }, 20);
+            Bukkit.getScheduler().runTaskLater(getPlugin(), () -> getAllWithers().forEach(Entity::remove), 120);
+        } else {
+            getPlayerInWorld().forEach(p -> p.playSound(p, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 0));
+            broadcast(getSkillConfig().getString("end-broadcast"));
+            getAllWithers().forEach(Entity::remove);
+        }
     }
 }
