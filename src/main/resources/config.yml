@@ -191,16 +191,16 @@ attributes:
       amount: 1.5
       operation: "ADD_SCALAR"
 stay-together:
-  group-says:
-    - "快过来，人多力量大"
-    - "终于来了，RCF 小队绝不丢下任何队员"
-    - "别放弃，我们都在！"
-    - "下次别跑的太远了，欢迎回来"
-  alone-says:
-    - "我来了，搭把手！"
-    - "帮我一下，一起对付它！"
-    - "搭把手！"
-    - "我来了"
+#  group-says:
+#    - "快过来，人多力量大"
+#    - "终于来了，RCF 小队绝不丢下任何队员"
+#    - "别放弃，我们都在！"
+#    - "下次别跑的太远了，欢迎回来"
+#  alone-says:
+#    - "我来了，搭把手！"
+#    - "帮我一下，一起对付它！"
+#    - "搭把手！"
+#    - "我来了"
 death-respawn-title:
   title: <color:#7cd0ff>RCF</color><gray>中枢弹射系统</gray><dark_gray>►</dark_gray><red>执行成功</red>
   subtitle: <dark_gray>●认知障碍:<gray>未检测</gray>●时序紊乱:<gray>未检测</gray>●记忆保全:<gray>成功</gray></dark_gray>
