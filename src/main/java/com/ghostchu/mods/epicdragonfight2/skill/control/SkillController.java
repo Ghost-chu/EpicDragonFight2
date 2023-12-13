@@ -8,6 +8,7 @@ import com.ghostchu.mods.epicdragonfight2.skill.passive.EpicPassiveSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.team.EpicTeamSkill;
 import com.ghostchu.mods.epicdragonfight2.util.ClazzScanner;
 import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Sound;
 
 import java.lang.reflect.InvocationTargetException;
@@ -45,6 +46,13 @@ public class SkillController {
         assignNewPassiveSkill();
         //assignNewTeamSkill();
         assignNewDragonSkill();
+        removeDragonDamageCooldown();
+    }
+
+    private void removeDragonDamageCooldown() {
+        if (currentStage == Stage.STAGE_5) {
+            fight.getDragon().setNoDamageTicks(0);
+        }
     }
 
     private void assignNewDragonSkill() {
@@ -90,6 +98,8 @@ public class SkillController {
     private void tickStage() {
         if (currentStage == null) {
             currentStage = Stage.values()[stagePos];
+            broadcastStageMessage();
+            logger.info("Stage switched to " + currentStage.name());
             return;
         }
         double percent = fight.getDragon().getHealth() / fight.getDragon().getMaxHealth();
@@ -99,7 +109,15 @@ public class SkillController {
                 currentStage = Stage.values()[stagePos];
                 fight.getPlayerInWorld().forEach(p -> p.playSound(p, Sound.ENTITY_IRON_GOLEM_DEATH, 1.0f, 0.0f));
                 logger.info("Stage switched to " + currentStage.name());
+                broadcastStageMessage();
             }
+        }
+    }
+
+    private void broadcastStageMessage() {
+        String minimessage = fight.getPlugin().getConfig().getString("stage-messages." + currentStage.name());
+        if (StringUtils.isNotEmpty(minimessage)) {
+            fight.broadcast(minimessage);
         }
     }
 

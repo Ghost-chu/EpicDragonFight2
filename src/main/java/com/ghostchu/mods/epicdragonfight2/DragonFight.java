@@ -99,7 +99,6 @@ public class DragonFight implements Listener {
 
     public void tick() {
         this.skillController.tick();
-        getDragon().setNoDamageTicks(0);
     }
 
     @NotNull
