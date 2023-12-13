@@ -62,20 +62,20 @@ public class DragonFight implements Listener {
     public void broadcast(String minimessage) {
         Component component = MiniMessage.miniMessage().deserialize(minimessage);
         Map<String, ComponentLike> preDefinedVars = new HashMap<>();
-        preDefinedVars.put("<dragon_name>", LegacyComponentSerializer.legacySection().deserialize(dragon.getName()));
+        preDefinedVars.put("<red><dragon_name></red>", LegacyComponentSerializer.legacySection().deserialize(dragon.getName()));
         preDefinedVars.put("<dragon_health>", Component.text(String.format("%.2f", dragon.getHealth())));
         Player randomPlayer = randomPlayer();
         Component playerComponent = Component.text("无");
         if (randomPlayer != null)
             playerComponent = LegacyComponentSerializer.legacySection().deserialize(randomPlayer.getDisplayName());
-        preDefinedVars.put("<random_other_player_name>", playerComponent);
+        preDefinedVars.put("<red><random_other_player_name></red>", playerComponent);
         preDefinedVars.put("<players_in_fight>", LegacyComponentSerializer.legacySection().deserialize(Util.list2String(getPlayerInWorld().stream().map(Player::getDisplayName).toList())));
         preDefinedVars.put("<player_amount_in_fight>", Component.text(getPlayerInWorld().size()));
         Component com = component.compact();
         BaseComponent[] serialized = BungeeComponentSerializer.get().serialize(com);
         getPlayerInWorld().forEach(p -> {
             Map<String, ComponentLike> perPlayerVars = new HashMap<>(preDefinedVars);
-            perPlayerVars.put("<player_name>", LegacyComponentSerializer.legacySection().deserialize(p.getDisplayName()));
+            perPlayerVars.put("<red><player_name></red>", LegacyComponentSerializer.legacySection().deserialize(p.getDisplayName()));
             Component preFilled = Util.fillArgs(BungeeComponentSerializer.get().deserialize(serialized), perPlayerVars);
             p.spigot().sendMessage(BungeeComponentSerializer.get().serialize(preFilled));
         });
@@ -277,16 +277,16 @@ public class DragonFight implements Listener {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 event.getEntity().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 120, 2));
                 event.getEntity().addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 120, 2));
-                String title = "&x&7&c&d&0&f&fRCF&7中枢弹射系统&8►&c执行成功";
-                String subTitle = "&8●认知障碍:&7未检测&8●时序紊乱:&7未检测&8●记忆保全:&7成功";
-                title = ChatColor.translateAlternateColorCodes('&', title);
-                subTitle = ChatColor.translateAlternateColorCodes('&', subTitle);
-                event.getEntity().sendTitle(title, subTitle, 10, 100, 20);
-                event.getEntity().sendMessage(ChatColor.RED + "● MSG FR RCF");
-                event.getEntity().sendMessage(ChatColor.GRAY + "你还好吧，" + event.getEntity().getName() + "。");
-                event.getEntity().sendMessage(ChatColor.GRAY + "在上次 RCF 行动后，我们对队员的护甲系统进行了改良，现在护甲和工具不会损耗耐久值了。");
-                event.getEntity().sendMessage(ChatColor.GRAY + "你的装备在这边，如果准备好的话，就立刻返回战场吧。留给我们的时间不多了。");
-                event.getEntity().sendMessage(ChatColor.GRAY + "谨慎行事，RCF 不希望再失去任何队员了。");
+
+
+                Component title = MiniMessage.miniMessage().deserialize(plugin.getConfig().getString("death-respawn-title.title"));
+                Component subTitle = MiniMessage.miniMessage().deserialize(plugin.getConfig().getString("death-respawn-title.subtitle"));
+                Component chatMsg = MiniMessage.miniMessage().deserialize(
+                        plugin.getConfig().getString("death-respawn-message")
+                );
+                Util.fillArgs(chatMsg, Map.of("{player_name}", LegacyComponentSerializer.legacySection().deserialize(event.getEntity().getDisplayName())));
+                event.getEntity().sendTitle(LegacyComponentSerializer.legacySection().serialize(title), LegacyComponentSerializer.legacySection().serialize(subTitle), 10, 100, 20);
+                event.getEntity().spigot().sendMessage(BungeeComponentSerializer.get().serialize(chatMsg));
             }, 2L);
         }, 2L);
     }

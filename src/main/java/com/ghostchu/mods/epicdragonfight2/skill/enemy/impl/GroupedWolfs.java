@@ -13,6 +13,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -59,7 +60,6 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
                     wolf.setCustomName("狼群弹药");
                     markEntitySummonedByPlugin(wolf);
                 }
-
             }
         }
         return false;
@@ -77,11 +77,28 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onWolfDamaged(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof DragonFireball)) {
+    public void onWolfDamaged(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Wolf)) {
             return;
         }
         if (!isMarkedSummonedByPlugin(event.getEntity())) {
+            return;
+        }
+        if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            event.setCancelled(true);
+        }
+        event.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onWolfDamaged(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Wolf)) {
+            return;
+        }
+        if (!isMarkedSummonedByPlugin(event.getEntity())) {
+            return;
+        }
+        if (!isMarkedSummonedByPlugin(event.getDamager())) {
             return;
         }
         event.setCancelled(true);
