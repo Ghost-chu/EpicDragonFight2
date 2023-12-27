@@ -61,7 +61,7 @@ public class DragonEffectCloud extends AbstractEpicDragonSkill {
         return false;
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onDragonBallHit(ProjectileHitEvent event) {
         if (!(event.getEntity() instanceof DragonFireball)) {
             return;

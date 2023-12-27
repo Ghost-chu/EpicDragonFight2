@@ -2,6 +2,7 @@ package com.ghostchu.mods.epicdragonfight2.skill.control;
 
 import com.ghostchu.mods.epicdragonfight2.DragonFight;
 import com.ghostchu.mods.epicdragonfight2.Stage;
+import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.EpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import com.ghostchu.mods.epicdragonfight2.skill.passive.EpicPassiveSkill;
@@ -31,6 +32,7 @@ public class SkillController {
     private int emptyWindowForTeamSkills;
     private int emptyWindowForDragonSkills;
 
+    private Class<? extends EpicDragonSkill> lastSelectedDragonSkill = null;
 
     public SkillController(Logger logger, DragonFight fight) {
         this.logger = logger;
@@ -45,7 +47,7 @@ public class SkillController {
         tickDragonSkills();
         assignNewPassiveSkill();
         //assignNewTeamSkill();
-        assignNewDragonSkill();
+        assignNewDragonSkill(true);
         removeDragonDamageCooldown();
     }
 
@@ -55,13 +57,21 @@ public class SkillController {
         }
     }
 
-    private void assignNewDragonSkill() {
+    private void assignNewDragonSkill(boolean canReSelect) {
         if (!currentDragonSkills.isEmpty()) return;
         emptyWindowForDragonSkills++;
         if (emptyWindowForDragonSkills >= fight.getPlugin().getConfig().getInt("skill-pick-latency")) {
             emptyWindowForDragonSkills = 0;
             EpicDragonSkill dragonSkill = spawnNewInstance(RandomUtil.randomPick(stageAvailableDragonSkills.getOrDefault(currentStage, Collections.emptyList())));
             if (dragonSkill != null) {
+                if(dragonSkill.getClass() == lastSelectedDragonSkill){
+                    if(canReSelect){
+                        logger.info("技能重复，尝试随机新的技能……");
+                        assignNewDragonSkill(false);
+                        return;
+                    }
+                }
+                lastSelectedDragonSkill = dragonSkill.getClass();
                 currentDragonSkills.add(dragonSkill);
                 fight.broadcast(dragonSkill.preAnnounce());
                 logger.info("已安装技能 " + dragonSkill.getClass().getName());

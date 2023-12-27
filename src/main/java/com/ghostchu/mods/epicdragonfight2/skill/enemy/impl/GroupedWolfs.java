@@ -52,43 +52,20 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
                     wolfGenerated.add(0, -3, 0);
                 }
                 for (int i = 0; i < wolfAmount; i++) {
-                    Wolf wolf = (Wolf) this.getWorld().spawnEntity(wolfGenerated, EntityType.WOLF);
-                    wolf.setVelocity(fromToVector(player.getLocation(), getDragon().getLocation()));
+                    Wolf wolf = (Wolf) this.getWorld().spawnEntity(player.getLocation().add(getRandom().nextInt(10), getRandom().nextInt(2), getRandom().nextInt(10)), EntityType.WOLF);
                     wolf.setAngry(true);
                     wolf.setTarget(randomPlayer());
                     wolf.setCustomNameVisible(true);
                     wolf.setCustomName("狼群弹药");
                     markEntitySummonedByPlugin(wolf);
+                    wolf.setNoDamageTicks(20);
                 }
             }
         }
         return false;
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onDragonBallHit(ProjectileHitEvent event) {
-        if (!(event.getEntity() instanceof DragonFireball)) {
-            return;
-        }
-        if (!isMarkedSummonedByPlugin(event.getEntity())) {
-            return;
-        }
-
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onWolfDamaged(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Wolf)) {
-            return;
-        }
-        if (!isMarkedSummonedByPlugin(event.getEntity())) {
-            return;
-        }
-        if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
-            event.setCancelled(true);
-        }
-    }
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onWolfDamaged(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Wolf)) {
             return;

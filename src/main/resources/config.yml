@@ -31,8 +31,8 @@ skills:
     velocity-y: 100.0
     velocity-z: 0.0
     broadcast:
-      - <purple><dragon_name></purple>：失去坚实土地的地上生灵，尽情宣泄你们的无能为力吧哈哈哈哈！
-      - <purple><dragon_name></purple>：没有体会过「立足之处」被剥夺的感觉吧蝼蚁！
+      - <dark_purple><dragon_name></dark_purple>：失去坚实土地的地上生灵，尽情宣泄你们的无能为力吧哈哈哈哈！
+      - <dark_purple><dragon_name></dark_purple>：没有体会过「立足之处」被剥夺的感觉吧蝼蚁！
   # 苦力怕乘TNT - 摧毁末地大陆！
   rocket-rain: # 龙炎火雨
     # 技能持续时间
@@ -54,9 +54,9 @@ skills:
     # 苦力怕速度药水效果等级
     creeper-speed-level: 2
     broadcast:
-      - <purple><dragon_name></purple>：艺术就是爆炸，而你……！将在爆炸中泯灭！
-      - <purple><dragon_name></purple>：够了，该结束这场闹剧了！吾命你们这群蝼蚁……灰飞烟灭！
-      - <purple><dragon_name></purple>：蝼蚁们！见识下龙族核平的力量！
+      - <dark_purple><dragon_name></dark_purple>：艺术就是爆炸，而你……！将在爆炸中泯灭！
+      - <dark_purple><dragon_name></dark_purple>：够了，该结束这场闹剧了！吾命你们这群蝼蚁……灰飞烟灭！
+      - <dark_purple><dragon_name></dark_purple>：蝼蚁们！见识下龙族核平的力量！
       - <red>RCF-bot</red>：检测到不可识别的核聚变打击！
   trident: # 天降三叉戟
     # 技能持续时间
@@ -77,7 +77,7 @@ skills:
     # 爆炸强度参考: 普通苦力怕为 3，TNT是 4，闪电苦力怕是 6
     power: 25.0
     broadcast:
-      - <purple><dragon_name></purple>：末日丧钟应召响起了，悲哀蚂蚁们，一切都将在爆炸的火焰中陨灭！
+      - <dark_purple><dragon_name></dark_purple>：末日丧钟应召响起了，悲哀蚂蚁们，一切都将在爆炸的火焰中陨灭！
       - |
         <red><player_name></red>：这条龙它疯了，它想和我们同归于尽！
         <red><random_other_player_name></red>：远离中心祭坛！
@@ -90,8 +90,8 @@ skills:
     # 范围多少方块以内的末影人会设置玩家为仇恨目标，过大的值可能引起卡顿
     range: 100
     broadcast:
-      - <purple><dragon_name></purple>：我的子民们，团结起来，将这些无知蚂蚁从我们的故乡驱逐出去！
-      - <purple><dragon_name></purple>：兵卒们！是时候也让底下的蝼蚁尝尝生物海战术的滋味！
+      - <dark_purple><dragon_name></dark_purple>：我的子民们，团结起来，将这些无知蚂蚁从我们的故乡驱逐出去！
+      - <dark_purple><dragon_name></dark_purple>：兵卒们！是时候也让底下的蝼蚁尝尝生物海战术的滋味！
   warden: # 监守者之力
     # 监守者血量
     warden-health: 80.0
@@ -101,8 +101,8 @@ skills:
     # 每次召唤的技能生物数量
     amount: 10
     broadcast:
-      - <purple><dragon_name></purple>：让愚蠢的蝼蚁离开他们引以为傲的陆地吧！
-      - <purple><dragon_name></purple>：潜影一族，听吾号令，袭！
+      - <dark_purple><dragon_name></dark_purple>：让愚蠢的蝼蚁离开他们引以为傲的陆地吧！
+      - <dark_purple><dragon_name></dark_purple>：潜影一族，听吾号令，袭！
       - |
         <red>RCF-bot</red>：检测到幻翼一族活动的声呐信号。
         <red><random_other_player_name></red>：（当场拿出收割黑夜）
@@ -110,7 +110,7 @@ skills:
     # 狼群内狼群数量
     amount: 15
     broadcast:
-      - <purple><dragon_name></purple>：我的随从们！让这些蝼蚁尝尝利齿撕咬的滋味！
+      - <dark_purple><dragon_name></dark_purple>：我的随从们！让这些蝼蚁尝尝利齿撕咬的滋味！
       - |
         <red><random_other_player_name></red>：笑死，它召唤的好像是狗哎！等下，woc这不是一般的狗，这是疯狗！
         <red><player_name></red>：兄弟，是狼！你们有带骨头吗？
@@ -122,7 +122,7 @@ skills:
     broadcast:
       - <random_other_player_name>：真是刺耳的声音
       - |
-        <purple><dragon_name></purple>：可恶的蝼蚁！（大声咆哮）
+        <dark_purple><dragon_name></dark_purple>：可恶的蝼蚁！（大声咆哮）
         <red><player_name></red>：让我想起了我家的姜黄猫，猛虎咆哮.jpg
   flame-boom: # 烈焰眩晕
     # 发射的末影火球数量
@@ -134,7 +134,7 @@ skills:
     # 被末影火球炸到的玩家给予的无视护甲的直接伤害
     damage: 5
     broadcast:
-      - <purple><dragon_name></purple>：感受一下龙炎的灼热吧！
+      - <dark_purple><dragon_name></dark_purple>：感受一下龙炎的灼热吧！
   breath-lock-link: # 龙息束链
     # 技能持续时间，在技能结束时，被粘住的玩家会被传送回龙息束链的位置
     duration: 200
@@ -149,12 +149,12 @@ skills:
     range: 150
     broadcast:
       - |
-        <red><random_other_player_name></red>：<purple><dragon_name></purple>停下来了，这条该死的龙在做什么？
+        <red><random_other_player_name></red>：<dark_purple><dragon_name></dark_purple>停下来了，这条该死的龙在做什么？
         <red><random_other_player_name></red>：不对劲，这附近的气流也停滞下来了！
       - |
-        <red><player_name></red>：大家快落地！飞行装置失灵了，<purple><dragon_name></purple>正利用这点想要击飞所有在场的东西！
+        <red><player_name></red>：大家快落地！飞行装置失灵了，<dark_purple><dragon_name></dark_purple>正利用这点想要击飞所有在场的东西！
         <red><random_other_player_name></red>：我去外面是虚空，小心别掉进去！
-      - <purple><dragon_name></purple>：肆意破坏世界的你们，自然也不理解狂风的本质！
+      - <dark_purple><dragon_name></dark_purple>：肆意破坏世界的你们，自然也不理解狂风的本质！
       - <red>传达队员404</red>：阵列注意，你们所在附近的风场变的十分不稳定，大的要来了，抓好附近的东西，别被吹飞了！
   wither-shield: # 凋零护盾
     # 凋零的最大数量，每玩家数量+1，最大不超过此限制
@@ -168,7 +168,7 @@ skills:
     # 技能超时广播
     timeout-broadcast: |
       <red>传达队员404</red>：阵列注意，你们没有在 3 分钟内破坏凋零护盾，末影龙缓过来了！
-      <purple><dragon_name><</purple>：<i>*猛烈的扇动翅膀*</i>
+      <dark_purple><dragon_name><</dark_purple>：<i>*猛烈的扇动翅膀*</i>
     # 技能成功击破广播
     end-broadcast: <green>凋零护盾已被击破，干得漂亮！
     # 技能开始广播
@@ -184,7 +184,7 @@ skills:
     # 骷髅射手的击退附魔等级
     bow-knockback-enchantment-level: 2
     broadcast:
-      - <purple><dragon_name></purple>：嘶，队友呢？队友救一下啊队友!
+      - <dark_purple><dragon_name></dark_purple>：嘶，队友呢？队友救一下啊队友!
   # 【被动】 末影龙 HP 低于该值时禁用爆炸伤害
   explosion-protect:
     below: 150.0
