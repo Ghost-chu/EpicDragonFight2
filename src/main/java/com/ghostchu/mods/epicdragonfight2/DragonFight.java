@@ -12,18 +12,13 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
-import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.persistence.PersistentDataType;
@@ -53,7 +48,7 @@ public class DragonFight implements Listener {
         this.world = world;
         this.dragon = dragon;
         this.uuid = uuid;
-        this.skillController = new SkillController(plugin.getLogger(),this);
+        this.skillController = new SkillController(plugin.getLogger(), this);
         markEntitySummonedByPlugin(this.dragon);
         world.getWorldBorder().setCenter(0, 0);
         world.getWorldBorder().setSize(300, TimeUnit.SECONDS, 10);
@@ -236,10 +231,37 @@ public class DragonFight implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void creeperSecurity(EntityDamageEvent event) {
-        if (event.getCause() != EntityDamageEvent.DamageCause.FALL || event.getCause() != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {
+        if (event.getCause() != EntityDamageEvent.DamageCause.FALL ||
+                event.getCause() != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION ||
+                event.getCause() != EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
             return;
         }
         if (!isMarkedSummonedByPlugin(event.getEntity())) {
+            return;
+        }
+        event.setDamage(0.0);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void creeperSecurity(EntityDamageByEntityEvent event) {
+        if (!isMarkedSummonedByPlugin(event.getDamager())) {
+            return;
+        }
+        if (!isMarkedSummonedByPlugin(event.getEntity())) {
+            return;
+        }
+        if(event.getDamager() instanceof TNTPrimed) return;
+        if(event.getDamager() instanceof Creeper) return;
+        event.setDamage(0.0);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void creeperSecurity(EntityDamageByBlockEvent event) {
+        if (event.getDamager() == null) return;
+        if (!isMarkedSummonedByPlugin(event.getEntity())) {
+            return;
+        }
+        if (Tag.BEDS.isTagged(event.getDamager().getType())) {
             return;
         }
         event.setDamage(0.0);
@@ -253,14 +275,6 @@ public class DragonFight implements Listener {
             }
         }
     }
-//    @EventHandler(ignoreCancelled = true)
-//    public void noDragonDamageTick(EntityDamageEvent event) {
-//        if (isMarkedSummonedByPlugin(event.getEntity())) {
-//            if(event.getEntity() instanceof EnderDragon eDragon && eDragon == getDragon()){
-//                eDragon.setNoDamageTicks(0);
-//            }
-//        }
-//    }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -276,16 +290,14 @@ public class DragonFight implements Listener {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 event.getEntity().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 120, 2));
                 event.getEntity().addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 120, 2));
-
-
                 Component title = MiniMessage.miniMessage().deserialize(plugin.getConfig().getString("death-respawn-title.title"));
                 Component subTitle = MiniMessage.miniMessage().deserialize(plugin.getConfig().getString("death-respawn-title.subtitle"));
                 Component chatMsg = MiniMessage.miniMessage().deserialize(
                         plugin.getConfig().getString("death-respawn-message")
                 );
-                Util.fillArgs(chatMsg, Map.of("<player_name>", LegacyComponentSerializer.legacySection().deserialize(event.getEntity().getDisplayName())));
+                Component component = Util.fillArgs(chatMsg, Map.of("<player_name>", LegacyComponentSerializer.legacySection().deserialize(event.getEntity().getDisplayName())));
                 event.getEntity().sendTitle(LegacyComponentSerializer.legacySection().serialize(title), LegacyComponentSerializer.legacySection().serialize(subTitle), 10, 100, 20);
-                event.getEntity().spigot().sendMessage(BungeeComponentSerializer.get().serialize(chatMsg));
+                event.getEntity().spigot().sendMessage(BungeeComponentSerializer.get().serialize(component));
             }, 2L);
         }, 2L);
     }

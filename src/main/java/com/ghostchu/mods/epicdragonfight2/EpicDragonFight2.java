@@ -276,6 +276,9 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void dragonSpawn(EntitySpawnEvent event) {
         if (event.getEntity() instanceof EnderDragon enderDragon && this.worlds.contains(event.getLocation().getWorld())) {
+            if(event.getLocation().getWorld().getPersistentDataContainer().has(PLUGIN_ENTITY_MARKER,PersistentDataType.BOOLEAN)){
+                return;
+            }
             DragonFight fight = new DragonFight(this, UUID.randomUUID(), event.getLocation().getWorld(), enderDragon);
             this.registerFight(fight);
             enderDragon.setMaxHealth(this.getConfig().getDouble("dragon-max-health"));
@@ -322,6 +325,7 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
                             e.remove();
                         }
                     });
+                    dragonFight.getWorld().getPersistentDataContainer().set(PLUGIN_ENTITY_MARKER,PersistentDataType.BOOLEAN, true);
                 }
             });
         }

@@ -2,9 +2,9 @@
 worlds:
   - world_the_end
 # 龙最大血量
-dragon-max-health: 4096.0
+dragon-max-health: 8192.0
 # 技能结束后新技能安装延迟
-skill-pick-latency: 300
+skill-pick-latency: 250
 # 技能列表
 skills:
   dragon-effect-cloud: # 龙息云
@@ -96,7 +96,7 @@ skills:
     # 监守者血量
     warden-health: 80.0
     broadcast:
-      - "&5末影龙: &r我以末地之主的名义召唤，漆黑之梦魇，现！"
+      - "<dark_purple><dragon_name></dark_purple>: 我以末地之主的名义召唤，漆黑之梦魇，现！"
   shulker-on-phantom: # 潜影浮现
     # 每次召唤的技能生物数量
     amount: 10
@@ -120,7 +120,7 @@ skills:
     # 负面药水效果等级
     potion-level: 1
     broadcast:
-      - <random_other_player_name>：真是刺耳的声音
+      - <red><random_other_player_name></red>：真是刺耳的声音
       - |
         <dark_purple><dragon_name></dark_purple>：可恶的蝼蚁！（大声咆哮）
         <red><player_name></red>：让我想起了我家的姜黄猫，猛虎咆哮.jpg

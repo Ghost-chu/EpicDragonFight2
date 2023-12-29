@@ -52,6 +52,9 @@ public class Ravage extends AbstractEpicDragonSkill {
         for (Player player : this.getPlayerInWorld()) {
             if (player.getInventory().getHelmet() != null && player.getInventory().getHelmet().getType() == Material.CARVED_PUMPKIN)
                 continue;
+            if(player.getInventory().getHelmet().getType() == Material.CARVED_PUMPKIN){
+                continue;
+            }
             this.getWorld().getNearbyEntities(player.getLocation(), this.range, 20.0, this.range).stream().filter(entity -> entity instanceof Enderman).map(entity -> (Enderman) entity).forEach(enderman -> {
                 enderman.setTarget(player);
                 markEntitySummonedByPlugin(enderman);
