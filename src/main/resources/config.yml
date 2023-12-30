@@ -4,7 +4,7 @@ worlds:
 # 龙最大血量
 dragon-max-health: 8192.0
 # 技能结束后新技能安装延迟
-skill-pick-latency: 250
+skill-pick-latency: 300
 # 技能列表
 skills:
   dragon-effect-cloud: # 龙息云

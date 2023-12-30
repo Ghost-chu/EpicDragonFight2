@@ -250,8 +250,7 @@ public class DragonFight implements Listener {
         if (!isMarkedSummonedByPlugin(event.getEntity())) {
             return;
         }
-        if(event.getDamager() instanceof TNTPrimed) return;
-        if(event.getDamager() instanceof Creeper) return;
+        if(!(event.getDamager() instanceof TNTPrimed) || !(event.getDamager() instanceof Creeper)) return;
         event.setDamage(0.0);
     }
 
