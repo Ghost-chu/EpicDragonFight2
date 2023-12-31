@@ -94,6 +94,12 @@ public class DragonFight implements Listener {
 
     public void tick() {
         this.skillController.tick();
+        if(getWorld().getGameTime() % 200 == 0){
+            for (Map.Entry<String, AtomicDouble> stringAtomicDoubleEntry : this.damageRankBoard.entrySet()) {
+                plugin.getLogger().info("计分板 dump：");
+                plugin.getLogger().info(stringAtomicDoubleEntry.getKey()+": "+stringAtomicDoubleEntry.getValue());
+            }
+        }
     }
 
     @NotNull
