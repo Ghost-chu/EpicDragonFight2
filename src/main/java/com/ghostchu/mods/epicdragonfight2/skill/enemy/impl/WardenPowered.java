@@ -52,15 +52,16 @@ public class WardenPowered extends AbstractEpicDragonSkill {
     private void spawnWarden(Player p) {
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1, false, false, true));
         Location spawnAt = p.getLocation();
-        Warden entity = getWorld().spawn(spawnAt, Warden.class);
-        entity.setMaxHealth(wardenHealth);
-        entity.setHealth(entity.getMaxHealth());
-        NBTEntity nbtEntity = new NBTEntity(entity);
-        NBTContainer nbtContainer = new NBTContainer("{Brain:{memories:{\"minecraft:dig_cooldown\":{ttl:1200L,value:{}}, \"minecraft:is_emerging\":{ttl:134L,value:{}}}}}");
-        nbtEntity.mergeCompound(nbtContainer);
-        entity.setInvisible(true);
-        markEntitySummonedByPlugin(entity);
-        Bukkit.getScheduler().runTaskLater(EpicDragonFight2.getInstance(), () -> entity.setInvisible(false), 4);
+       getWorld().spawn(spawnAt, Warden.class,(entity)->{
+           entity.setMaxHealth(wardenHealth);
+           entity.setHealth(entity.getMaxHealth());
+           NBTEntity nbtEntity = new NBTEntity(entity);
+           NBTContainer nbtContainer = new NBTContainer("{Brain:{memories:{\"minecraft:dig_cooldown\":{ttl:1200L,value:{}}, \"minecraft:is_emerging\":{ttl:134L,value:{}}}}}");
+           nbtEntity.mergeCompound(nbtContainer);
+           entity.setInvisible(true);
+           markEntitySummonedByPlugin(entity);
+           Bukkit.getScheduler().runTaskLater(EpicDragonFight2.getInstance(), () -> entity.setInvisible(false), 4);
+        });
     }
 
     @Override
