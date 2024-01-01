@@ -59,7 +59,7 @@ public class FallingTrident extends AbstractEpicDragonSkill {
             if (!isMarkedSummonedByPlugin(trident)) continue;
             this.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, trident.getLocation(), 2);
             Location location = getFalloutPosition(trident);
-            summonCircle(location, 2);
+            //summonCircle(location, 2);
         }
     }
 
