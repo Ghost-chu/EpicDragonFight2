@@ -11,6 +11,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 @EpicSkill
@@ -50,11 +51,9 @@ public class Ravage extends AbstractEpicDragonSkill {
 
     private void findAndApplyTarget() {
         for (Player player : this.getPlayerInWorld()) {
-            if (player.getInventory().getHelmet() != null && player.getInventory().getHelmet().getType() == Material.CARVED_PUMPKIN)
+            ItemStack stack = player.getInventory().getHelmet();
+            if (stack != null && stack.getType() == Material.CARVED_PUMPKIN)
                 continue;
-            if(player.getInventory().getHelmet().getType() == Material.CARVED_PUMPKIN){
-                continue;
-            }
             this.getWorld().getNearbyEntities(player.getLocation(), this.range, 20.0, this.range).stream().filter(entity -> entity instanceof Enderman).map(entity -> (Enderman) entity).forEach(enderman -> {
                 enderman.setTarget(player);
                 markEntitySummonedByPlugin(enderman);
