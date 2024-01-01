@@ -64,8 +64,10 @@ public class Ravage extends AbstractEpicDragonSkill {
 
     private void playParticle() {
         for (Enderman enderman : this.getWorld().getEntitiesByClass(Enderman.class)) {
-            Location particlePos = enderman.getLocation().add(0.0, 3.0, 0.0);
-            this.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, particlePos, 1);
+            if(getRandom().nextInt(5) == 0) {
+                Location particlePos = enderman.getLocation().add(0.0, 3.0, 0.0);
+                this.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, particlePos, 1);
+            }
         }
     }
 
