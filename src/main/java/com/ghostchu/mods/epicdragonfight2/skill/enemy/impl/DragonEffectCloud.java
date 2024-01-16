@@ -45,7 +45,7 @@ public class DragonEffectCloud extends AbstractEpicDragonSkill {
             return false;
         }
         if (this.getCleanTick() % this.checkInterval == 0) {
-            for (Player player : this.getPlayerInWorld()) {
+            for (Player player : randomPlayers()) {
                 Location ballGeneratePos = getDragon().getLocation();
                 if (player.getLocation().getBlockY() > getDragon().getLocation().getBlockY()) {
                     ballGeneratePos.add(0, 3, 0);

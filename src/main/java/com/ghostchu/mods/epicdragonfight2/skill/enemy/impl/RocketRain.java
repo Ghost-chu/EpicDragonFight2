@@ -57,8 +57,8 @@ public class RocketRain extends AbstractEpicDragonSkill {
     @Override
     public boolean tick() {
         if (getCleanTick() % this.checkInterval == 0) {
-            ArrayList<Player> playersRecent = new ArrayList<Player>();
-            for (Player player : this.getPlayerInWorld()) {
+            ArrayList<Player> playersRecent = new ArrayList<>();
+            for (Player player : randomPlayers()) {
                 if (!(player.getLocation().distance(this.getDragon().getLocation()) < 300.0)) continue;
                 playersRecent.add(player);
             }
@@ -92,7 +92,7 @@ public class RocketRain extends AbstractEpicDragonSkill {
 
     private void playParticle() {
         for (TNTPrimed tnt : this.getWorld().getEntitiesByClass(TNTPrimed.class)) {
-            this.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, tnt.getLocation(), 2);
+            this.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, tnt.getLocation(), 1);
         }
     }
 

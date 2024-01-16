@@ -1,6 +1,7 @@
 package com.ghostchu.mods.epicdragonfight2;
 
 import com.ghostchu.mods.epicdragonfight2.skill.control.SkillController;
+import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
 import com.ghostchu.mods.epicdragonfight2.util.Util;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.kyori.adventure.text.Component;
@@ -123,6 +124,10 @@ public class DragonFight implements Listener {
             return players.get(0);
         }
         return players.get(this.random.nextInt(Math.max(1, players.size() - 1)));
+    }
+    @NotNull
+    public List<Player> randomPlayers(){
+        return RandomUtil.randomPick(getPlayerInWorld(), plugin.getConfig().getInt("global-skill-players-max-pick", 12));
     }
 
     @EventHandler(ignoreCancelled = true)

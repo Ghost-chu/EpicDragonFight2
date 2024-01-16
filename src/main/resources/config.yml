@@ -38,9 +38,9 @@ skills:
     # 技能持续时间
     duration: 250
     # 技能时间内，每 X tick 发射一次
-    check-interval: 10
+    check-interval: 15
     # 苦力怕爆炸范围
-    creeper-explode-radius: 13
+    creeper-explode-radius: 10
     # 是否为闪电苦力怕
     creeper-powered: true
     # 苦力怕引信长度 tick
@@ -295,3 +295,4 @@ stage-messages:
     <red>RCF·支援分队<red>：阵列注意，我们的支援已抵达战场，末影龙的护甲已被我们剥离，它不再拥有攻击冷却了，刀能挥多块挥多快吧！
     <red><player_name></red>：RCF 特有的支援姗姗来迟
     <red><random_other_player_name></red>：我可以理解为爆点鼠标的意思吗？
+global-skill-players-max-pick: 12

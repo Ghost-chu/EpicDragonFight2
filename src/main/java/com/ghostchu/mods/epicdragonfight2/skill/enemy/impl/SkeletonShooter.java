@@ -55,7 +55,7 @@ public class SkeletonShooter extends AbstractEpicDragonSkill {
         if (isWaitingStart())
             return false;
         List<Skeleton> skeletonList = new ArrayList<>();
-        for (Player player : getPlayerInWorld()) {
+        for (Player player : randomPlayers()) {
             Location stdPos = player.getLocation().add(0, height, 0);
             Location pos1 = stdPos.add(getRandom().nextInt(-10, 10), 0, getRandom().nextInt(-10, 10));
             Location pos2 = stdPos.add(getRandom().nextInt(-10, 10), 0, getRandom().nextInt(-10, 10));

@@ -50,7 +50,7 @@ public class Ravage extends AbstractEpicDragonSkill {
     }
 
     private void findAndApplyTarget() {
-        for (Player player : this.getPlayerInWorld()) {
+        for (Player player : randomPlayers()) {
             ItemStack stack = player.getInventory().getHelmet();
             if (stack != null && stack.getType() == Material.CARVED_PUMPKIN)
                 continue;

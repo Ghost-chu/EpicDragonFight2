@@ -56,9 +56,7 @@ public class FlameBoom extends AbstractEpicDragonSkill {
             return false;
         }
         if (this.getCleanTick() == 0) {
-            List<Player> playerList = new ArrayList<>(this.getPlayerInWorld().stream().limit(maxAmount).toList());
-            Collections.shuffle(playerList);
-            for (Player player : playerList) {
+            for (Player player : randomPlayers()) {
                 Location ballGeneratePos = getDragon().getLocation();
                 if (player.getLocation().getBlockY() > getDragon().getLocation().getBlockY()) {
                     ballGeneratePos.add(0, 3, 0);

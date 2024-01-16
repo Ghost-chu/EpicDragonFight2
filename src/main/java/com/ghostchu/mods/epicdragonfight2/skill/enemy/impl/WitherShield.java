@@ -45,7 +45,7 @@ public class WitherShield extends AbstractEpicDragonSkill {
     @Override
     public int start() {
         spawned = 0;
-        List<Player> playerList = getPlayerInWorld();
+        List<Player> playerList = randomPlayers();
         for (int i = 0; i < Math.min(playerList.size(), witherMaxAmounts); i++) {
             Player player = playerList.get(i);
             Wither wither = (Wither) getWorld().spawnEntity(player.getLocation().add(0, 20, 0), EntityType.WITHER);

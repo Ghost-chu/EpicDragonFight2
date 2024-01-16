@@ -44,7 +44,7 @@ public class GroupedWolfs extends AbstractEpicDragonSkill {
             return false;
         }
         if (this.getCleanTick() == 0) {
-            for (Player player : this.getPlayerInWorld()) {
+            for (Player player : randomPlayers()) {
                 Location wolfGenerated = getDragon().getLocation();
                 if (player.getLocation().getBlockY() > getDragon().getLocation().getBlockY()) {
                     wolfGenerated.add(0, 3, 0);

@@ -68,6 +68,8 @@ public class AbstractEpicSkill {
         this.fight.broadcastActionBar(string);
     }
 
+    public List<Player> randomPlayers(){return this.fight.randomPlayers();}
+
     @NotNull
     public World getWorld() {
         return this.fight.getWorld();

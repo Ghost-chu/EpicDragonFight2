@@ -1,9 +1,6 @@
 package com.ghostchu.mods.epicdragonfight2.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class RandomUtil {
     private static final Random RANDOM = new Random();
@@ -13,5 +10,18 @@ public class RandomUtil {
         List<T> clone = new ArrayList<>(from);
         int selected = RANDOM.nextInt(clone.size());
         return clone.get(selected);
+    }
+
+    public static <T> List<T> randomPick(List<T> from, int amount) {
+        Collections.shuffle(from);
+        List<T> picked = new ArrayList<>();
+        Iterator<T> it = from.iterator();
+        int i = 0;
+        while (it.hasNext() && i < amount) {
+            T t = it.next();
+            picked.add(t);
+            i++;
+        }
+        return picked;
     }
 }
