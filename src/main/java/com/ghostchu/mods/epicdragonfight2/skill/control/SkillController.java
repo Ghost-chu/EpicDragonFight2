@@ -41,14 +41,38 @@ public class SkillController {
     }
 
     public void tick() {
-        tickStage();
-        tickPassiveSkills();
+        try {
+            tickStage();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        try {
+            tickPassiveSkills();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
         //tickTeamSkills();
-        tickDragonSkills();
-        assignNewPassiveSkill();
+        try {
+            tickDragonSkills();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        try {
+            assignNewPassiveSkill();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
         //assignNewTeamSkill();
-        assignNewDragonSkill(true);
-        removeDragonDamageCooldown();
+        try {
+            assignNewDragonSkill(true);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        try {
+            removeDragonDamageCooldown();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
     private void removeDragonDamageCooldown() {
@@ -64,8 +88,8 @@ public class SkillController {
             emptyWindowForDragonSkills = 0;
             EpicDragonSkill dragonSkill = spawnNewInstance(RandomUtil.randomPick(stageAvailableDragonSkills.getOrDefault(currentStage, Collections.emptyList())));
             if (dragonSkill != null) {
-                if(dragonSkill.getClass() == lastSelectedDragonSkill){
-                    if(canReSelect){
+                if (dragonSkill.getClass() == lastSelectedDragonSkill) {
+                    if (canReSelect) {
                         logger.info("技能重复，尝试随机新的技能……");
                         assignNewDragonSkill(false);
                         return;
