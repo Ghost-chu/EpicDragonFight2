@@ -5,6 +5,7 @@ import com.ghostchu.mods.epicdragonfight2.Stage;
 import com.ghostchu.mods.epicdragonfight2.skill.EpicSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.AbstractEpicDragonSkill;
 import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -51,7 +52,9 @@ public class NukeExplosion extends AbstractEpicDragonSkill {
             return false;
         }
         if (getCleanTick() == 0) {
+            getDragon().setInvulnerable(true);
             this.getWorld().createExplosion(new Location(this.getWorld(), 0.0, 70.0, 0.0), this.power, true, false, this.getDragon());
+            Bukkit.getScheduler().runTaskLater(getPlugin(), ()->getDragon().setInvulnerable(false), 2);
         }
         return false;
     }

@@ -9,6 +9,7 @@ import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -68,7 +69,9 @@ public class AbstractEpicSkill {
         this.fight.broadcastActionBar(string);
     }
 
-    public List<Player> randomPlayers(){return this.fight.randomPlayers();}
+    public List<Player> randomPlayers() {
+        return this.fight.randomPlayers();
+    }
 
     @NotNull
     public World getWorld() {
@@ -119,10 +122,14 @@ public class AbstractEpicSkill {
 
 
     public void markEntitySummonedByPlugin(Entity entity) {
+        entity.setMetadata("summon_by_edf2", new FixedMetadataValue(getPlugin(), true));
         fight.markEntitySummonedByPlugin(entity);
     }
 
     public boolean isMarkedSummonedByPlugin(Entity entity) {
+        if (entity.hasMetadata("summon_by_edf2")) {
+            return true;
+        }
         return fight.isMarkedSummonedByPlugin(entity);
     }
 }

@@ -55,6 +55,7 @@ public class WitherShield extends AbstractEpicDragonSkill {
             markEntitySummonedByPlugin(wither);
             spawned++;
         }
+        getDragon().setInvulnerable(true);
         return getSkillConfig().getInt("timeout");
     }
 
@@ -101,36 +102,6 @@ public class WitherShield extends AbstractEpicDragonSkill {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void dragonAttacked(EntityDamageEvent event) {
-        if (event.getEntity() instanceof EnderDragon dragon) {
-            if (isMarkedSummonedByPlugin(dragon)) {
-                event.setCancelled(true);
-                event.setDamage(0);
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void dragonAttacked(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof EnderDragon dragon) {
-            if (isMarkedSummonedByPlugin(dragon)) {
-                event.setCancelled(true);
-                event.setDamage(0);
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void dragonAttacked(EntityDamageByBlockEvent event) {
-        if (event.getEntity() instanceof EnderDragon dragon) {
-            if (isMarkedSummonedByPlugin(dragon)) {
-                event.setCancelled(true);
-                event.setDamage(0);
-            }
-        }
-    }
-
     public List<Wither> getAllWithers() {
         return getWorld().getEntitiesByClass(Wither.class)
                 .stream()
@@ -145,6 +116,7 @@ public class WitherShield extends AbstractEpicDragonSkill {
 
     @Override
     public void end(@NotNull SkillEndReason var1) {
+        getDragon().setInvulnerable(false);
         getAllWithers().forEach(w -> w.setHealth(0.0d));
         bossBar.removeAll();
         Bukkit.removeBossBar(bossBar.getKey());

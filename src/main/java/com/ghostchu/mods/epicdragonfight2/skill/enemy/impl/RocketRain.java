@@ -8,6 +8,8 @@ import com.ghostchu.mods.epicdragonfight2.skill.enemy.SkillEndReason;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -93,6 +95,14 @@ public class RocketRain extends AbstractEpicDragonSkill {
     private void playParticle() {
         for (TNTPrimed tnt : this.getWorld().getEntitiesByClass(TNTPrimed.class)) {
             this.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, tnt.getLocation(), 1);
+        }
+    }
+    @EventHandler(ignoreCancelled = true)
+    public void onExplode(EntityDamageEvent event){
+        if(isMarkedSummonedByPlugin(event.getEntity())){
+            if(event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION || event.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION){
+                event.setCancelled(true);
+            }
         }
     }
 

@@ -408,6 +408,9 @@ public final class EpicDragonFight2 extends JavaPlugin implements Listener {
 
     private boolean registerFight(@NotNull DragonFight dragonFight) {
         Bukkit.getPluginManager().registerEvents(dragonFight, this);
+        if(dragonFight.getDragon() != null && dragonFight.getDragon().isInvulnerable()) {
+            dragonFight.getDragon().setInvulnerable(false);
+        }
         return this.dragonFightList.add(dragonFight);
     }
 

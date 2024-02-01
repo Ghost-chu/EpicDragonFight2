@@ -11,6 +11,7 @@ import com.ghostchu.mods.epicdragonfight2.util.ClazzScanner;
 import com.ghostchu.mods.epicdragonfight2.util.RandomUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
